@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0D1B2A" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="BinaLab" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <title>BinaLab OS</title>
+  <style>
+    :root{
+      --navy:#0D1B2A; --green:#22C55E; --blue:#2563EB; --ink:#111827;
+      --muted:#6B7280; --line:#E7ECF2; --surface:#FFFFFF; --soft:#F4F7FB;
+      --radius:26px; --shadow:0 18px 60px rgba(13,27,42,.12);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;background:#071425}
+    body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#F7F9FC;color:var(--ink)}
+    button,a{font:inherit}
+    button{cursor:pointer}
+    .shell{max-width:1440px;margin:auto;background:#F7F9FC;min-height:100vh}
+    .splash{position:fixed;inset:0;z-index:1000;background:
+      radial-gradient(circle at 25% 30%,rgba(34,197,94,.28),transparent 35%),
+      radial-gradient(circle at 75% 70%,rgba(37,99,235,.30),transparent 40%),#071425;
+      display:grid;place-items:center;transition:opacity .7s ease,visibility .7s ease}
+    .splash.hide{opacity:0;visibility:hidden}
+    .splash-card{text-align:center;color:#fff;animation:splashIn 1s cubic-bezier(.2,.8,.2,1) both}
+    .logo-mark{width:92px;height:92px;border-radius:28px;background:#fff;display:grid;place-items:center;margin:0 auto 22px;box-shadow:0 24px 70px rgba(0,0,0,.25)}
+    .logo-mark img{width:72px;height:72px;border-radius:20px}
+    .splash h1{font-size:42px;margin:0 0 8px;letter-spacing:-1.5px}
+    .splash h1 span{color:var(--green)}
+    .splash p{margin:0;color:#B9C4D1}
+    .loader{width:180px;height:4px;background:rgba(255,255,255,.12);border-radius:999px;margin:30px auto 0;overflow:hidden}
+    .loader span{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--blue));animation:load 4s linear forwards}
+    @keyframes load{from{width:0}to{width:100%}}
+    @keyframes splashIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+    header{position:sticky;top:0;z-index:50;padding:16px 24px;background:rgba(247,249,252,.82);backdrop-filter:blur(16px);border-bottom:1px solid rgba(231,236,242,.8)}
+    .nav{max-width:1320px;margin:auto;display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:800;font-size:22px;color:var(--navy);text-decoration:none}
+    .brand img{width:40px;height:40px;border-radius:12px}
+    .brand span b{color:var(--green)}
+    .navlinks{display:flex;gap:28px;align-items:center}
+    .navlinks a{text-decoration:none;color:#344054;font-weight:600;font-size:14px}
+    .btn{border:0;border-radius:14px;padding:13px 18px;font-weight:800;transition:.25s ease}
+    .btn-primary{color:#fff;background:linear-gradient(135deg,var(--green),#14B8A6);box-shadow:0 12px 30px rgba(34,197,94,.25)}
+    .btn-dark{background:var(--navy);color:#fff}
+    .btn-ghost{background:#fff;color:var(--navy);border:1px solid var(--line)}
+    .btn:hover{transform:translateY(-2px)}
+    main{max-width:1320px;margin:auto;padding:26px 24px 80px}
+    .hero{background:#fff;border:1px solid var(--line);border-radius:34px;box-shadow:var(--shadow);padding:72px 64px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;overflow:hidden;position:relative}
+    .hero:after{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:radial-gradient(circle,rgba(34,197,94,.16),transparent 68%);right:-120px;top:-150px}
+    .eyebrow{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;border-radius:999px;background:#F0FDF4;color:#166534;font-weight:800;font-size:12px}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--green)}
+    h1{font-size:clamp(44px,6vw,82px);line-height:.98;letter-spacing:-4px;margin:24px 0}
+    h1 .accent{color:var(--green)}
+    .lead{font-size:18px;line-height:1.7;color:var(--muted);max-width:590px}
+    .actions{display:flex;gap:12px;margin-top:30px;flex-wrap:wrap}
+    .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:46px}
+    .metric{padding-right:14px;border-right:1px solid var(--line)}
+    .metric:last-child{border-right:0}
+    .metric strong{font-size:30px;display:block}
+    .metric small{color:var(--muted)}
+    .hero-ui{position:relative;z-index:2;background:linear-gradient(145deg,#0B1B2D,#0D2743);border-radius:28px;padding:18px;color:#fff;box-shadow:0 30px 80px rgba(13,27,42,.28);transform:rotate(-1deg)}
+    .dash-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+    .mini-logo{display:flex;align-items:center;gap:8px;font-weight:800}.mini-logo img{width:28px;border-radius:8px}
+    .window-dots{display:flex;gap:5px}.window-dots i{width:7px;height:7px;border-radius:50%;background:#496078}
+    .dash-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .stat{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.08);padding:16px;border-radius:18px}
+    .stat span{color:#A8B7C7;font-size:12px}.stat strong{display:block;font-size:28px;margin-top:8px}
+    .progress-card{grid-column:1/-1;background:#fff;color:var(--ink);border-radius:20px;padding:18px}
+    .ring{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;margin:12px auto;background:conic-gradient(var(--green) 0 75%,#E8EDF3 75%)}
+    .ring:before{content:"75%";width:88px;height:88px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:900;font-size:22px}
+    section{margin-top:28px}
+    .section-card{background:#fff;border:1px solid var(--line);border-radius:30px;box-shadow:0 14px 50px rgba(13,27,42,.07);padding:34px}
+    .section-head{display:flex;justify-content:space-between;align-items:end;gap:24px;margin-bottom:24px}
+    .section-head h2{font-size:34px;letter-spacing:-1.2px;margin:0}
+    .section-head p{color:var(--muted);margin:6px 0 0}
+    .process{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+    .step{padding:24px;border:1px solid var(--line);border-radius:22px;position:relative}
+    .step-no{width:34px;height:34px;border-radius:12px;background:#EFF6FF;color:var(--blue);display:grid;place-items:center;font-weight:900}
+    .step:nth-child(3) .step-no,.step:nth-child(4) .step-no{background:#F0FDF4;color:#15803D}
+    .step h3{margin:18px 0 10px}.step p{color:var(--muted);line-height:1.6;margin:0}
+    .portfolio{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+    .project{border:1px solid var(--line);border-radius:24px;overflow:hidden;background:#fff}
+    .cover{height:170px;padding:20px;color:#fff;display:flex;flex-direction:column;justify-content:end;background:
+      linear-gradient(180deg,transparent,rgba(0,0,0,.72)),
+      radial-gradient(circle at 70% 20%,rgba(34,197,94,.55),transparent 35%),#0B1B2D}
+    .project:nth-child(2) .cover{background:linear-gradient(180deg,transparent,rgba(0,0,0,.75)),linear-gradient(135deg,#4B5563,#111827)}
+    .project:nth-child(3) .cover{background:linear-gradient(180deg,transparent,rgba(0,0,0,.75)),linear-gradient(135deg,#556B2F,#263512)}
+    .project:nth-child(4) .cover{background:linear-gradient(180deg,transparent,rgba(0,0,0,.75)),linear-gradient(135deg,#CBD5E1,#0F172A)}
+    .cover b{font-size:24px}.cover small{opacity:.78}
+    .project-body{padding:18px}.project-body h4{margin:0 0 8px}.project-body p{color:var(--muted);font-size:13px;line-height:1.6}
+    .project-link{color:var(--navy);font-weight:800;text-decoration:none}
+    .diagnosis{display:grid;grid-template-columns:.8fr 1.2fr;gap:24px;align-items:stretch}
+    .score{border-radius:26px;background:linear-gradient(145deg,#071425,#0D2743);color:#fff;padding:30px;display:flex;flex-direction:column;justify-content:center}
+    .score .big{font-size:74px;font-weight:900;letter-spacing:-4px;color:var(--green)}
+    .score p{color:#B7C3D0}
+    .checklist{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .check{padding:18px;border-radius:18px;background:var(--soft);display:flex;gap:12px;align-items:flex-start}
+    .check i{width:24px;height:24px;border-radius:50%;background:#DCFCE7;color:#15803D;display:grid;place-items:center;font-style:normal;font-weight:900}
+    .mobile-bar{display:none}
+    footer{background:#071425;color:#fff;border-radius:30px;padding:34px;margin-top:28px;display:flex;justify-content:space-between;align-items:center}
+    footer p{color:#9FB0C2}
+    @media(max-width:1000px){
+      .navlinks{display:none}
+      .hero{grid-template-columns:1fr;padding:54px 34px}
+      .hero-ui{transform:none}
+      .metrics{grid-template-columns:repeat(2,1fr)}
+      .process,.portfolio{grid-template-columns:repeat(2,1fr)}
+      .diagnosis{grid-template-columns:1fr}
+    }
+    @media(max-width:640px){
+      header{padding:10px 14px}
+      .nav .btn{display:none}
+      main{padding:14px 14px 110px}
+      .hero{padding:34px 22px;border-radius:26px}
+      h1{font-size:48px;letter-spacing:-2.6px}
+      .lead{font-size:15px}
+      .actions .btn{width:100%}
+      .metrics{grid-template-columns:repeat(2,1fr);margin-top:32px}
+      .metric{border-right:0;border-bottom:1px solid var(--line);padding:0 0 12px}
+      .hero-ui{border-radius:22px;padding:14px}
+      .section-card{padding:22px 16px;border-radius:24px}
+      .section-head{align-items:flex-start;flex-direction:column}
+      .section-head h2{font-size:28px}
+      .process,.portfolio,.checklist{grid-template-columns:1fr}
+      .cover{height:155px}
+      footer{margin-bottom:10px;display:block;text-align:center}
+      .mobile-bar{position:fixed;left:12px;right:12px;bottom:12px;z-index:80;background:rgba(7,20,37,.94);backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.08);border-radius:22px;display:grid;grid-template-columns:repeat(4,1fr);padding:10px;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+      .mobile-bar button{border:0;background:transparent;color:#A9B7C7;font-size:11px;padding:7px}
+      .mobile-bar button.active{color:#fff}
+      .mobile-bar b{display:block;font-size:18px;color:var(--green);margin-bottom:3px}
+    }
+  </style>
+</head>
+<body>
+  <div class="splash" id="splash">
+    <div class="splash-card">
+      <div class="logo-mark"><img src="icon-192.png" alt="BinaLab"></div>
+      <h1>Bina<span>Lab</span></h1>
+      <p>Real Business. Real Solutions.</p>
+      <div class="loader"><span></span></div>
+    </div>
+  </div>
+
+  <div class="shell">
+    <header>
+      <nav class="nav">
+        <a class="brand" href="#"><img src="icon-192.png" alt="BinaLab"><span>Bina<b>Lab</b></span></a>
+        <div class="navlinks">
+          <a href="#solutions">Solutions</a><a href="#portfolio">Portfolio</a><a href="#process">Process</a><a href="#diagnosis">Diagnosis</a>
+        </div>
+        <button class="btn btn-dark" onclick="startProject()">Start a Project</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <div class="eyebrow"><span class="dot"></span> Digital Systems That Drive Real Business</div>
+          <h1>Real Business.<br><span class="accent">Real Solutions.</span></h1>
+          <p class="lead">Kami membantu perniagaan menyelesaikan masalah operasi melalui sistem digital yang praktikal, mudah digunakan dan memberi impak sebenar.</p>
+          <div class="actions">
+            <button class="btn btn-primary" onclick="startProject()">Start Your Project →</button>
+            <button class="btn btn-ghost" onclick="document.querySelector('#portfolio').scrollIntoView()">Explore Our Work</button>
+          </div>
+          <div class="metrics">
+            <div class="metric"><strong>4+</strong><small>Digital Products</small></div>
+            <div class="metric"><strong>6+</strong><small>Industries</small></div>
+            <div class="metric"><strong>20+</strong><small>Systems Delivered</small></div>
+            <div class="metric"><strong>100%</strong><small>Client Focused</small></div>
+          </div>
+        </div>
+        <div class="hero-ui">
+          <div class="dash-top"><div class="mini-logo"><img src="icon-192.png"> BinaLab Studio</div><div class="window-dots"><i></i><i></i><i></i></div></div>
+          <div class="dash-grid">
+            <div class="stat"><span>Active Projects</span><strong>12</strong></div>
+            <div class="stat"><span>Pending Approval</span><strong>5</strong></div>
+            <div class="stat"><span>New Leads</span><strong>8</strong></div>
+            <div class="stat"><span>Tasks Today</span><strong>7</strong></div>
+            <div class="progress-card"><b>Project Progress</b><div class="ring"></div><small>Average progress across all active projects</small></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="process" class="section-card">
+        <div class="section-head"><div><h2>Our Process</h2><p>Sistem yang kami bina melalui proses yang terbukti.</p></div></div>
+        <div class="process">
+          <div class="step"><div class="step-no">1</div><h3>OBSERVE</h3><p>Kami faham masalah dan proses operasi perniagaan anda.</p></div>
+          <div class="step"><div class="step-no">2</div><h3>DESIGN</h3><p>Kami reka aliran kerja dan solusi yang paling sesuai.</p></div>
+          <div class="step"><div class="step-no">3</div><h3>BUILD</h3><p>Kami bina sistem yang praktikal, stabil dan mudah digunakan.</p></div>
+          <div class="step"><div class="step-no">4</div><h3>IMPROVE</h3><p>Kami sentiasa perbaiki hasil supaya lebih baik.</p></div>
+        </div>
+      </section>
+
+      <section id="portfolio" class="section-card">
+        <div class="section-head"><div><h2>Our Work</h2><p>Sistem yang dibina untuk menyelesaikan masalah sebenar.</p></div><button class="btn btn-ghost">View All Projects</button></div>
+        <div class="portfolio">
+          <article class="project"><div class="cover"><b>MOS Karting</b><small>Entertainment</small></div><div class="project-body"><h4>Session & Race Management</h4><p>Daripada stopwatch manual kepada operasi sesi yang lebih tersusun.</p><a class="project-link" href="#">View Case Study →</a></div></article>
+          <article class="project"><div class="cover"><b>Abedin Auto</b><small>Automotive</small></div><div class="project-body"><h4>Digital Rental Workflow</h4><p>Perjanjian sewa, rekod pelanggan dan aliran operasi dalam satu sistem.</p><a class="project-link" href="#">View Case Study →</a></div></article>
+          <article class="project"><div class="cover"><b>KeduaOS</b><small>F&B / Catering</small></div><div class="project-body"><h4>Catering Management</h4><p>Tempahan, rekod pelanggan dan pengurusan acara yang lebih kemas.</p><a class="project-link" href="#">View Case Study →</a></div></article>
+          <article class="project"><div class="cover"><b>Awanzco</b><small>Retail / Mobile</small></div><div class="project-body"><h4>Used Device Operations</h4><p>Inventori, harga belian dan margin untuk jual beli telefon terpakai.</p><a class="project-link" href="#">View Case Study →</a></div></article>
+        </div>
+      </section>
+
+      <section id="diagnosis" class="section-card diagnosis">
+        <div class="score"><small>DIGITAL READINESS SCORE</small><div class="big">78%</div><h2>Good</h2><p>Bisnes anda mempunyai potensi tinggi untuk automasi operasi.</p><button class="btn btn-primary" onclick="startProject()">Request Proposal</button></div>
+        <div>
+          <div class="section-head"><div><h2>Business Diagnosis</h2><p>Peluang penambahbaikan berdasarkan operasi semasa.</p></div></div>
+          <div class="checklist">
+            <div class="check"><i>✓</i><div><b>Booking Automation</b><br><small>Kurangkan kerja manual dan keciciran.</small></div></div>
+            <div class="check"><i>✓</i><div><b>Customer Database</b><br><small>Semua rekod pelanggan dalam satu tempat.</small></div></div>
+            <div class="check"><i>✓</i><div><b>Invoice Workflow</b><br><small>Lebih cepat, tepat dan profesional.</small></div></div>
+            <div class="check"><i>✓</i><div><b>Smart Notifications</b><br><small>Pastikan pasukan tidak terlepas tindakan penting.</small></div></div>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div><div class="brand" style="color:#fff"><img src="icon-192.png"><span>Bina<b>Lab</b></span></div><p>Real Business. Real Solutions.</p></div>
+        <button class="btn btn-primary" onclick="startProject()">Start a Project</button>
+      </footer>
+    </main>
+  </div>
+
+  <div class="mobile-bar">
+    <button class="active"><b>⌂</b>Home</button>
+    <button onclick="document.querySelector('#portfolio').scrollIntoView()"><b>◫</b>Projects</button>
+    <button onclick="startProject()"><b>＋</b>Start</button>
+    <button onclick="document.querySelector('#diagnosis').scrollIntoView()"><b>◎</b>Diagnosis</button>
+  </div>
+
+  <script>
+    const splash = document.getElementById('splash');
+    setTimeout(() => splash.classList.add('hide'), 4000);
+
+    function startProject(){
+      const name = prompt('Nama bisnes anda?');
+      if(!name) return;
+      alert('Terima kasih, ' + name + '! Discovery form akan dibuka dalam versi seterusnya.');
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.error));
+    }
+  </script>
+</body>
+</html>
