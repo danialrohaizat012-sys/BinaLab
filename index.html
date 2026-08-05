@@ -10,7 +10,7 @@
   <meta name="description" content="BinaLab menyelesaikan masalah bisnes melalui sistem digital yang dibina mengikut operasi sebenar." />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <title>BinaLab — Problem Solvers. System Builders.</title>
+  <title>BinaLab — Business Discovery</title>
 
   <style>
     :root{
@@ -385,6 +385,165 @@
       *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
       .reveal{opacity:1;transform:none}
     }
+  
+    /* BinaLab Discovery */
+    .discovery-trigger{position:relative;overflow:hidden}
+    .discovery-trigger::after{
+      content:"";position:absolute;inset:0;background:linear-gradient(110deg,transparent 35%,rgba(255,255,255,.28),transparent 65%);
+      transform:translateX(-130%);transition:transform .65s ease
+    }
+    .discovery-trigger:hover::after{transform:translateX(130%)}
+
+    .discovery-overlay{
+      position:fixed;inset:0;z-index:1600;background:rgba(3,12,22,.72);
+      backdrop-filter:blur(16px);display:none;padding:18px;overflow:auto
+    }
+    .discovery-overlay.open{display:block;animation:overlayIn .28s ease both}
+    @keyframes overlayIn{from{opacity:0}to{opacity:1}}
+    .discovery-app{
+      width:min(1180px,100%);min-height:calc(100vh - 36px);margin:auto;background:#F7F9FC;
+      border:1px solid rgba(255,255,255,.12);border-radius:30px;overflow:hidden;
+      box-shadow:0 40px 130px rgba(0,0,0,.42)
+    }
+    .discovery-topbar{
+      position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:18px;
+      padding:16px 20px;background:rgba(247,249,252,.92);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)
+    }
+    .discovery-brand{display:flex;align-items:center;gap:11px;font-weight:950;color:var(--navy)}
+    .discovery-brand img{width:38px;height:38px;border-radius:12px}
+    .discovery-brand span b{color:var(--green)}
+    .discovery-close{
+      width:42px;height:42px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--navy);
+      font-size:24px;line-height:1
+    }
+    .discovery-layout{display:grid;grid-template-columns:290px 1fr;min-height:760px}
+    .discovery-sidebar{
+      background:linear-gradient(160deg,#061321,#0D2743);color:#fff;padding:30px 24px;position:relative;overflow:hidden
+    }
+    .discovery-sidebar::after{
+      content:"";position:absolute;width:300px;height:300px;border-radius:50%;left:-150px;bottom:-130px;
+      background:radial-gradient(circle,rgba(34,197,94,.35),transparent 68%)
+    }
+    .discovery-sidebar small{color:var(--green);font-weight:900;letter-spacing:.14em}
+    .discovery-sidebar h3{font-size:34px;line-height:1.02;letter-spacing:-1.4px;margin:13px 0 12px}
+    .discovery-sidebar p{color:#AFC0D0;line-height:1.65;font-size:14px}
+    .journey-list{display:grid;gap:9px;margin-top:28px;position:relative;z-index:2}
+    .journey-item{
+      display:flex;align-items:center;gap:12px;padding:12px;border-radius:15px;color:#9FB0C3;font-size:13px;font-weight:800
+    }
+    .journey-item i{
+      width:28px;height:28px;border-radius:10px;background:rgba(255,255,255,.07);display:grid;place-items:center;
+      font-style:normal;font-size:11px
+    }
+    .journey-item.active{background:rgba(255,255,255,.10);color:#fff}
+    .journey-item.active i{background:var(--green);color:#fff}
+    .journey-item.done{color:#D9FBE4}
+    .journey-item.done i{background:rgba(34,197,94,.18);color:var(--green)}
+
+    .discovery-main{padding:34px}
+    .progress-label{display:flex;justify-content:space-between;gap:16px;color:var(--muted);font-size:12px;font-weight:850}
+    .progress-track{height:7px;background:#E8EDF3;border-radius:999px;margin:10px 0 34px;overflow:hidden}
+    .progress-bar{height:100%;width:16.66%;background:linear-gradient(90deg,var(--green),#14B8A6);border-radius:999px;transition:width .35s ease}
+    .discovery-step{display:none;animation:stepIn .32s ease both}
+    .discovery-step.active{display:block}
+    @keyframes stepIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+    .step-kicker{color:var(--green-2);font-size:12px;font-weight:950;letter-spacing:.12em}
+    .discovery-step h2{font-size:clamp(34px,5vw,58px);line-height:1;letter-spacing:-2.5px;margin:12px 0}
+    .step-intro{color:var(--muted);line-height:1.7;max-width:760px;margin:0 0 28px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .field{display:grid;gap:8px}
+    .field.full{grid-column:1/-1}
+    .field label{font-size:13px;font-weight:850;color:#475467}
+    .field input,.field select,.field textarea{
+      width:100%;border:1px solid var(--line);border-radius:16px;padding:15px 16px;background:#fff;color:var(--ink);outline:none;
+      transition:border .2s ease,box-shadow .2s ease
+    }
+    .field textarea{min-height:150px;resize:vertical;line-height:1.65}
+    .field input:focus,.field select:focus,.field textarea:focus{
+      border-color:var(--green);box-shadow:0 0 0 4px rgba(34,197,94,.10)
+    }
+    .logo-upload,.file-upload{
+      border:1.5px dashed #C8D2DE;border-radius:18px;padding:24px;background:#fff;text-align:center;cursor:pointer;
+      transition:.25s ease
+    }
+    .logo-upload:hover,.file-upload:hover{border-color:var(--green);background:#F5FFF8}
+    .logo-preview{
+      width:82px;height:82px;border-radius:21px;margin:0 auto 12px;background:var(--soft);display:grid;place-items:center;
+      color:var(--muted);font-weight:900;overflow:hidden
+    }
+    .logo-preview img{width:100%;height:100%;object-fit:cover}
+    .choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}
+    .choice-card{
+      border:1px solid var(--line);border-radius:20px;padding:19px;background:#fff;cursor:pointer;transition:.24s ease;
+      min-height:135px
+    }
+    .choice-card:hover{transform:translateY(-3px);box-shadow:0 14px 38px rgba(13,27,42,.08)}
+    .choice-card.selected{border:2px solid var(--green);background:#F3FFF6;box-shadow:0 14px 38px rgba(34,197,94,.11)}
+    .choice-card b{display:block;font-size:15px;margin-top:16px}
+    .choice-card span{font-size:26px}
+    .choice-card small{display:block;color:var(--muted);line-height:1.45;margin-top:6px}
+    .upload-list{display:grid;gap:10px;margin-top:15px}
+    .upload-item{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-radius:13px;background:var(--soft);font-size:13px}
+    .review-card{border:1px solid var(--line);border-radius:22px;padding:22px;background:#fff;margin-bottom:14px}
+    .review-card small{color:var(--green-2);font-weight:900;letter-spacing:.08em}
+    .review-card h4{font-size:20px;margin:8px 0 10px}
+    .review-card p{color:var(--muted);line-height:1.65;white-space:pre-wrap;margin:0}
+    .review-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .review-tags span{padding:8px 10px;border-radius:999px;background:#F0FDF4;color:#166534;font-size:12px;font-weight:850}
+    .discovery-actions{
+      display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:30px;padding-top:22px;border-top:1px solid var(--line)
+    }
+    .discovery-actions .right{display:flex;gap:10px}
+    .submit-state{text-align:center;padding:38px 10px}
+    .submit-orb{
+      width:110px;height:110px;border-radius:34px;background:linear-gradient(145deg,#071425,#0D2743);
+      display:grid;place-items:center;margin:0 auto 24px;box-shadow:0 24px 60px rgba(13,27,42,.22)
+    }
+    .submit-orb img{width:78px;height:78px;border-radius:22px}
+    .submit-state h2{font-size:48px;margin:0 0 10px}
+    .submit-state p{max-width:650px;margin:0 auto;color:var(--muted);line-height:1.7}
+    .analysis-lines{display:grid;gap:12px;max-width:560px;margin:28px auto;text-align:left}
+    .analysis-line{padding:14px 16px;border-radius:15px;background:#fff;border:1px solid var(--line);display:flex;gap:12px;align-items:center}
+    .analysis-line i{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(34,197,94,.12)}
+    .portal-preview{
+      text-align:left;display:grid;grid-template-columns:1fr 1.2fr;gap:18px;margin-top:26px
+    }
+    .portal-card{border:1px solid var(--line);border-radius:22px;padding:20px;background:#fff}
+    .portal-card h4{margin:0 0 15px;font-size:18px}
+    .status-list{display:grid;gap:9px}
+    .status-row{display:flex;justify-content:space-between;gap:12px;padding:12px;border-radius:13px;background:var(--soft);font-size:13px;font-weight:800}
+    .status-row.done{background:#F0FDF4;color:#166534}
+    .status-row.current{background:#EFF6FF;color:#1D4ED8}
+    .status-row.waiting{color:#8A96A7}
+    .prototype-box{
+      min-height:260px;border-radius:18px;background:
+        radial-gradient(circle at 80% 20%,rgba(34,197,94,.32),transparent 30%),
+        linear-gradient(145deg,#061321,#0D2743);color:#fff;padding:22px;display:flex;flex-direction:column;justify-content:space-between
+    }
+    .prototype-box small{color:#9FB0C3;font-weight:850}
+    .prototype-box h3{font-size:30px;letter-spacing:-1px;margin:8px 0}
+    .prototype-box p{color:#AFC0D0;line-height:1.6}
+
+    @media(max-width:850px){
+      .discovery-overlay{padding:0}
+      .discovery-app{min-height:100vh;border-radius:0}
+      .discovery-layout{grid-template-columns:1fr}
+      .discovery-sidebar{display:none}
+      .discovery-main{padding:24px 16px 110px}
+      .form-grid,.portal-preview{grid-template-columns:1fr}
+      .choice-grid{grid-template-columns:1fr 1fr}
+      .discovery-actions{
+        position:fixed;left:0;right:0;bottom:0;z-index:25;background:rgba(247,249,252,.95);backdrop-filter:blur(18px);
+        padding:12px 14px;border-top:1px solid var(--line);margin:0
+      }
+    }
+    @media(max-width:540px){
+      .choice-grid{grid-template-columns:1fr}
+      .discovery-step h2{font-size:40px}
+      .submit-state h2{font-size:40px}
+      .discovery-actions .btn{padding:13px 14px}
+    }
+
   </style>
 </head>
 
@@ -415,7 +574,7 @@
           <a href="#diagnosis">Diagnosis</a>
         </div>
 
-        <button class="btn btn-dark" data-scroll="#diagnosis">Diagnose My Business</button>
+        <button class="btn btn-dark" data-discovery>Start Business Discovery</button>
       </nav>
     </header>
 
@@ -436,7 +595,7 @@
           </p>
 
           <div class="actions">
-            <button class="btn btn-primary" data-scroll="#diagnosis">Diagnose My Business →</button>
+            <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery →</button>
             <button class="btn btn-ghost" data-scroll="#stories">Explore Business Stories</button>
           </div>
 
@@ -725,6 +884,25 @@
         </div>
       </section>
 
+
+      <section class="section-card reveal" id="journey">
+        <div class="section-head">
+          <div>
+            <h2>The BinaLab Journey.</h2>
+            <p>Daripada cerita operasi anda sehingga sistem dilancarkan—setiap langkah jelas, tersusun dan boleh diikuti.</p>
+          </div>
+          <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery →</button>
+        </div>
+
+        <div class="process">
+          <article class="step"><div class="step-num">1</div><h3>DISCOVERY</h3><p>Anda ceritakan bisnes, operasi harian, aset sedia ada dan masalah utama.</p></article>
+          <article class="step"><div class="step-num">2</div><h3>PROBLEM MAPPING</h3><p>BinaLab menyusun bottleneck, risiko dan peluang penambahbaikan yang sebenar.</p></article>
+          <article class="step"><div class="step-num">3</div><h3>BLUEPRINT</h3><p>Kami mencadangkan workflow, struktur sistem dan reka bentuk awal yang sesuai.</p></article>
+          <article class="step code"><div class="step-num">4</div><h3>PROTOTYPE REVIEW</h3><p>Anda melihat dan menguji arah aplikasi sebelum bersetuju meneruskan pembangunan.</p></article>
+          <article class="step"><div class="step-num">5</div><h3>PROPOSAL & BUILD</h3><p>Selepas prototaip dipersetujui, barulah proposal, quotation, pembayaran dan pembangunan dimulakan.</p></article>
+        </div>
+      </section>
+
       <section class="final-cta reveal">
         <small>EVERY BUSINESS HAS A BOTTLENECK</small>
         <h2>Let's find yours.</h2>
@@ -732,7 +910,7 @@
           Jangan mulakan dengan senarai feature. Mulakan dengan satu perbualan tentang
           masalah sebenar yang sedang memperlahankan bisnes anda.
         </p>
-        <button class="btn btn-primary" data-scroll="#diagnosis">Start Business Discovery →</button>
+        <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery →</button>
       </section>
 
       <footer>
@@ -743,9 +921,233 @@
           </a>
           <p>Problem Solvers. System Builders.</p>
         </div>
-        <button class="btn btn-primary" data-scroll="#diagnosis">Start With Your Problem</button>
+        <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery</button>
       </footer>
     </main>
+  </div>
+
+
+  <div class="discovery-overlay" id="discoveryOverlay" aria-hidden="true">
+    <div class="discovery-app">
+      <div class="discovery-topbar">
+        <div class="discovery-brand">
+          <img src="icon-192.png" alt="BinaLab">
+          <span>Bina<b>Lab</b> Discovery</span>
+        </div>
+        <button class="discovery-close" id="discoveryClose" aria-label="Close">×</button>
+      </div>
+
+      <div class="discovery-layout">
+        <aside class="discovery-sidebar">
+          <small>THE BINALAB JOURNEY</small>
+          <h3>Tell us the business. Not the app.</h3>
+          <p>Jawapan anda membantu kami memahami operasi sebenar sebelum mencadangkan sebarang sistem.</p>
+
+          <div class="journey-list" id="journeyList">
+            <div class="journey-item active"><i>1</i><span>About Your Business</span></div>
+            <div class="journey-item"><i>2</i><span>Daily Operations</span></div>
+            <div class="journey-item"><i>3</i><span>Pain Points</span></div>
+            <div class="journey-item"><i>4</i><span>Files & References</span></div>
+            <div class="journey-item"><i>5</i><span>Dream Outcome</span></div>
+            <div class="journey-item"><i>6</i><span>Review & Submit</span></div>
+          </div>
+        </aside>
+
+        <main class="discovery-main">
+          <div id="discoveryFormView">
+            <div class="progress-label">
+              <span id="progressName">About Your Business</span>
+              <span id="progressCount">Step 1 of 6</span>
+            </div>
+            <div class="progress-track"><div class="progress-bar" id="discoveryProgress"></div></div>
+
+            <section class="discovery-step active" data-step="0">
+              <span class="step-kicker">STEP 01 — BUSINESS</span>
+              <h2>Tell us about your business.</h2>
+              <p class="step-intro">Mulakan dengan identiti asas. Kami mahu memahami siapa anda sebelum membincangkan apa yang perlu dibina.</p>
+
+              <div class="form-grid">
+                <div class="field">
+                  <label for="discoveryBusinessName">Nama perniagaan *</label>
+                  <input id="discoveryBusinessName" placeholder="Contoh: Meney Gaming">
+                </div>
+                <div class="field">
+                  <label for="discoveryIndustry">Industri *</label>
+                  <select id="discoveryIndustry">
+                    <option value="">Pilih industri</option>
+                    <option>Retail</option><option>Automotive</option><option>Food & Beverage</option>
+                    <option>Service Business</option><option>Beauty</option><option>Events & Entertainment</option>
+                    <option>Education</option><option>Other</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="discoveryLocation">Lokasi operasi</label>
+                  <input id="discoveryLocation" placeholder="Contoh: Kota Bharu, Kelantan">
+                </div>
+                <div class="field">
+                  <label for="discoveryTeam">Saiz pasukan</label>
+                  <select id="discoveryTeam">
+                    <option>1–5 orang</option><option>6–20 orang</option><option>21–50 orang</option><option>50+ orang</option>
+                  </select>
+                </div>
+                <div class="field full">
+                  <label>Logo perniagaan</label>
+                  <label class="logo-upload" for="discoveryLogo">
+                    <div class="logo-preview" id="logoPreview">LOGO</div>
+                    <strong>Upload logo</strong>
+                    <div style="color:var(--muted);font-size:13px;margin-top:5px">PNG, JPG atau WEBP</div>
+                    <input id="discoveryLogo" type="file" accept="image/*" hidden>
+                  </label>
+                </div>
+              </div>
+            </section>
+
+            <section class="discovery-step" data-step="1">
+              <span class="step-kicker">STEP 02 — OPERATIONS</span>
+              <h2>Walk us through a normal day.</h2>
+              <p class="step-intro">Ceritakan aliran sebenar daripada pelanggan datang atau membuat pertanyaan sehingga urusan selesai.</p>
+
+              <div class="form-grid">
+                <div class="field full">
+                  <label for="dailyOperation">Bagaimana operasi harian berjalan? *</label>
+                  <textarea id="dailyOperation" placeholder="Contoh: Pelanggan WhatsApp untuk bertanya stok. Staff semak secara manual, catat tempahan dalam buku, kemudian hubungi pelanggan semula..."></textarea>
+                </div>
+                <div class="field">
+                  <label for="currentTools">Tools yang digunakan sekarang</label>
+                  <input id="currentTools" placeholder="WhatsApp, Excel, Google Form, buku...">
+                </div>
+                <div class="field">
+                  <label for="customerFlow">Cara pelanggan berurusan</label>
+                  <input id="customerFlow" placeholder="Walk-in, WhatsApp, Instagram, website...">
+                </div>
+                <div class="field full">
+                  <label for="staffFlow">Apa yang staff perlu lakukan setiap hari?</label>
+                  <textarea id="staffFlow" placeholder="Senaraikan kerja penting, kerja berulang dan siapa yang bertanggungjawab."></textarea>
+                </div>
+              </div>
+            </section>
+
+            <section class="discovery-step" data-step="2">
+              <span class="step-kicker">STEP 03 — PAIN POINTS</span>
+              <h2>What is slowing the business down?</h2>
+              <p class="step-intro">Pilih semua yang berkaitan. Masalah ini akan digunakan untuk membina Problem Map awal.</p>
+
+              <div class="choice-grid" id="painChoices">
+                <div class="choice-card" data-value="Too much manual work"><span>⏳</span><b>Too much manual work</b><small>Banyak proses perlu dibuat berulang kali.</small></div>
+                <div class="choice-card" data-value="Paper and forms"><span>📄</span><b>Paper and forms</b><small>Dokumen sukar dicari dan disemak.</small></div>
+                <div class="choice-card" data-value="WhatsApp everywhere"><span>📱</span><b>WhatsApp everywhere</b><small>Maklumat pelanggan dan tempahan berselerak.</small></div>
+                <div class="choice-card" data-value="Inventory is messy"><span>📦</span><b>Inventory is messy</b><small>Stok, kos dan pergerakan sukar dipantau.</small></div>
+                <div class="choice-card" data-value="Staff mistakes"><span>👥</span><b>Staff mistakes</b><small>Proses tidak konsisten atau SOP mudah terlupa.</small></div>
+                <div class="choice-card" data-value="No visibility"><span>📊</span><b>No dashboard</b><small>Owner sukar melihat keadaan semasa bisnes.</small></div>
+              </div>
+
+              <div class="field" style="margin-top:18px">
+                <label for="biggestProblem">Terangkan masalah paling kritikal *</label>
+                <textarea id="biggestProblem" placeholder="Apa yang berlaku, berapa kerap ia berlaku dan bagaimana ia memberi kesan kepada operasi atau pelanggan?"></textarea>
+              </div>
+            </section>
+
+            <section class="discovery-step" data-step="3">
+              <span class="step-kicker">STEP 04 — REFERENCES</span>
+              <h2>Show us how things work today.</h2>
+              <p class="step-intro">Dokumen sebenar membantu kami memahami konteks tanpa membuat andaian.</p>
+
+              <label class="file-upload" for="referenceFiles">
+                <strong>＋ Upload logo, borang, SOP, invoice atau gambar operasi</strong>
+                <div style="color:var(--muted);font-size:13px;margin-top:7px">Anda boleh pilih beberapa fail serentak.</div>
+                <input id="referenceFiles" type="file" multiple hidden>
+              </label>
+              <div class="upload-list" id="uploadList"></div>
+
+              <div class="field" style="margin-top:18px">
+                <label for="referenceLink">Link rujukan</label>
+                <input id="referenceLink" placeholder="Website, Facebook, Instagram atau sistem semasa">
+              </div>
+            </section>
+
+            <section class="discovery-step" data-step="4">
+              <span class="step-kicker">STEP 05 — OUTCOME</span>
+              <h2>Imagine the business one year from now.</h2>
+              <p class="step-intro">Jangan fikir tentang feature dahulu. Ceritakan perubahan yang anda mahu rasai dalam operasi.</p>
+
+              <div class="form-grid">
+                <div class="field full">
+                  <label for="dreamOutcome">Apakah keadaan ideal yang anda mahu capai? *</label>
+                  <textarea id="dreamOutcome" placeholder="Contoh: Saya mahu staff boleh urus tempahan tanpa bergantung kepada saya, semua data berada di satu tempat dan saya boleh monitor dari telefon."></textarea>
+                </div>
+                <div class="field">
+                  <label for="priorityOutcome">Keutamaan utama</label>
+                  <select id="priorityOutcome">
+                    <option>Jimat masa</option><option>Kurangkan kesilapan</option><option>Naikkan jualan</option>
+                    <option>Lebih mudah monitor</option><option>Lebih profesional kepada pelanggan</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="targetTimeline">Bila anda mahu mula?</label>
+                  <select id="targetTimeline">
+                    <option>Secepat mungkin</option><option>Dalam 1 bulan</option><option>Dalam 3 bulan</option><option>Masih meneroka</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <section class="discovery-step" data-step="5">
+              <span class="step-kicker">STEP 06 — REVIEW</span>
+              <h2>Review your Business Discovery.</h2>
+              <p class="step-intro">Pastikan ringkasan ini menggambarkan bisnes dan masalah sebenar anda.</p>
+              <div id="reviewContent"></div>
+            </section>
+
+            <div class="discovery-actions">
+              <button class="btn btn-ghost" id="discoveryBack">← Back</button>
+              <div class="right">
+                <button class="btn btn-ghost" id="saveDiscovery">Save Draft</button>
+                <button class="btn btn-primary" id="discoveryNext">Next →</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="submit-state" id="discoverySuccess" hidden>
+            <div class="submit-orb"><img src="icon-192.png" alt="BinaLab"></div>
+            <span class="step-kicker">DISCOVERY RECEIVED</span>
+            <h2>Welcome to the BinaLab Journey.</h2>
+            <p>Business Discovery anda telah direkodkan dalam browser ini sebagai prototaip. Dalam versi production, submission ini akan dihantar ke dashboard BinaLab.</p>
+
+            <div class="analysis-lines">
+              <div class="analysis-line"><i></i><span>Business information received</span></div>
+              <div class="analysis-line"><i></i><span>Workflow ready for problem mapping</span></div>
+              <div class="analysis-line"><i></i><span>Business Blueprint queued for preparation</span></div>
+            </div>
+
+            <div class="portal-preview">
+              <div class="portal-card">
+                <h4>Your Journey Status</h4>
+                <div class="status-list">
+                  <div class="status-row done"><span>Business Discovery</span><b>Completed</b></div>
+                  <div class="status-row current"><span>Problem Mapping</span><b>Next</b></div>
+                  <div class="status-row waiting"><span>Business Blueprint</span><b>Waiting</b></div>
+                  <div class="status-row waiting"><span>Interactive Prototype</span><b>Waiting</b></div>
+                  <div class="status-row waiting"><span>Development Proposal</span><b>After Approval</b></div>
+                </div>
+              </div>
+
+              <div class="portal-card">
+                <div class="prototype-box">
+                  <div>
+                    <small>UPCOMING DELIVERABLE</small>
+                    <h3>Business Blueprint</h3>
+                    <p>Problem summary, proposed workflow, initial interface direction and prototype link.</p>
+                  </div>
+                  <strong>Quotation is prepared only after prototype approval.</strong>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="finishDiscovery" style="margin-top:24px">Return to BinaLab</button>
+          </div>
+        </main>
+      </div>
+    </div>
   </div>
 
   <div class="mobile-bar">
@@ -880,6 +1282,241 @@
       glow.style.left = event.clientX + 'px';
       glow.style.top = event.clientY + 'px';
     });
+
+
+    const discoveryOverlay = document.getElementById('discoveryOverlay');
+    const discoveryClose = document.getElementById('discoveryClose');
+    const discoverySteps = [...document.querySelectorAll('.discovery-step')];
+    const journeyItems = [...document.querySelectorAll('#journeyList .journey-item')];
+    const discoveryProgress = document.getElementById('discoveryProgress');
+    const progressName = document.getElementById('progressName');
+    const progressCount = document.getElementById('progressCount');
+    const nextButton = document.getElementById('discoveryNext');
+    const backButton = document.getElementById('discoveryBack');
+    const saveButton = document.getElementById('saveDiscovery');
+    const formView = document.getElementById('discoveryFormView');
+    const successView = document.getElementById('discoverySuccess');
+    let discoveryStep = 0;
+
+    const stepNames = [
+      'About Your Business','Daily Operations','Pain Points',
+      'Files & References','Dream Outcome','Review & Submit'
+    ];
+
+    function openDiscovery(){
+      discoveryOverlay.classList.add('open');
+      discoveryOverlay.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+      loadDiscoveryDraft();
+      updateDiscoveryStep();
+    }
+
+    function closeDiscovery(){
+      discoveryOverlay.classList.remove('open');
+      discoveryOverlay.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-discovery]').forEach(button => {
+      button.addEventListener('click', openDiscovery);
+    });
+
+    discoveryClose.addEventListener('click', closeDiscovery);
+    discoveryOverlay.addEventListener('click', event => {
+      if(event.target === discoveryOverlay) closeDiscovery();
+    });
+    document.getElementById('finishDiscovery').addEventListener('click', closeDiscovery);
+
+    function updateDiscoveryStep(){
+      discoverySteps.forEach((step,index) => step.classList.toggle('active', index === discoveryStep));
+      journeyItems.forEach((item,index) => {
+        item.classList.toggle('active', index === discoveryStep);
+        item.classList.toggle('done', index < discoveryStep);
+      });
+      discoveryProgress.style.width = ((discoveryStep + 1) / discoverySteps.length * 100) + '%';
+      progressName.textContent = stepNames[discoveryStep];
+      progressCount.textContent = `Step ${discoveryStep + 1} of ${discoverySteps.length}`;
+      backButton.style.visibility = discoveryStep === 0 ? 'hidden' : 'visible';
+      nextButton.textContent = discoveryStep === discoverySteps.length - 1 ? 'Submit Discovery →' : 'Next →';
+
+      if(discoveryStep === discoverySteps.length - 1) buildReview();
+    }
+
+    function requiredValue(id){
+      return document.getElementById(id).value.trim();
+    }
+
+    function validateCurrentStep(){
+      const requirements = {
+        0: [['discoveryBusinessName','Nama perniagaan'],['discoveryIndustry','Industri']],
+        1: [['dailyOperation','Operasi harian']],
+        2: [['biggestProblem','Masalah paling kritikal']],
+        4: [['dreamOutcome','Dream outcome']]
+      };
+      const fields = requirements[discoveryStep] || [];
+      for(const [id,label] of fields){
+        if(!requiredValue(id)){
+          alert(`Sila lengkapkan: ${label}.`);
+          document.getElementById(id).focus();
+          return false;
+        }
+      }
+      return true;
+    }
+
+    nextButton.addEventListener('click', () => {
+      if(!validateCurrentStep()) return;
+
+      if(discoveryStep < discoverySteps.length - 1){
+        discoveryStep++;
+        updateDiscoveryStep();
+        document.querySelector('.discovery-app').scrollTo({top:0,behavior:'smooth'});
+      }else{
+        submitDiscovery();
+      }
+    });
+
+    backButton.addEventListener('click', () => {
+      if(discoveryStep > 0){
+        discoveryStep--;
+        updateDiscoveryStep();
+      }
+    });
+
+    document.querySelectorAll('#painChoices .choice-card').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('selected'));
+    });
+
+    const logoInput = document.getElementById('discoveryLogo');
+    logoInput.addEventListener('change', () => {
+      const file = logoInput.files[0];
+      if(!file) return;
+      const reader = new FileReader();
+      reader.onload = event => {
+        document.getElementById('logoPreview').innerHTML = `<img src="${event.target.result}" alt="Business logo">`;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    const referenceFiles = document.getElementById('referenceFiles');
+    referenceFiles.addEventListener('change', () => {
+      const list = document.getElementById('uploadList');
+      list.innerHTML = '';
+      [...referenceFiles.files].forEach(file => {
+        const item = document.createElement('div');
+        item.className = 'upload-item';
+        item.innerHTML = `<span>${file.name}</span><b>${Math.max(1,Math.round(file.size/1024))} KB</b>`;
+        list.appendChild(item);
+      });
+    });
+
+    function selectedPainPoints(){
+      return [...document.querySelectorAll('#painChoices .choice-card.selected')].map(card => card.dataset.value);
+    }
+
+    function collectDiscovery(){
+      return {
+        businessName: requiredValue('discoveryBusinessName'),
+        industry: document.getElementById('discoveryIndustry').value,
+        location: requiredValue('discoveryLocation'),
+        team: document.getElementById('discoveryTeam').value,
+        dailyOperation: requiredValue('dailyOperation'),
+        currentTools: requiredValue('currentTools'),
+        customerFlow: requiredValue('customerFlow'),
+        staffFlow: requiredValue('staffFlow'),
+        painPoints: selectedPainPoints(),
+        biggestProblem: requiredValue('biggestProblem'),
+        referenceLink: requiredValue('referenceLink'),
+        dreamOutcome: requiredValue('dreamOutcome'),
+        priorityOutcome: document.getElementById('priorityOutcome').value,
+        targetTimeline: document.getElementById('targetTimeline').value,
+        files: [...referenceFiles.files].map(file => file.name)
+      };
+    }
+
+    function buildReview(){
+      const data = collectDiscovery();
+      const pains = data.painPoints.length ? data.painPoints : ['Belum dipilih'];
+      document.getElementById('reviewContent').innerHTML = `
+        <div class="review-card">
+          <small>BUSINESS</small>
+          <h4>${escapeHTML(data.businessName || '—')}</h4>
+          <p>${escapeHTML([data.industry,data.location,data.team].filter(Boolean).join(' • '))}</p>
+        </div>
+        <div class="review-card">
+          <small>CURRENT OPERATIONS</small>
+          <h4>How the business works today</h4>
+          <p>${escapeHTML(data.dailyOperation || '—')}</p>
+        </div>
+        <div class="review-card">
+          <small>PROBLEM MAP INPUT</small>
+          <h4>Primary pain points</h4>
+          <p>${escapeHTML(data.biggestProblem || '—')}</p>
+          <div class="review-tags">${pains.map(item => `<span>${escapeHTML(item)}</span>`).join('')}</div>
+        </div>
+        <div class="review-card">
+          <small>DESIRED OUTCOME</small>
+          <h4>${escapeHTML(data.priorityOutcome || 'Business improvement')}</h4>
+          <p>${escapeHTML(data.dreamOutcome || '—')}</p>
+        </div>
+        <div class="review-card">
+          <small>NEXT STEP</small>
+          <h4>Problem Mapping → Business Blueprint → Prototype</h4>
+          <p>Development Proposal dan quotation hanya disediakan selepas arah prototaip dipersetujui.</p>
+        </div>`;
+    }
+
+    function escapeHTML(value){
+      return String(value || '').replace(/[&<>"']/g, char => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+      })[char]);
+    }
+
+    function saveDiscoveryDraft(){
+      const data = collectDiscovery();
+      localStorage.setItem('binalabDiscoveryDraft', JSON.stringify(data));
+      saveButton.textContent = 'Draft Saved ✓';
+      setTimeout(() => saveButton.textContent = 'Save Draft', 1600);
+    }
+    saveButton.addEventListener('click', saveDiscoveryDraft);
+
+    function loadDiscoveryDraft(){
+      const raw = localStorage.getItem('binalabDiscoveryDraft');
+      if(!raw) return;
+      try{
+        const data = JSON.parse(raw);
+        const fields = {
+          discoveryBusinessName:data.businessName, discoveryIndustry:data.industry,
+          discoveryLocation:data.location, discoveryTeam:data.team,
+          dailyOperation:data.dailyOperation, currentTools:data.currentTools,
+          customerFlow:data.customerFlow, staffFlow:data.staffFlow,
+          biggestProblem:data.biggestProblem, referenceLink:data.referenceLink,
+          dreamOutcome:data.dreamOutcome, priorityOutcome:data.priorityOutcome,
+          targetTimeline:data.targetTimeline
+        };
+        Object.entries(fields).forEach(([id,value]) => {
+          const element = document.getElementById(id);
+          if(element && value) element.value = value;
+        });
+        document.querySelectorAll('#painChoices .choice-card').forEach(card => {
+          card.classList.toggle('selected', (data.painPoints || []).includes(card.dataset.value));
+        });
+      }catch(error){
+        console.warn('Unable to load draft',error);
+      }
+    }
+
+    function submitDiscovery(){
+      const data = collectDiscovery();
+      localStorage.setItem('binalabDiscoverySubmission', JSON.stringify({
+        ...data, submittedAt:new Date().toISOString(), status:'Business Discovery Completed'
+      }));
+      localStorage.removeItem('binalabDiscoveryDraft');
+      formView.hidden = true;
+      successView.hidden = false;
+      document.querySelector('.discovery-app').scrollTo({top:0,behavior:'smooth'});
+    }
+
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
