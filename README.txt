@@ -1,30 +1,26 @@
-BinaLab OS — Premium Portfolio Showcase Edition (v7)
+BinaLab — Client Ready Release v1.0
 
-Semua fail berada di root repository.
+Status: FINAL CLIENT-READY FRONT-END
 
-Kemas kini utama:
-- Real Business Stories ditukar kepada screenshot-led premium portfolio showcase
-- Empat screenshot sebenar dimasukkan:
-  • Abedin Auto
-  • Awanzco
-  • KeduaOS
-  • MOS Karting
-- Setiap projek dipaparkan dalam premium phone frame
-- Hover animation, zoom dan floating actions
-- Badge REAL BUSINESS dan LIVE PWA
-- Butang View Case Study
-- Butang Open Live App dengan URL sebenar
-- Mobile action buttons untuk phone
-- Existing interactive case-study modal dikekalkan
-- Existing Business Discovery flow dikekalkan
-- Service worker cache v7
+Kandungan utama:
+- Premium positioning: We solve business problems. Not just write code.
+- Portfolio Real Systems dengan screenshot sebenar
+- Live app links untuk Abedin Auto, KeduaOS, Awanzco dan MOS Karting
+- Interactive case studies
+- Full Business Discovery flow
+- Problem Mapping → Blueprint → Prototype → Development Proposal
+- Why BinaLab trust section
+- Clear next-step expectations
+- Client-ready footer
+- Mobile-first dan PWA ready
+- Service worker cache v10
 
-Live URLs:
-- Abedin Auto: https://danialrohaizat012-sys.github.io/AbeDInAuto/
-- Awanzco: https://danialrohaizat012-sys.github.io/Awanzco/
-- KeduaOS: https://danialrohaizat012-sys.github.io/KeduaKopi/
-- MOS Karting: https://danialrohaizat012-sys.github.io/MosKart/
+Penting:
+Business Discovery masih menyimpan draft/submission dalam localStorage browser.
+Ia belum menghantar data kepada BinaLab secara online. Firebase/Firestore atau backend perlu disambungkan sebelum form digunakan untuk menerima lead sebenar.
 
 Cara deploy:
-Upload semua fail dalam folder ini ke root repository GitHub dan replace versi lama.
-Jika versi lama masih dipaparkan, buat hard refresh atau clear site/PWA cache.
+1. Upload semua fail dalam folder ini ke root repository GitHub.
+2. Replace semua fail lama.
+3. Commit dan tunggu GitHub Pages selesai deploy.
+4. Buat hard refresh atau clear PWA cache jika versi lama masih kelihatan.

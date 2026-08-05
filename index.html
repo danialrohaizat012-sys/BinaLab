@@ -7,10 +7,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="BinaLab" />
-  <meta name="description" content="BinaLab menyelesaikan masalah bisnes melalui sistem digital yang dibina mengikut operasi sebenar." />
+  <meta name="description" content="BinaLab memahami masalah operasi, mereka prototaip dan membina sistem digital untuk perniagaan sebenar." />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-  <title>BinaLab — Business Discovery</title>
+  <title>BinaLab — Business Systems Studio</title>
 
   <style>
     :root{
@@ -757,6 +757,63 @@
       .showcase-title-row h3{font-size:27px}
     }
 
+  
+    /* BinaLab v1.0 client-ready release */
+    .trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+    .trust-card{
+      padding:22px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,#fff,#FAFCFE);
+      transition:.25s ease
+    }
+    .trust-card:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(13,27,42,.09)}
+    .trust-icon{
+      width:42px;height:42px;border-radius:14px;background:#F0FDF4;color:#15803D;
+      display:grid;place-items:center;font-weight:950;margin-bottom:16px
+    }
+    .trust-card h3{font-size:18px;margin:0 0 8px}
+    .trust-card p{margin:0;color:var(--muted);line-height:1.6;font-size:14px}
+    .client-ready{display:grid;grid-template-columns:1.05fr .95fr;gap:22px;align-items:stretch}
+    .client-ready-copy{
+      background:linear-gradient(145deg,#071425,#0D2743);color:#fff;border-radius:28px;padding:36px;
+      position:relative;overflow:hidden
+    }
+    .client-ready-copy::after{
+      content:"";position:absolute;width:300px;height:300px;border-radius:50%;right:-120px;bottom:-150px;
+      background:radial-gradient(circle,rgba(34,197,94,.36),transparent 68%)
+    }
+    .client-ready-copy h2{font-size:clamp(40px,5vw,68px);line-height:.98;letter-spacing:-3px;margin:14px 0}
+    .client-ready-copy p{color:#AFC0D0;line-height:1.7;max-width:560px;position:relative;z-index:2}
+    .next-steps{border:1px solid var(--line);border-radius:28px;background:#fff;padding:28px;display:grid;gap:12px}
+    .next-step{display:flex;gap:14px;align-items:flex-start;padding:15px;border-radius:16px;background:var(--soft)}
+    .next-step b{
+      width:30px;height:30px;flex:0 0 auto;border-radius:10px;background:var(--green);color:#fff;
+      display:grid;place-items:center;font-size:12px
+    }
+    .next-step strong{display:block;margin-bottom:4px}
+    .next-step span{color:var(--muted);font-size:13px;line-height:1.5}
+    .launch-note{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 11px;border-radius:999px;
+      background:#F0FDF4;color:#166534;font-size:11px;font-weight:900
+    }
+    .launch-note i{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(34,197,94,.12)}
+    .footer-grid{display:grid;grid-template-columns:1.4fr repeat(3,1fr);gap:28px;width:100%}
+    .footer-col h4{margin:0 0 12px;font-size:13px;color:#fff}
+    .footer-col a{display:block;color:#9FB0C3;font-size:13px;margin:8px 0}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{
+      margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.08);
+      display:flex;justify-content:space-between;gap:18px;color:#728195;font-size:12px
+    }
+    @media(max-width:900px){
+      .trust-grid{grid-template-columns:1fr 1fr}
+      .client-ready{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:620px){
+      .trust-grid{grid-template-columns:1fr}
+      .footer-grid{grid-template-columns:1fr}
+      .footer-bottom{flex-direction:column}
+    }
+
   </style>
 </head>
 
@@ -802,9 +859,8 @@
           </h1>
 
           <p class="hero-copy">
-            BinaLab memahami <strong>masalah, operasi dan matlamat bisnes anda</strong>
-            sebelum membina sebarang sistem. Kerana aplikasi yang cantik tidak bermakna
-            jika ia tidak menyelesaikan masalah sebenar.
+            Kami mengkaji <strong>operasi dan bottleneck bisnes anda</strong>, mereka prototaip yang boleh dicuba,
+            kemudian membina sistem yang tepat.
           </p>
 
           <div class="actions">
@@ -959,7 +1015,7 @@
         <div class="section-head">
           <div>
             <span class="case-kicker">REAL SYSTEMS. REAL BUSINESSES.</span>
-            <h2>Products we've built.</h2>
+            <h2>Real systems we've built.</h2>
             <p>Setiap sistem di bawah direka berdasarkan masalah operasi sebenar—bukan fictional case study atau sekadar mockup.</p>
           </div>
         </div>
@@ -1129,6 +1185,47 @@
         </div>
       </section>
 
+
+      <section class="section-card reveal" id="why-binalab">
+        <div class="section-head">
+          <div>
+            <span class="case-kicker">WHY BINALAB</span>
+            <h2>Built for real operations.</h2>
+            <p>BinaLab direka untuk owner yang mahu sistem praktikal, jelas dan benar-benar sesuai dengan cara bisnes mereka beroperasi.</p>
+          </div>
+        </div>
+
+        <div class="trust-grid">
+          <article class="trust-card"><div class="trust-icon">01</div><h3>Problem first</h3><p>Kami memahami masalah dan punca sebenar sebelum menyentuh code.</p></article>
+          <article class="trust-card"><div class="trust-icon">02</div><h3>Prototype before commitment</h3><p>Anda boleh melihat dan menilai arah sistem sebelum pembangunan penuh bermula.</p></article>
+          <article class="trust-card"><div class="trust-icon">03</div><h3>Mobile-first</h3><p>Sistem direka untuk digunakan dengan selesa pada phone, tablet dan desktop.</p></article>
+          <article class="trust-card"><div class="trust-icon">04</div><h3>PWA ready</h3><p>Aplikasi boleh dipasang pada device seperti aplikasi biasa tanpa melalui app store.</p></article>
+          <article class="trust-card"><div class="trust-icon">05</div><h3>Built around workflow</h3><p>Feature mengikuti operasi sebenar, bukan memaksa bisnes mengikut template.</p></article>
+          <article class="trust-card"><div class="trust-icon">06</div><h3>Continuous improvement</h3><p>Sistem boleh ditambah baik berdasarkan penggunaan, data dan maklum balas sebenar.</p></article>
+        </div>
+      </section>
+
+      <section class="section-card reveal">
+        <div class="client-ready">
+          <div class="client-ready-copy">
+            <span class="launch-note"><i></i> NOW ACCEPTING BUSINESS DISCOVERY</span>
+            <h2>Share the business. We propose the system.</h2>
+            <p>
+              Ceritakan nama bisnes, operasi harian, masalah utama dan matlamat anda.
+              BinaLab akan menyediakan Problem Mapping, Blueprint dan prototaip awal sebelum Development Proposal dikeluarkan.
+            </p>
+            <button class="btn btn-primary discovery-trigger" data-discovery style="margin-top:20px">Start Business Discovery →</button>
+          </div>
+
+          <div class="next-steps">
+            <div class="next-step"><b>1</b><div><strong>Discovery received</strong><span>Kami semak konteks, operasi dan masalah yang dihantar.</span></div></div>
+            <div class="next-step"><b>2</b><div><strong>Problem Mapping</strong><span>Bottleneck dan peluang sistem dipetakan dengan jelas.</span></div></div>
+            <div class="next-step"><b>3</b><div><strong>Blueprint & prototype</strong><span>Anda melihat cadangan workflow dan layout aplikasi.</span></div></div>
+            <div class="next-step"><b>4</b><div><strong>Proposal after approval</strong><span>Quotation, skop dan timeline disediakan selepas prototaip dipersetujui.</span></div></div>
+          </div>
+        </div>
+      </section>
+
       <section class="final-cta reveal">
         <small>EVERY BUSINESS HAS A BOTTLENECK</small>
         <h2>Let's find yours.</h2>
@@ -1140,14 +1237,40 @@
       </section>
 
       <footer>
-        <div>
-          <a class="brand" href="#" style="color:#fff">
-            <img src="icon-192.png" alt="BinaLab">
-            <span>Bina<b>Lab</b></span>
-          </a>
-          <p>Problem Solvers. System Builders.</p>
+        <div style="width:100%">
+          <div class="footer-grid">
+            <div>
+              <a class="brand" href="#" style="color:#fff">
+                <img src="icon-192.png" alt="BinaLab">
+                <span>Bina<b>Lab</b></span>
+              </a>
+              <p style="max-width:330px">We solve business problems. Not just write code.</p>
+            </div>
+            <div class="footer-col">
+              <h4>Explore</h4>
+              <a href="#stories">Real Systems</a>
+              <a href="#process">The BinaLab Way</a>
+              <a href="#journey">Client Journey</a>
+            </div>
+            <div class="footer-col">
+              <h4>Start</h4>
+              <a href="#diagnosis">Business Diagnosis</a>
+              <a href="javascript:void(0)" data-discovery>Business Discovery</a>
+              <a href="#why-binalab">Why BinaLab</a>
+            </div>
+            <div class="footer-col">
+              <h4>Live Products</h4>
+              <a href="https://danialrohaizat012-sys.github.io/AbeDInAuto/" target="_blank" rel="noopener">Abedin Auto ↗</a>
+              <a href="https://danialrohaizat012-sys.github.io/KeduaKopi/" target="_blank" rel="noopener">KeduaOS ↗</a>
+              <a href="https://danialrohaizat012-sys.github.io/Awanzco/" target="_blank" rel="noopener">Awanzco ↗</a>
+              <a href="https://danialrohaizat012-sys.github.io/MosKart/" target="_blank" rel="noopener">MOS Karting ↗</a>
+            </div>
+          </div>
+          <div class="footer-bottom">
+            <span>© 2026 BinaLab. Real Business. Real Solutions.</span>
+            <span>Business Systems Studio • Kelantan, Malaysia</span>
+          </div>
         </div>
-        <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery</button>
       </footer>
     </main>
   </div>
@@ -1418,7 +1541,7 @@
             <div class="submit-orb"><img src="icon-192.png" alt="BinaLab"></div>
             <span class="step-kicker">DISCOVERY RECEIVED</span>
             <h2>Welcome to the BinaLab Journey.</h2>
-            <p>Business Discovery anda telah direkodkan dalam browser ini sebagai prototaip. Dalam versi production, submission ini akan dihantar ke dashboard BinaLab.</p>
+            <p>Business Discovery ini telah direkodkan pada device anda sebagai demonstrasi aliran pelanggan. Pasukan BinaLab akan menyambungkan submission online dalam fasa backend.</p>
 
             <div class="analysis-lines">
               <div class="analysis-line"><i></i><span>Business information received</span></div>
