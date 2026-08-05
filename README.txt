@@ -56,3 +56,12 @@ FIX v1.3:
 - Fixed JavaScript syntax error that caused splash screen to stay forever.
 - Firebase configuration has been inserted.
 - Service worker cache upgraded to v13.
+
+
+FIX v1.4:
+- Removed the duplicated JavaScript closure that stopped the whole page.
+- Added CSS-only splash fail-safe after 5 seconds.
+- Added defensive JavaScript splash removal.
+- Firebase module cache-busted.
+- Service worker cache upgraded to v14.
+- Inline JavaScript syntax verified: PASS.

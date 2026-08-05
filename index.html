@@ -57,7 +57,7 @@
         var(--deep);
       display:grid;
       place-items:center;
-      transition:opacity .85s ease,visibility .85s ease;
+      transition:opacity .85s ease,visibility .85s ease;animation:splashFailsafe 5s forwards;
     }
     .splash.hide{opacity:0;visibility:hidden}
     .splash-inner{text-align:center;color:#fff;animation:splashPop 1s cubic-bezier(.2,.8,.2,1) both}
@@ -74,6 +74,10 @@
     .load span{display:block;height:100%;background:linear-gradient(90deg,var(--green),var(--blue));animation:loading 4s linear forwards}
     @keyframes loading{from{width:0}to{width:100%}}
     @keyframes splashPop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+    @keyframes splashFailsafe{
+      0%,82%{opacity:1;visibility:visible;pointer-events:auto}
+      100%{opacity:0;visibility:hidden;pointer-events:none}
+    }
 
     .cursor-glow{
       position:fixed;width:420px;height:420px;border-radius:50%;
@@ -881,7 +885,7 @@
 
   </style>
 
-  <script type="module" src="firebase-config.js"></script>
+  <script type="module" src="firebase-config.js?v=14"></script>
 </head>
 
 <body>
@@ -1649,7 +1653,14 @@
 
   <script>
     const splash = document.getElementById('splash');
-    setTimeout(() => splash.classList.add('hide'), 4000);
+    const hideSplash = () => {
+      if (!splash) return;
+      splash.classList.add('hide');
+      splash.style.pointerEvents = 'none';
+    };
+    setTimeout(hideSplash, 4000);
+    window.addEventListener('load', () => setTimeout(hideSplash, 300));
+    window.addEventListener('error', () => setTimeout(hideSplash, 100));
 
     document.querySelectorAll('[data-scroll]').forEach(button => {
       button.addEventListener('click', () => {
@@ -2160,7 +2171,7 @@
         info.style.color = '#BE123C';
       }
     });
-    });
+
 
     function selectedPainPoints(){
       return [...document.querySelectorAll('#painChoices .choice-card.selected')].map(card => card.dataset.value);
@@ -2312,7 +2323,9 @@
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(console.error);
+        navigator.serviceWorker.register('./sw.js', {updateViaCache:'none'})
+          .then(registration => registration.update())
+          .catch(console.error);
       });
     }
   </script>
