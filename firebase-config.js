@@ -1,4 +1,4 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-app.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-app.js";
 import {
   getFirestore,
   collection,
@@ -13,16 +13,16 @@ import {
   onSnapshot,
   serverTimestamp,
   arrayUnion
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-firestore.js";
 import {
   getAuth,
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged
-} from "https://www.gstatic.com/firebasejs/12.2.1/firebase-auth.js";
+} from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDZZvniHnoxZQNfplSgxBg0Wg_Dn59w8N0",
+  apiKey: "AIzaSyDZZvniHnoxZQNfp1SgxBgoWg_Dn59w8N0",
   authDomain: "binalab-a7891.firebaseapp.com",
   projectId: "binalab-a7891",
   messagingSenderId: "394316362316",

@@ -45,3 +45,10 @@ SECURITY NOTE
 NOTIFICATION NOTE
 - WhatsApp notification is owner-initiated.
 - Fully automatic email/push notifications require a backend or Cloud Function.
+
+
+FIX v2.1:
+- Corrected Firebase API key exactly from Firebase Console.
+- Corrected digit/letter differences in the API key.
+- Updated Firebase SDK imports to 12.17.1.
+- Cache version upgraded to v210.
