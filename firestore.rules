@@ -1,0 +1,27 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /businessDiscoveries/{discoveryId} {
+      allow create: if
+        request.resource.data.businessName is string
+        && request.resource.data.businessName.size() >= 2
+        && request.resource.data.businessName.size() <= 120
+        && request.resource.data.ownerName is string
+        && request.resource.data.phone is string
+        && request.resource.data.industry is string
+        && request.resource.data.dailyOperation is string
+        && request.resource.data.biggestProblem is string
+        && request.resource.data.dreamOutcome is string
+        && (
+          !('logoSize' in request.resource.data)
+          || request.resource.data.logoSize <= 184320
+        );
+
+      allow get: if true;
+      allow list: if request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+  }
+}

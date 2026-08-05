@@ -885,7 +885,7 @@
 
   </style>
 
-  <script type="module" src="firebase-config.js?v=16"></script>
+  <script type="module" src="firebase-config.js?v=200"></script>
 </head>
 
 <body>
@@ -1471,6 +1471,18 @@
                   <input id="discoveryBusinessName" placeholder="Contoh: Meney Gaming">
                 </div>
                 <div class="field">
+                  <label for="discoveryOwnerName">Nama untuk dihubungi *</label>
+                  <input id="discoveryOwnerName" placeholder="Contoh: Ahmad">
+                </div>
+                <div class="field">
+                  <label for="discoveryPhone">Nombor WhatsApp *</label>
+                  <input id="discoveryPhone" inputmode="tel" placeholder="Contoh: 60123456789">
+                </div>
+                <div class="field">
+                  <label for="discoveryEmail">Email</label>
+                  <input id="discoveryEmail" type="email" placeholder="Contoh: owner@business.com">
+                </div>
+                <div class="field">
                   <label for="discoveryIndustry">Industri *</label>
                   <select id="discoveryIndustry">
                     <option value="">Pilih industri</option>
@@ -1637,6 +1649,17 @@
               </div>
             </div>
 
+            <div class="portal-card" style="max-width:760px;margin:22px auto 0;text-align:left">
+              <small style="color:var(--green);font-weight:900">PROJECT CASE ID</small>
+              <h3 id="customerCaseId" style="margin:6px 0 18px;font-size:28px">BNL-2026-0000</h3>
+              <h4>Your Customer Portal</h4>
+              <p style="color:var(--muted);line-height:1.6">Simpan link ini untuk melihat status, kemajuan dan prototaip projek anda.</p>
+              <div style="display:flex;gap:10px;flex-wrap:wrap">
+                <input id="customerPortalLink" readonly style="flex:1;min-width:240px;padding:14px;border:1px solid var(--line);border-radius:14px">
+                <button class="btn btn-dark" id="copyPortalLink">Copy Link</button>
+                <a class="btn btn-primary" id="openPortalLink" target="_blank" rel="noopener">Open Portal</a>
+              </div>
+            </div>
             <button class="btn btn-primary" id="finishDiscovery" style="margin-top:24px">Return to BinaLab</button>
           </div>
         </main>
@@ -2068,7 +2091,7 @@
 
     function validateCurrentStep(){
       const requirements = {
-        0: [['discoveryBusinessName','Nama perniagaan'],['discoveryIndustry','Industri']],
+        0: [['discoveryBusinessName','Nama perniagaan'],['discoveryOwnerName','Nama untuk dihubungi'],['discoveryPhone','Nombor WhatsApp'],['discoveryIndustry','Industri']],
         1: [['dailyOperation','Operasi harian']],
         2: [['biggestProblem','Masalah paling kritikal']],
         4: [['dreamOutcome','Dream outcome']]
@@ -2250,6 +2273,9 @@
     function collectDiscovery(){
       return {
         businessName: requiredValue('discoveryBusinessName'),
+        ownerName: requiredValue('discoveryOwnerName'),
+        phone: requiredValue('discoveryPhone'),
+        email: requiredValue('discoveryEmail'),
         industry: document.getElementById('discoveryIndustry').value,
         location: requiredValue('discoveryLocation'),
         team: document.getElementById('discoveryTeam').value,
@@ -2273,7 +2299,7 @@
         <div class="review-card">
           <small>BUSINESS</small>
           <h4>${escapeHTML(data.businessName || '—')}</h4>
-          <p>${escapeHTML([data.industry,data.location,data.team].filter(Boolean).join(' • '))}</p>
+          <p>${escapeHTML([data.ownerName,data.phone,data.email,data.industry,data.location,data.team].filter(Boolean).join(' • '))}</p>
         </div>
         <div class="review-card">
           <small>CURRENT OPERATIONS</small>
@@ -2318,7 +2344,9 @@
       try{
         const data = JSON.parse(raw);
         const fields = {
-          discoveryBusinessName:data.businessName, discoveryIndustry:data.industry,
+          discoveryBusinessName:data.businessName, discoveryOwnerName:data.ownerName,
+          discoveryPhone:data.phone, discoveryEmail:data.email,
+          discoveryIndustry:data.industry,
           discoveryLocation:data.location, discoveryTeam:data.team,
           dailyOperation:data.dailyOperation, currentTools:data.currentTools,
           customerFlow:data.customerFlow, staffFlow:data.staffFlow,
@@ -2351,17 +2379,30 @@
           throw new Error('Firebase belum dikonfigurasi. Lengkapkan firebase-config.js terlebih dahulu.');
         }
 
+        const portalToken = crypto.randomUUID();
+        const caseId = `BNL-${new Date().getFullYear()}-${portalToken.slice(0,4).toUpperCase()}`;
         const submissionId = await window.BinaLabFirebase.submitDiscovery({
           ...data,
+          portalToken,
+          caseId,
           logoData: compressedLogoData,
           logoSize: compressedLogoBytes,
           logoType: compressedLogoType,
           submittedAt: new Date().toISOString(),
-          status: 'new'
+          status: 'new',
+          stage: 'Discovery',
+          progress: 10,
+          prototypeUrl: '',
+          customerMessage: 'Business Discovery received. BinaLab is reviewing your submission.'
         });
 
         localStorage.removeItem('binalabDiscoveryDraft');
         localStorage.setItem('binalabLastSubmissionId', submissionId);
+        const portalUrl = new URL('portal.html', window.location.href);
+        portalUrl.searchParams.set('id', submissionId);
+        document.getElementById('customerCaseId').textContent = caseId;
+        document.getElementById('customerPortalLink').value = portalUrl.href;
+        document.getElementById('openPortalLink').href = portalUrl.href;
         statusBox.className = 'firebase-status show success';
         statusBox.textContent = 'Business Discovery berjaya dihantar.';
 
@@ -2389,6 +2430,15 @@
         });
         item.classList.toggle('open');
       });
+    });
+
+
+    document.getElementById('copyPortalLink')?.addEventListener('click', async () => {
+      const input = document.getElementById('customerPortalLink');
+      if(!input?.value) return;
+      await navigator.clipboard.writeText(input.value);
+      document.getElementById('copyPortalLink').textContent = 'Copied ✓';
+      setTimeout(() => document.getElementById('copyPortalLink').textContent = 'Copy Link', 1400);
     });
 
     if ('serviceWorker' in navigator) {

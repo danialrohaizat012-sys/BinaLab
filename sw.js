@@ -1,11 +1,18 @@
-const CACHE = 'binalab-os-v16';
+const CACHE = 'binalab-os-v200';
 const ASSETS = [
-  './',
-  './index.html','./firebase-config.js',
-  './manifest.webmanifest',
-  './icon-192.png',
-  './icon-512.png',
-  './apple-touch-icon.png','./mos-karting.jpg','./awanzco.jpg','./keduaos.jpg','./abedin-auto.jpg'
+  "./",
+  "./index.html",
+  "./studio.html",
+  "./portal.html",
+  "./firebase-config.js?v=200",
+  "./manifest.webmanifest",
+  "./icon-192.png",
+  "./icon-512.png",
+  "./apple-touch-icon.png",
+  "./abedin-auto.jpg",
+  "./awanzco.jpg",
+  "./keduaos.jpg",
+  "./mos-karting.jpg"
 ];
 
 self.addEventListener('install', event => {
@@ -24,13 +31,25 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
 
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          const clone = response.clone();
+          caches.open(CACHE).then(cache => cache.put(event.request, clone));
+          return response;
+        })
+        .catch(() => caches.match(event.request).then(r => r || caches.match('./index.html')))
+    );
+    return;
+  }
+
   event.respondWith(
-    fetch(event.request)
-      .then(response => {
+    caches.match(event.request)
+      .then(cached => cached || fetch(event.request).then(response => {
         const clone = response.clone();
         caches.open(CACHE).then(cache => cache.put(event.request, clone));
         return response;
-      })
-      .catch(() => caches.match(event.request))
+      }))
   );
 });

@@ -1,84 +1,47 @@
-BinaLab — Client Acquisition Edition v1.2 (Firestore Logo Compression)
+BinaLab v2.0 Production
 
-Perubahan utama:
-- Business Diagnosis dibuang
-- Business Discovery menjadi lead flow utama
-- Customer boleh upload logo atau screenshot logo dari phone
-- Logo auto-resize maksimum 500×500 px
-- Logo auto-convert ke WebP
-- Logo auto-compress dengan sasaran bawah 180 KB
-- Logo disimpan sebagai Base64 terus dalam Firestore
-- Firebase Storage tidak diperlukan
-- Firestore collection: businessDiscoveries
-- FAQ, Brand Identity, Industries Explored, live portfolio dan case studies dikekalkan
-- Service worker cache v12
+FILES
+- index.html: public website + Business Discovery
+- studio.html: BinaLab Studio owner dashboard
+- portal.html: customer project portal
+- firebase-config.js: Firebase config, Firestore and Authentication
+- firestore.rules: required Firestore rules
+- sw.js: PWA service worker
+- manifest.webmanifest
+- icons and portfolio screenshots
 
-WAJIB SEBELUM DEPLOY:
-1. Create Firebase project.
-2. Register Web App.
-3. Copy firebaseConfig ke firebase-config.js.
-4. Enable Firestore Database.
-5. Publish Firestore security rules.
-6. Upload semua fail dalam folder ini ke root GitHub repository.
+CUSTOMER FLOW
+1. Customer submits Business Discovery.
+2. System generates a Case ID such as BNL-2026-A1B2.
+3. Customer receives a private portal link.
+4. Portal shows stage, progress, update message and prototype URL.
+5. Portal updates live from Firestore.
 
-Cadangan Firestore Rules:
+OWNER FLOW
+1. Open /studio.html.
+2. Login using Firebase Authentication Email/Password.
+3. Select a discovery.
+4. Update stage, progress, customer message, status and prototype URL.
+5. Save progress.
+6. Use Update & Notify WhatsApp to open a ready-made customer update.
 
-rules_version = '2';
+REQUIRED FIREBASE SETUP
+1. Authentication → Sign-in method → enable Email/Password.
+2. Authentication → Users → Add user.
+3. Firestore → Rules → paste the contents of firestore.rules → Publish.
+4. Upload every file in this folder to the ROOT of the GitHub repository.
 
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /businessDiscoveries/{discoveryId} {
-      allow create: if
-        request.resource.data.businessName is string
-        && request.resource.data.businessName.size() >= 2
-        && request.resource.data.businessName.size() <= 120
-        && request.resource.data.industry is string
-        && request.resource.data.dailyOperation is string
-        && request.resource.data.biggestProblem is string
-        && request.resource.data.dreamOutcome is string
-        && (
-          !('logoSize' in request.resource.data)
-          || request.resource.data.logoSize <= 184320
-        );
+IMPORTANT URLS
+- Public site: /BinaLab/
+- Studio: /BinaLab/studio.html
+- Customer portal: /BinaLab/portal.html?id=PRIVATE_ID
 
-      allow read, update, delete: if false;
-    }
-  }
-}
+SECURITY NOTE
+- Customer portal links use long private document IDs.
+- Anonymous visitors cannot list discoveries.
+- Only authenticated Studio users can list, update or delete.
+- Do not publish customer portal links publicly.
 
-Penting:
-- Satu dokumen Firestore mempunyai had saiz.
-- Versi ini hanya sesuai untuk satu logo kecil yang sudah di-compress.
-- Jangan gunakan Base64 Firestore untuk banyak gambar atau dokumen besar.
-
-
-FIX v1.3:
-- Fixed JavaScript syntax error that caused splash screen to stay forever.
-- Firebase configuration has been inserted.
-- Service worker cache upgraded to v13.
-
-
-FIX v1.4:
-- Removed the duplicated JavaScript closure that stopped the whole page.
-- Added CSS-only splash fail-safe after 5 seconds.
-- Added defensive JavaScript splash removal.
-- Firebase module cache-busted.
-- Service worker cache upgraded to v14.
-- Inline JavaScript syntax verified: PASS.
-
-
-FIX v1.5:
-- Fixed runtime error from the removed Business Diagnosis section.
-- Business Discovery buttons now use resilient event delegation.
-- Added null guards for modal controls.
-- Service worker upgraded to v15.
-- JavaScript syntax verified: PASS.
-
-
-UPDATE v1.6:
-- Rebuilt logo compressor using iterative dimension and quality reduction.
-- Accepts large screenshots and keeps shrinking automatically until suitable.
-- Target maximum logo size is now approximately 120 KB.
-- Starts at 500 px and can reduce down to 96 px only when necessary.
-- Customer no longer needs to manually resize or compress the logo.
-- Service worker upgraded to v16.
+NOTIFICATION NOTE
+- WhatsApp notification is owner-initiated.
+- Fully automatic email/push notifications require a backend or Cloud Function.
