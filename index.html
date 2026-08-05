@@ -544,6 +544,121 @@
       .discovery-actions .btn{padding:13px 14px}
     }
 
+  
+    /* Interactive Business Stories */
+    .story-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+    .story-actions .btn{padding:12px 15px;font-size:13px}
+    .case-overlay{
+      position:fixed;inset:0;z-index:1700;background:rgba(3,12,22,.78);
+      backdrop-filter:blur(16px);display:none;padding:18px;overflow:auto
+    }
+    .case-overlay.open{display:block;animation:overlayIn .25s ease both}
+    .case-viewer{
+      width:min(1280px,100%);min-height:calc(100vh - 36px);margin:auto;background:#F7F9FC;
+      border-radius:30px;overflow:hidden;box-shadow:0 44px 140px rgba(0,0,0,.48)
+    }
+    .case-topbar{
+      position:sticky;top:0;z-index:30;display:flex;align-items:center;justify-content:space-between;gap:18px;
+      padding:15px 18px;background:rgba(247,249,252,.94);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)
+    }
+    .case-titlebar{display:flex;align-items:center;gap:12px}
+    .case-icon{
+      width:44px;height:44px;border-radius:14px;background:linear-gradient(145deg,#071425,#0D2743);
+      display:grid;place-items:center;color:var(--green);font-weight:950
+    }
+    .case-titlebar h3{margin:0;font-size:18px}
+    .case-titlebar p{margin:3px 0 0;color:var(--muted);font-size:12px}
+    .case-close{
+      width:42px;height:42px;border:1px solid var(--line);border-radius:14px;background:#fff;color:var(--navy);font-size:24px
+    }
+    .case-layout{display:grid;grid-template-columns:360px 1fr;min-height:760px}
+    .case-sidebar{padding:28px;background:#fff;border-right:1px solid var(--line)}
+    .case-kicker{color:var(--green-2);font-size:11px;font-weight:950;letter-spacing:.14em}
+    .case-sidebar h2{font-size:42px;line-height:1;letter-spacing:-2px;margin:12px 0}
+    .case-sidebar>p{color:var(--muted);line-height:1.65}
+    .case-meta{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 22px}
+    .case-meta span{padding:8px 10px;border-radius:999px;background:var(--soft);font-size:11px;font-weight:850;color:#475467}
+    .case-tabs{display:grid;gap:8px}
+    .case-tab{
+      border:1px solid var(--line);background:#fff;border-radius:15px;padding:13px 14px;text-align:left;
+      font-weight:800;color:#475467;transition:.22s ease
+    }
+    .case-tab:hover{transform:translateX(4px)}
+    .case-tab.active{background:var(--deep);color:#fff;border-color:var(--deep)}
+    .case-main{padding:28px}
+    .case-panel{display:none;animation:stepIn .28s ease both}
+    .case-panel.active{display:block}
+    .case-panel h3{font-size:32px;letter-spacing:-1.2px;margin:0 0 18px}
+    .case-flow-large{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:12px;align-items:stretch}
+    .flow-card{
+      padding:24px;border:1px solid var(--line);border-radius:22px;background:#fff;min-height:180px
+    }
+    .flow-card small{font-weight:950;letter-spacing:.1em;color:var(--muted)}
+    .flow-card h4{font-size:23px;margin:12px 0 10px}
+    .flow-card p{color:var(--muted);line-height:1.6;margin:0}
+    .flow-card.problem{background:#FFF7F7;border-color:#F7DCDC}
+    .flow-card.system{background:#F4F8FF;border-color:#DCE8FF}
+    .flow-card.outcome{background:#F2FFF6;border-color:#D8F4E1}
+    .case-arrow{display:grid;place-items:center;color:var(--green);font-size:26px;font-weight:950}
+    .preview-shell{
+      background:#091726;border-radius:26px;padding:18px;box-shadow:0 28px 70px rgba(13,27,42,.22)
+    }
+    .preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;color:#AFC0D0;font-size:12px;margin-bottom:14px}
+    .preview-dots{display:flex;gap:6px}
+    .preview-dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.18)}
+    .preview-frame{
+      width:100%;height:580px;border:0;border-radius:18px;background:#fff;display:block
+    }
+    .preview-placeholder{
+      min-height:580px;border-radius:18px;background:
+        radial-gradient(circle at 80% 20%,rgba(34,197,94,.34),transparent 30%),
+        linear-gradient(145deg,#071425,#0D2743);
+      color:#fff;padding:36px;display:flex;flex-direction:column;justify-content:space-between
+    }
+    .preview-placeholder h3{font-size:44px;line-height:1;letter-spacing:-2px;margin:10px 0}
+    .preview-placeholder p{color:#AFC0D0;max-width:650px;line-height:1.7}
+    .preview-mock{display:grid;grid-template-columns:220px 1fr;gap:16px;margin-top:24px}
+    .preview-nav{border-radius:18px;background:rgba(255,255,255,.08);padding:16px}
+    .preview-nav div{padding:11px;border-radius:11px;color:#AFC0D0;font-size:12px;margin-bottom:7px}
+    .preview-nav div.active{background:var(--green);color:#fff}
+    .preview-dashboard{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .preview-stat{border-radius:17px;background:#fff;color:var(--ink);padding:18px}
+    .preview-stat strong{font-size:26px;display:block}
+    .preview-stat small{color:var(--muted)}
+    .preview-chart{grid-column:1/-1;min-height:200px;border-radius:17px;background:#fff;padding:18px;position:relative;overflow:hidden}
+    .preview-chart::after{
+      content:"";position:absolute;left:18px;right:18px;bottom:30px;height:110px;
+      background:linear-gradient(135deg,transparent 0 10%,rgba(34,197,94,.22) 10% 20%,transparent 20% 30%,rgba(34,197,94,.32) 30% 45%,transparent 45% 56%,rgba(34,197,94,.20) 56% 66%,transparent 66%);
+      clip-path:polygon(0 75%,14% 52%,29% 65%,43% 30%,57% 45%,72% 18%,86% 38%,100% 8%,100% 100%,0 100%)
+    }
+    .feature-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
+    .feature-item{padding:18px;border:1px solid var(--line);border-radius:18px;background:#fff}
+    .feature-item b{display:block;margin-bottom:7px}
+    .feature-item p{margin:0;color:var(--muted);line-height:1.55;font-size:13px}
+    .case-note{margin-top:18px;padding:16px;border-radius:16px;background:#FFF8E8;border:1px solid #F7E2AB;color:#755B18;font-size:13px;line-height:1.55}
+    @media(max-width:920px){
+      .case-overlay{padding:0}
+      .case-viewer{min-height:100vh;border-radius:0}
+      .case-layout{grid-template-columns:1fr}
+      .case-sidebar{border-right:0;border-bottom:1px solid var(--line)}
+      .case-tabs{grid-template-columns:repeat(4,1fr)}
+      .case-tab{text-align:center;font-size:12px;padding:11px 8px}
+      .case-flow-large{grid-template-columns:1fr}
+      .case-arrow{transform:rotate(90deg)}
+    }
+    @media(max-width:620px){
+      .case-main{padding:18px 14px 90px}
+      .case-sidebar{padding:22px 16px}
+      .case-sidebar h2{font-size:36px}
+      .case-tabs{grid-template-columns:1fr 1fr}
+      .preview-frame,.preview-placeholder{height:520px;min-height:520px}
+      .preview-mock{grid-template-columns:1fr}
+      .preview-nav{display:none}
+      .preview-dashboard{grid-template-columns:1fr 1fr}
+      .preview-stat:last-of-type{grid-column:1/-1}
+      .feature-grid{grid-template-columns:1fr}
+    }
+
   </style>
 </head>
 
@@ -766,6 +881,10 @@
                 <div>Better operation</div>
               </div>
               <p class="story-note">Masalah utama bukan kekurangan aplikasi—tetapi proses sesi yang bergantung kepada catatan dan timing manual.</p>
+              <div class="story-actions">
+                <button class="btn btn-dark" data-case="mos">View Full Case Study</button>
+                <button class="btn btn-ghost" data-case="mos" data-preview-direct>Preview System</button>
+              </div>
             </div>
           </article>
 
@@ -784,6 +903,10 @@
                 <div>Professional flow</div>
               </div>
               <p class="story-note">Perjanjian dan rekod pelanggan disusun semula agar proses sewaan lebih kemas, konsisten dan mudah dirujuk.</p>
+              <div class="story-actions">
+                <button class="btn btn-dark" data-case="abedin">View Full Case Study</button>
+                <button class="btn btn-ghost" data-case="abedin" data-preview-direct>Preview System</button>
+              </div>
             </div>
           </article>
 
@@ -802,6 +925,10 @@
                 <div>Clearer bookings</div>
               </div>
               <p class="story-note">Sistem direka mengikut realiti coffee van dan fokus catering—bukan memaksa model kafe biasa.</p>
+              <div class="story-actions">
+                <button class="btn btn-dark" data-case="kedua">View Full Case Study</button>
+                <button class="btn btn-ghost" data-case="kedua" data-preview-direct>Preview System</button>
+              </div>
             </div>
           </article>
 
@@ -820,6 +947,10 @@
                 <div>Clearer margins</div>
               </div>
               <p class="story-note">Data sourcing, kos belian dan margin disatukan supaya keputusan pembelian boleh dibuat dengan lebih jelas.</p>
+              <div class="story-actions">
+                <button class="btn btn-dark" data-case="awanzco">View Full Case Study</button>
+                <button class="btn btn-ghost" data-case="awanzco" data-preview-direct>Preview System</button>
+              </div>
             </div>
           </article>
         </div>
@@ -926,6 +1057,87 @@
     </main>
   </div>
 
+
+
+  <div class="case-overlay" id="caseOverlay" aria-hidden="true">
+    <div class="case-viewer">
+      <div class="case-topbar">
+        <div class="case-titlebar">
+          <div class="case-icon">BL</div>
+          <div>
+            <h3 id="caseTopTitle">Business Story</h3>
+            <p>Interactive case study & system preview</p>
+          </div>
+        </div>
+        <button class="case-close" id="caseClose" aria-label="Close">×</button>
+      </div>
+
+      <div class="case-layout">
+        <aside class="case-sidebar">
+          <span class="case-kicker">REAL BUSINESS STORY</span>
+          <h2 id="caseTitle">MOS Karting</h2>
+          <p id="caseSummary"></p>
+          <div class="case-meta" id="caseMeta"></div>
+
+          <div class="case-tabs">
+            <button class="case-tab active" data-case-tab="story">The Story</button>
+            <button class="case-tab" data-case-tab="preview">System Preview</button>
+            <button class="case-tab" data-case-tab="features">What We Built</button>
+            <button class="case-tab" data-case-tab="impact">Expected Impact</button>
+          </div>
+        </aside>
+
+        <div class="case-main">
+          <section class="case-panel active" data-case-panel="story">
+            <h3>From a real operational problem to a better system.</h3>
+            <div class="case-flow-large">
+              <div class="flow-card problem">
+                <small>THE PROBLEM</small>
+                <h4 id="caseProblemTitle"></h4>
+                <p id="caseProblemText"></p>
+              </div>
+              <div class="case-arrow">→</div>
+              <div class="flow-card system">
+                <small>THE SYSTEM</small>
+                <h4 id="caseSystemTitle"></h4>
+                <p id="caseSystemText"></p>
+              </div>
+              <div class="case-arrow">→</div>
+              <div class="flow-card outcome">
+                <small>THE OUTCOME</small>
+                <h4 id="caseOutcomeTitle"></h4>
+                <p id="caseOutcomeText"></p>
+              </div>
+            </div>
+          </section>
+
+          <section class="case-panel" data-case-panel="preview">
+            <h3>Preview the system experience.</h3>
+            <div class="preview-shell">
+              <div class="preview-toolbar">
+                <div class="preview-dots"><i></i><i></i><i></i></div>
+                <span id="previewAddress">BinaLab Prototype Preview</span>
+              </div>
+              <div id="previewContainer"></div>
+            </div>
+            <div class="case-note" id="previewNote">
+              Paparan ini ialah preview interaktif yang dibina dalam website BinaLab. Link live deployment boleh dimasukkan kemudian untuk membuka sistem sebenar dalam frame ini.
+            </div>
+          </section>
+
+          <section class="case-panel" data-case-panel="features">
+            <h3>What BinaLab designed.</h3>
+            <div class="feature-grid" id="caseFeatures"></div>
+          </section>
+
+          <section class="case-panel" data-case-panel="impact">
+            <h3>What this system is designed to improve.</h3>
+            <div class="feature-grid" id="caseImpact"></div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="discovery-overlay" id="discoveryOverlay" aria-hidden="true">
     <div class="discovery-app">
@@ -1281,6 +1493,205 @@
     window.addEventListener('mousemove', event => {
       glow.style.left = event.clientX + 'px';
       glow.style.top = event.clientY + 'px';
+    });
+
+
+
+    const caseStudies = {
+      mos: {
+        title:'MOS Karting',
+        industry:'Entertainment',
+        type:'Session Operations',
+        summary:'A digital session workflow designed around a karting operation that still depends on one staff member and manual stopwatch timing.',
+        problemTitle:'Manual stopwatch workflow',
+        problemText:'Timing, session tracking and race handling depend heavily on one staff member, making the experience harder to standardise.',
+        systemTitle:'MOS Session OS',
+        systemText:'A mobile-first session management interface for creating sessions, organising drivers and recording results in a clearer flow.',
+        outcomeTitle:'Faster, clearer sessions',
+        outcomeText:'Reduce confusion, improve consistency and give staff a more structured way to manage each 10-minute session.',
+        liveUrl:'',
+        features:[
+          ['Session creation','Create and organise a new karting session from one clear screen.'],
+          ['Driver management','Add drivers and manage the session lineup without crowded forms.'],
+          ['Manual timing support','Designed around the real limitation that timing is still handled manually.'],
+          ['Session history','Keep previous sessions easier to review and reference.']
+        ],
+        impact:[
+          ['Less operational confusion','Staff can follow one consistent session flow.'],
+          ['Better customer experience','Drivers receive a more organised experience.'],
+          ['Reduced dependency','The workflow becomes easier for more than one staff member to understand.'],
+          ['Foundation for future upgrades','The system can later connect to automatic timing hardware.']
+        ]
+      },
+      abedin: {
+        title:'Abedin Auto',
+        industry:'Automotive',
+        type:'Rental Workflow',
+        summary:'A professional digital agreement and customer workflow designed to replace fragmented paper-based rental processes.',
+        problemTitle:'Paper rental agreements',
+        problemText:'Customer information, rental terms and records are captured manually, making reference and follow-up harder.',
+        systemTitle:'Digital Rental Flow',
+        systemText:'A responsive agreement experience that organises customer details, vehicle information and rental terms in one structured process.',
+        outcomeTitle:'Professional records',
+        outcomeText:'Make customer intake cleaner, reduce missing information and produce a more consistent rental experience.',
+        liveUrl:'',
+        features:[
+          ['Digital agreement form','Capture rental information in a structured digital format.'],
+          ['Customer records','Organise customer details for easier future reference.'],
+          ['Mobile-first intake','Designed for completion from a phone or tablet.'],
+          ['Review before submission','Reduce incomplete or incorrect information.']
+        ],
+        impact:[
+          ['Less paperwork','Reduce dependence on physical forms.'],
+          ['Cleaner customer journey','Provide a more professional rental experience.'],
+          ['Faster record access','Information becomes easier to retrieve.'],
+          ['More consistent process','Every rental follows the same required flow.']
+        ]
+      },
+      kedua: {
+        title:'KeduaOS',
+        industry:'F&B / Catering',
+        type:'Booking Experience',
+        summary:'A customer and catering workflow designed around the real operating model of a mobile coffee van.',
+        problemTitle:'Bookings inside chat',
+        problemText:'Catering enquiries, event details and customer follow-up can become difficult to organise when everything stays inside WhatsApp.',
+        systemTitle:'KeduaOS',
+        systemText:'A branded booking and customer experience that supports catering requests, location updates and relationship-building.',
+        outcomeTitle:'Clearer event bookings',
+        outcomeText:'Help customers understand the service, submit better event details and make bookings easier to monitor.',
+        liveUrl:'',
+        features:[
+          ['Catering request flow','Collect event date, location and requirements clearly.'],
+          ['Customer-facing experience','A branded journey that reflects the KeduaKopi identity.'],
+          ['Location communication','Support updates for where the van is operating.'],
+          ['Loyalty foundation','Prepare the business for stronger repeat-customer engagement.']
+        ],
+        impact:[
+          ['Better-quality enquiries','Customers provide more useful details from the beginning.'],
+          ['Less repeated messaging','Reduce back-and-forth questions in chat.'],
+          ['Stronger brand experience','Make the business feel more organised and memorable.'],
+          ['Growth beyond walk-in sales','Support the catering direction of the business.']
+        ]
+      },
+      awanzco: {
+        title:'Awanzco',
+        industry:'Retail / Mobile',
+        type:'Deal & Inventory Workflow',
+        summary:'A sourcing and inventory concept designed for a used-device business that needs clearer buying decisions and margin visibility.',
+        problemTitle:'Scattered sourcing data',
+        problemText:'Deals, purchase costs, market prices and expected margins are difficult to compare when information is spread across platforms.',
+        systemTitle:'Awanzco Deal OS',
+        systemText:'A workflow that centralises potential deals, inventory information and margin calculations before purchasing decisions are made.',
+        outcomeTitle:'Clearer buying decisions',
+        outcomeText:'Help the owner compare opportunities faster and understand potential margin before committing cash.',
+        liveUrl:'',
+        features:[
+          ['Deal capture','Record potential purchases from different platforms.'],
+          ['Margin visibility','Compare purchase cost against expected selling price.'],
+          ['Inventory workflow','Avoid disconnected product records.'],
+          ['AI-ready structure','Prepare data for future assisted deal discovery.']
+        ],
+        impact:[
+          ['Faster sourcing review','Compare deals from one structured view.'],
+          ['Better cash decisions','See potential margin before buying.'],
+          ['Reduced duplicate records','Create a cleaner inventory foundation.'],
+          ['Scalable sourcing process','Support future growth and automation.']
+        ]
+      }
+    };
+
+    const caseOverlay = document.getElementById('caseOverlay');
+    const caseClose = document.getElementById('caseClose');
+    let activeCase = null;
+
+    function openCase(slug, previewDirect=false){
+      const data = caseStudies[slug];
+      if(!data) return;
+      activeCase = data;
+
+      document.getElementById('caseTopTitle').textContent = data.title;
+      document.getElementById('caseTitle').textContent = data.title;
+      document.getElementById('caseSummary').textContent = data.summary;
+      document.getElementById('caseMeta').innerHTML = `<span>${data.industry}</span><span>${data.type}</span><span>Mobile-first</span>`;
+      document.getElementById('caseProblemTitle').textContent = data.problemTitle;
+      document.getElementById('caseProblemText').textContent = data.problemText;
+      document.getElementById('caseSystemTitle').textContent = data.systemTitle;
+      document.getElementById('caseSystemText').textContent = data.systemText;
+      document.getElementById('caseOutcomeTitle').textContent = data.outcomeTitle;
+      document.getElementById('caseOutcomeText').textContent = data.outcomeText;
+      document.getElementById('caseFeatures').innerHTML = data.features.map(item => `<div class="feature-item"><b>${item[0]}</b><p>${item[1]}</p></div>`).join('');
+      document.getElementById('caseImpact').innerHTML = data.impact.map(item => `<div class="feature-item"><b>${item[0]}</b><p>${item[1]}</p></div>`).join('');
+
+      renderCasePreview(data);
+      switchCaseTab(previewDirect ? 'preview' : 'story');
+
+      caseOverlay.classList.add('open');
+      caseOverlay.setAttribute('aria-hidden','false');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function renderCasePreview(data){
+      const container = document.getElementById('previewContainer');
+      const address = document.getElementById('previewAddress');
+      const note = document.getElementById('previewNote');
+
+      if(data.liveUrl){
+        address.textContent = data.liveUrl;
+        container.innerHTML = `<iframe class="preview-frame" src="${data.liveUrl}" title="${data.title} live prototype" loading="lazy"></iframe>`;
+        note.textContent = 'Ini ialah live prototype. Sesetengah fungsi mungkin menggunakan sample data untuk tujuan demonstrasi.';
+      }else{
+        address.textContent = `${data.title} — Interactive Preview`;
+        container.innerHTML = `
+          <div class="preview-placeholder">
+            <div>
+              <small>BUILT BY BINALAB</small>
+              <h3>${data.systemTitle}</h3>
+              <p>${data.systemText}</p>
+            </div>
+            <div class="preview-mock">
+              <div class="preview-nav">
+                <div class="active">Dashboard</div>
+                <div>Operations</div>
+                <div>Customers</div>
+                <div>Reports</div>
+                <div>Settings</div>
+              </div>
+              <div class="preview-dashboard">
+                <div class="preview-stat"><strong>24</strong><small>Active records</small></div>
+                <div class="preview-stat"><strong>8</strong><small>Today's activity</small></div>
+                <div class="preview-stat"><strong>92%</strong><small>Workflow complete</small></div>
+                <div class="preview-chart"><b>Operational overview</b></div>
+              </div>
+            </div>
+          </div>`;
+        note.textContent = 'Ini ialah interactive visual preview sementara. Live deployment URL belum dimasukkan ke dalam fail ini.';
+      }
+    }
+
+    function switchCaseTab(tab){
+      document.querySelectorAll('.case-tab').forEach(button => button.classList.toggle('active', button.dataset.caseTab === tab));
+      document.querySelectorAll('.case-panel').forEach(panel => panel.classList.toggle('active', panel.dataset.casePanel === tab));
+    }
+
+    document.querySelectorAll('[data-case]').forEach(button => {
+      button.addEventListener('click', () => openCase(button.dataset.case, button.hasAttribute('data-preview-direct')));
+    });
+
+    document.querySelectorAll('.case-tab').forEach(button => {
+      button.addEventListener('click', () => switchCaseTab(button.dataset.caseTab));
+    });
+
+    function closeCase(){
+      caseOverlay.classList.remove('open');
+      caseOverlay.setAttribute('aria-hidden','true');
+      document.body.style.overflow = '';
+      const frame = caseOverlay.querySelector('iframe');
+      if(frame) frame.src = frame.src;
+    }
+
+    caseClose.addEventListener('click', closeCase);
+    caseOverlay.addEventListener('click', event => {
+      if(event.target === caseOverlay) closeCase();
     });
 
 

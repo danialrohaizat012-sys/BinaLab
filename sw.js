@@ -1,4 +1,4 @@
-const CACHE = 'binalab-os-v4';
+const CACHE = 'binalab-os-v5';
 const ASSETS = [
   './',
   './index.html',
