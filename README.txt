@@ -65,3 +65,11 @@ FIX v1.4:
 - Firebase module cache-busted.
 - Service worker cache upgraded to v14.
 - Inline JavaScript syntax verified: PASS.
+
+
+FIX v1.5:
+- Fixed runtime error from the removed Business Diagnosis section.
+- Business Discovery buttons now use resilient event delegation.
+- Added null guards for modal controls.
+- Service worker upgraded to v15.
+- JavaScript syntax verified: PASS.

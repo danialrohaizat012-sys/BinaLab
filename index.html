@@ -885,7 +885,7 @@
 
   </style>
 
-  <script type="module" src="firebase-config.js?v=14"></script>
+  <script type="module" src="firebase-config.js?v=15"></script>
 </head>
 
 <body>
@@ -1727,7 +1727,7 @@
     const loader = document.getElementById('analysisLoader');
     const result = document.getElementById('result');
 
-    diagnosisButton.addEventListener('click', runDiagnosis);
+    diagnosisButton?.addEventListener('click', runDiagnosis);
 
     function runDiagnosis(){
       const business = document.getElementById('businessType').value;
@@ -2004,6 +2004,10 @@
     ];
 
     function openDiscovery(){
+      if(!discoveryOverlay){
+        alert('Business Discovery tidak dapat dibuka. Sila refresh laman.');
+        return;
+      }
       discoveryOverlay.classList.add('open');
       discoveryOverlay.setAttribute('aria-hidden','false');
       document.body.style.overflow = 'hidden';
@@ -2017,15 +2021,31 @@
       document.body.style.overflow = '';
     }
 
-    document.querySelectorAll('[data-discovery]').forEach(button => {
-      button.addEventListener('click', openDiscovery);
+    function bindDiscoveryButtons(){
+      document.querySelectorAll('[data-discovery]').forEach(button => {
+        if(button.dataset.discoveryBound === 'true') return;
+        button.dataset.discoveryBound = 'true';
+        button.addEventListener('click', event => {
+          event.preventDefault();
+          openDiscovery();
+        });
+      });
+    }
+
+    bindDiscoveryButtons();
+
+    document.addEventListener('click', event => {
+      const trigger = event.target.closest('[data-discovery]');
+      if(!trigger) return;
+      event.preventDefault();
+      openDiscovery();
     });
 
-    discoveryClose.addEventListener('click', closeDiscovery);
-    discoveryOverlay.addEventListener('click', event => {
+    discoveryClose?.addEventListener('click', closeDiscovery);
+    discoveryOverlay?.addEventListener('click', event => {
       if(event.target === discoveryOverlay) closeDiscovery();
     });
-    document.getElementById('finishDiscovery').addEventListener('click', closeDiscovery);
+    document.getElementById('finishDiscovery')?.addEventListener('click', closeDiscovery);
 
     function updateDiscoveryStep(){
       discoverySteps.forEach((step,index) => step.classList.toggle('active', index === discoveryStep));
