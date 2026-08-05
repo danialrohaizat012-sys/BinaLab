@@ -1,26 +1,35 @@
-BinaLab — Client Ready Release v1.0
+BinaLab — Client Acquisition Edition v1.1
 
-Status: FINAL CLIENT-READY FRONT-END
-
-Kandungan utama:
-- Premium positioning: We solve business problems. Not just write code.
-- Portfolio Real Systems dengan screenshot sebenar
-- Live app links untuk Abedin Auto, KeduaOS, Awanzco dan MOS Karting
-- Interactive case studies
-- Full Business Discovery flow
-- Problem Mapping → Blueprint → Prototype → Development Proposal
-- Why BinaLab trust section
-- Clear next-step expectations
-- Client-ready footer
+Perubahan utama:
+- Business Diagnosis dibuang sepenuhnya
+- Business Discovery menjadi satu-satunya lead flow
+- USP baharu: interface direka mengikut colour branding dan identiti jenama client
+- Brand Identity showcase
+- Industries We Have Explored
+- FAQ
+- Business Discovery disambungkan kepada Firebase Firestore + Firebase Storage
+- Logo dan reference files dihantar ke Firebase Storage
+- Submission disimpan dalam collection: businessDiscoveries
 - Mobile-first dan PWA ready
-- Service worker cache v10
+- Service worker cache v11
+
+WAJIB SEBELUM DEPLOY:
+1. Buka Firebase Console.
+2. Create / pilih project BinaLab.
+3. Tambah Web App.
+4. Copy firebaseConfig.
+5. Buka firebase-config.js.
+6. Replace semua nilai PASTE_... dengan config sebenar.
+7. Enable Firestore Database.
+8. Enable Firebase Storage.
+9. Gunakan security rules yang sesuai sebelum share kepada client.
+
+Firestore collection:
+businessDiscoveries
+
+Storage folder:
+business-discoveries/{submissionId}/
 
 Penting:
-Business Discovery masih menyimpan draft/submission dalam localStorage browser.
-Ia belum menghantar data kepada BinaLab secara online. Firebase/Firestore atau backend perlu disambungkan sebelum form digunakan untuk menerima lead sebenar.
-
-Cara deploy:
-1. Upload semua fail dalam folder ini ke root repository GitHub.
-2. Replace semua fail lama.
-3. Commit dan tunggu GitHub Pages selesai deploy.
-4. Buat hard refresh atau clear PWA cache jika versi lama masih kelihatan.
+Fail ini menggunakan Firebase Web SDK melalui CDN.
+Jangan padam firebase-config.js daripada root repository.

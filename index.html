@@ -814,7 +814,74 @@
       .footer-bottom{flex-direction:column}
     }
 
+  
+    /* Brand-led design, industries and FAQ */
+    .brand-system{
+      display:grid;grid-template-columns:.9fr 1.1fr;gap:24px;align-items:stretch
+    }
+    .brand-copy{
+      background:linear-gradient(145deg,#071425,#0D2743);color:#fff;border-radius:28px;padding:38px;
+      position:relative;overflow:hidden
+    }
+    .brand-copy::after{
+      content:"";position:absolute;width:320px;height:320px;border-radius:50%;right:-120px;bottom:-160px;
+      background:radial-gradient(circle,rgba(34,197,94,.35),transparent 68%)
+    }
+    .brand-copy h2{font-size:clamp(42px,5vw,70px);line-height:.96;letter-spacing:-3px;margin:16px 0}
+    .brand-copy p{color:#AFC0D0;line-height:1.75;max-width:560px;position:relative;z-index:2}
+    .brand-mosaic{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .brand-tile{
+      min-height:210px;border-radius:24px;padding:22px;color:#fff;display:flex;flex-direction:column;justify-content:space-between;
+      position:relative;overflow:hidden;box-shadow:0 18px 48px rgba(13,27,42,.12)
+    }
+    .brand-tile::after{
+      content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.55));pointer-events:none
+    }
+    .brand-tile>*{position:relative;z-index:2}
+    .brand-tile small{font-size:10px;font-weight:950;letter-spacing:.12em;opacity:.85}
+    .brand-tile h3{font-size:26px;margin:0}
+    .brand-tile p{font-size:12px;margin:5px 0 0;opacity:.82}
+    .brand-tile.kedua{background:linear-gradient(145deg,#8C7A58,#3E3425)}
+    .brand-tile.mos{background:linear-gradient(145deg,#E11D2E,#130305)}
+    .brand-tile.awanzco{background:linear-gradient(145deg,#F4C430,#171717);color:#111}
+    .brand-tile.awanzco::after{background:linear-gradient(180deg,transparent 30%,rgba(255,255,255,.35))}
+    .brand-tile.abedin{background:linear-gradient(145deg,#B89A5A,#101318)}
+    .industry-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+    .industry-item{
+      padding:17px;border:1px solid var(--line);border-radius:18px;background:#fff;font-weight:850;
+      display:flex;justify-content:space-between;align-items:center;gap:12px
+    }
+    .industry-item.done{background:#F0FDF4;border-color:#D5F4DF;color:#166534}
+    .industry-item span{font-size:12px;color:var(--muted)}
+    .faq-list{display:grid;gap:12px}
+    .faq-item{border:1px solid var(--line);border-radius:19px;background:#fff;overflow:hidden}
+    .faq-question{
+      width:100%;border:0;background:#fff;padding:19px 20px;display:flex;justify-content:space-between;gap:18px;
+      text-align:left;font-weight:900;color:var(--navy)
+    }
+    .faq-question b{color:var(--green);font-size:20px;transition:.22s ease}
+    .faq-answer{max-height:0;overflow:hidden;padding:0 20px;color:var(--muted);line-height:1.65;transition:.28s ease}
+    .faq-item.open .faq-answer{max-height:220px;padding:0 20px 19px}
+    .faq-item.open .faq-question b{transform:rotate(45deg)}
+    .firebase-status{
+      margin-top:14px;padding:12px 14px;border-radius:14px;font-size:13px;display:none
+    }
+    .firebase-status.show{display:block}
+    .firebase-status.info{background:#EFF6FF;color:#1D4ED8}
+    .firebase-status.success{background:#F0FDF4;color:#166534}
+    .firebase-status.error{background:#FFF1F2;color:#BE123C}
+    @media(max-width:900px){
+      .brand-system{grid-template-columns:1fr}
+      .industry-grid{grid-template-columns:1fr 1fr}
+    }
+    @media(max-width:620px){
+      .brand-mosaic,.industry-grid{grid-template-columns:1fr}
+      .brand-copy{padding:30px 22px}
+    }
+
   </style>
+
+  <script type="module" src="firebase-config.js"></script>
 </head>
 
 <body>
@@ -864,7 +931,7 @@
           </p>
 
           <div class="actions">
-            <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery →</button>
+            <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery Session →</button>
             <button class="btn btn-ghost" data-scroll="#stories">Explore Business Stories</button>
           </div>
 
@@ -1107,73 +1174,13 @@
         </div>
       </section>
 
-      <section id="diagnosis" class="section-card diagnostic reveal">
-        <div class="diag-dark">
-          <small>BUSINESS DIAGNOSIS</small>
-          <h3>Tell us the problem, not the app.</h3>
-          <p>
-            Jawab beberapa soalan ringkas. BinaLab akan mengenal pasti ruang yang berpotensi
-            untuk disusun, didigitalkan atau diautomasikan.
-          </p>
-        </div>
-
-        <div>
-          <div class="diag-form">
-            <label for="businessType">Jenis perniagaan</label>
-            <select id="businessType">
-              <option value="">Pilih industri</option>
-              <option>Retail</option>
-              <option>Automotive</option>
-              <option>Food & Beverage</option>
-              <option>Service Business</option>
-              <option>Beauty</option>
-              <option>Events & Entertainment</option>
-              <option>Other</option>
-            </select>
-
-            <label for="problemType">Masalah terbesar sekarang</label>
-            <select id="problemType">
-              <option value="">Pilih masalah</option>
-              <option>Tempahan dan pelanggan berselerak</option>
-              <option>Inventori sukar dipantau</option>
-              <option>Staff banyak kerja manual</option>
-              <option>Dokumen dan borang masih menggunakan kertas</option>
-              <option>Owner sukar melihat prestasi operasi</option>
-            </select>
-
-            <label for="teamSize">Berapa orang terlibat dalam operasi?</label>
-            <input id="teamSize" type="number" min="1" max="500" placeholder="Contoh: 5" />
-
-            <button class="btn btn-primary" id="diagnosisButton">Generate My Diagnosis →</button>
-          </div>
-
-          <div class="analysis-loader" id="analysisLoader">
-            <div class="analysis-row"><i></i><span>Mapping current workflow...</span></div>
-            <div class="analysis-row"><i></i><span>Finding operational bottlenecks...</span></div>
-            <div class="analysis-row"><i></i><span>Generating initial recommendation...</span></div>
-          </div>
-
-          <div class="result" id="result">
-            <div class="score-wrap">
-              <div class="score-ring" id="scoreRing"><b id="scoreNumber">0%</b></div>
-              <div>
-                <small>INITIAL DIAGNOSIS</small>
-                <strong id="score">Digital Opportunity</strong>
-              </div>
-            </div>
-            <p id="resultText"></p>
-          </div>
-        </div>
-      </section>
-
-
       <section class="section-card reveal" id="journey">
         <div class="section-head">
           <div>
             <h2>The BinaLab Journey.</h2>
             <p>Daripada cerita operasi anda sehingga sistem dilancarkan—setiap langkah jelas, tersusun dan boleh diikuti.</p>
           </div>
-          <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery →</button>
+          <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery Session →</button>
         </div>
 
         <div class="process">
@@ -1186,6 +1193,46 @@
       </section>
 
 
+
+      <section class="section-card reveal" id="brand-identity">
+        <div class="brand-system">
+          <div class="brand-copy">
+            <span class="case-kicker">DESIGNED AROUND YOUR BRAND</span>
+            <h2>Your business is unique. Your system should be too.</h2>
+            <p>
+              Setiap interface direka mengikut colour branding, personaliti dan pengalaman pelanggan
+              perniagaan anda—bukan sekadar menukar logo pada template yang sama.
+            </p>
+          </div>
+
+          <div class="brand-mosaic">
+            <article class="brand-tile kedua"><small>WARM • EARTHY • COFFEE</small><div><h3>KeduaOS</h3><p>Brand-led F&amp;B experience</p></div></article>
+            <article class="brand-tile mos"><small>FAST • BOLD • RACING</small><div><h3>MOS Karting</h3><p>High-energy booking experience</p></div></article>
+            <article class="brand-tile awanzco"><small>YELLOW • BLACK • RETAIL</small><div><h3>Awanzco</h3><p>Clear deal intelligence UI</p></div></article>
+            <article class="brand-tile abedin"><small>PREMIUM • AUTOMOTIVE</small><div><h3>Abedin Auto</h3><p>Professional mission control</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section-card reveal" id="industries">
+        <div class="section-head">
+          <div>
+            <span class="case-kicker">INDUSTRIES WE HAVE EXPLORED</span>
+            <h2>Growing across real industries.</h2>
+            <p>Kami terus mengembangkan portfolio dengan mengkaji masalah sebenar daripada lebih banyak jenis perniagaan.</p>
+          </div>
+        </div>
+        <div class="industry-grid">
+          <div class="industry-item done">Automotive <span>Explored ✓</span></div>
+          <div class="industry-item done">Retail <span>Explored ✓</span></div>
+          <div class="industry-item done">F&amp;B / Catering <span>Explored ✓</span></div>
+          <div class="industry-item done">Entertainment <span>Explored ✓</span></div>
+          <div class="industry-item">Healthcare <span>Next</span></div>
+          <div class="industry-item">Education <span>Next</span></div>
+          <div class="industry-item">Logistics <span>Next</span></div>
+          <div class="industry-item">Construction <span>Next</span></div>
+        </div>
+      </section>
       <section class="section-card reveal" id="why-binalab">
         <div class="section-head">
           <div>
@@ -1214,7 +1261,7 @@
               Ceritakan nama bisnes, operasi harian, masalah utama dan matlamat anda.
               BinaLab akan menyediakan Problem Mapping, Blueprint dan prototaip awal sebelum Development Proposal dikeluarkan.
             </p>
-            <button class="btn btn-primary discovery-trigger" data-discovery style="margin-top:20px">Start Business Discovery →</button>
+            <button class="btn btn-primary discovery-trigger" data-discovery style="margin-top:20px">Start Business Discovery Session →</button>
           </div>
 
           <div class="next-steps">
@@ -1226,14 +1273,32 @@
         </div>
       </section>
 
+
+      <section class="section-card reveal" id="faq">
+        <div class="section-head">
+          <div>
+            <span class="case-kicker">COMMON QUESTIONS</span>
+            <h2>Before we begin.</h2>
+            <p>Perkara yang kebanyakan business owner mahu tahu sebelum memulakan Business Discovery.</p>
+          </div>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item"><button class="faq-question">Saya perlu tahu coding atau perkara teknikal?<b>＋</b></button><div class="faq-answer">Tidak. Anda hanya perlu menerangkan bagaimana bisnes anda beroperasi dan masalah yang sedang dihadapi.</div></div>
+          <div class="faq-item"><button class="faq-question">Adakah BinaLab menggunakan template yang sama?<b>＋</b></button><div class="faq-answer">Tidak. Workflow, interface dan pengalaman pengguna direka berdasarkan operasi serta identiti visual bisnes anda.</div></div>
+          <div class="faq-item"><button class="faq-question">Boleh lihat prototaip sebelum bersetuju?<b>＋</b></button><div class="faq-answer">Ya. Prototaip akan dibentangkan terlebih dahulu. Development Proposal dan quotation hanya disediakan selepas arah prototaip dipersetujui.</div></div>
+          <div class="faq-item"><button class="faq-question">Adakah aplikasi akan mengikut branding bisnes saya?<b>＋</b></button><div class="faq-answer">Ya. Colour palette, typography, visual tone dan interface akan disesuaikan dengan identiti jenama anda.</div></div>
+          <div class="faq-item"><button class="faq-question">Apa berlaku selepas saya submit Business Discovery?<b>＋</b></button><div class="faq-answer">BinaLab akan menyemak operasi, memetakan masalah, menyediakan Business Blueprint dan mencadangkan prototaip awal.</div></div>
+        </div>
+      </section>
       <section class="final-cta reveal">
         <small>EVERY BUSINESS HAS A BOTTLENECK</small>
-        <h2>Let's find yours.</h2>
+        <h2>Ready to build your business operating system?</h2>
         <p>
           Jangan mulakan dengan senarai feature. Mulakan dengan satu perbualan tentang
           masalah sebenar yang sedang memperlahankan bisnes anda.
         </p>
-        <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery →</button>
+        <button class="btn btn-primary discovery-trigger" data-discovery>Start Business Discovery Session →</button>
       </section>
 
       <footer>
@@ -1254,7 +1319,7 @@
             </div>
             <div class="footer-col">
               <h4>Start</h4>
-              <a href="#diagnosis">Business Diagnosis</a>
+              
               <a href="javascript:void(0)" data-discovery>Business Discovery</a>
               <a href="#why-binalab">Why BinaLab</a>
             </div>
@@ -1528,6 +1593,7 @@
               <div id="reviewContent"></div>
             </section>
 
+            <div class="firebase-status" id="firebaseStatus"></div>
             <div class="discovery-actions">
               <button class="btn btn-ghost" id="discoveryBack">← Back</button>
               <div class="right">
@@ -1541,7 +1607,7 @@
             <div class="submit-orb"><img src="icon-192.png" alt="BinaLab"></div>
             <span class="step-kicker">DISCOVERY RECEIVED</span>
             <h2>Welcome to the BinaLab Journey.</h2>
-            <p>Business Discovery ini telah direkodkan pada device anda sebagai demonstrasi aliran pelanggan. Pasukan BinaLab akan menyambungkan submission online dalam fasa backend.</p>
+            <p>Business Discovery anda telah dihantar kepada BinaLab. Maklumat ini akan digunakan untuk Problem Mapping, Business Blueprint dan prototaip awal.</p>
 
             <div class="analysis-lines">
               <div class="analysis-line"><i></i><span>Business information received</span></div>
@@ -1584,7 +1650,7 @@
     <button data-scroll="body"><b>⌂</b>Home</button>
     <button data-scroll="#process"><b>◎</b>Process</button>
     <button data-scroll="#stories"><b>◫</b>Stories</button>
-    <button data-scroll="#diagnosis"><b>＋</b>Diagnose</button>
+    <button data-discovery><b>＋</b>Discovery</button>
   </div>
 
   <script>
@@ -2135,17 +2201,58 @@
       }
     }
 
-    function submitDiscovery(){
+    async function submitDiscovery(){
       const data = collectDiscovery();
-      localStorage.setItem('binalabDiscoverySubmission', JSON.stringify({
-        ...data, submittedAt:new Date().toISOString(), status:'Business Discovery Completed'
-      }));
-      localStorage.removeItem('binalabDiscoveryDraft');
-      formView.hidden = true;
-      successView.hidden = false;
-      document.querySelector('.discovery-app').scrollTo({top:0,behavior:'smooth'});
+      const statusBox = document.getElementById('firebaseStatus');
+      statusBox.className = 'firebase-status show info';
+      statusBox.textContent = 'Submitting Business Discovery...';
+      nextButton.disabled = true;
+      nextButton.textContent = 'Submitting...';
+
+      try{
+        if(!window.BinaLabFirebase || !window.BinaLabFirebase.ready){
+          throw new Error('Firebase belum dikonfigurasi. Lengkapkan firebase-config.js terlebih dahulu.');
+        }
+
+        const submissionId = await window.BinaLabFirebase.submitDiscovery({
+          ...data,
+          submittedAt: new Date().toISOString(),
+          status: 'new'
+        }, {
+          logoFile: logoInput.files[0] || null,
+          referenceFiles: [...referenceFiles.files]
+        });
+
+        localStorage.removeItem('binalabDiscoveryDraft');
+        localStorage.setItem('binalabLastSubmissionId', submissionId);
+        statusBox.className = 'firebase-status show success';
+        statusBox.textContent = 'Business Discovery berjaya dihantar.';
+
+        setTimeout(() => {
+          formView.hidden = true;
+          successView.hidden = false;
+          document.querySelector('.discovery-app').scrollTo({top:0,behavior:'smooth'});
+        }, 500);
+      }catch(error){
+        console.error(error);
+        statusBox.className = 'firebase-status show error';
+        statusBox.textContent = error.message || 'Submission gagal dihantar. Sila cuba lagi.';
+        nextButton.disabled = false;
+        nextButton.textContent = 'Submit Discovery →';
+      }
     }
 
+
+
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const item = button.closest('.faq-item');
+        document.querySelectorAll('.faq-item').forEach(other => {
+          if(other !== item) other.classList.remove('open');
+        });
+        item.classList.toggle('open');
+      });
+    });
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {

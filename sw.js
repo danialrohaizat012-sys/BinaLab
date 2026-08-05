@@ -1,7 +1,7 @@
-const CACHE = 'binalab-os-v10';
+const CACHE = 'binalab-os-v11';
 const ASSETS = [
   './',
-  './index.html',
+  './index.html','./firebase-config.js',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
