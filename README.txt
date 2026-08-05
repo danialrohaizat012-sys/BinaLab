@@ -73,3 +73,12 @@ FIX v1.5:
 - Added null guards for modal controls.
 - Service worker upgraded to v15.
 - JavaScript syntax verified: PASS.
+
+
+UPDATE v1.6:
+- Rebuilt logo compressor using iterative dimension and quality reduction.
+- Accepts large screenshots and keeps shrinking automatically until suitable.
+- Target maximum logo size is now approximately 120 KB.
+- Starts at 500 px and can reduce down to 96 px only when necessary.
+- Customer no longer needs to manually resize or compress the logo.
+- Service worker upgraded to v16.

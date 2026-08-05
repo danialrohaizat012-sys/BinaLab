@@ -1,4 +1,4 @@
-const CACHE = 'binalab-os-v15';
+const CACHE = 'binalab-os-v16';
 const ASSETS = [
   './',
   './index.html','./firebase-config.js',

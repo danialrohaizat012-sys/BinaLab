@@ -885,7 +885,7 @@
 
   </style>
 
-  <script type="module" src="firebase-config.js?v=15"></script>
+  <script type="module" src="firebase-config.js?v=16"></script>
 </head>
 
 <body>
@@ -2113,51 +2113,101 @@
     let compressedLogoType = null;
 
     async function compressLogo(file){
-      const maxDimension = 500;
-      const targetMaxBytes = 180 * 1024;
-      const preferredQuality = 0.72;
+      const hardLimitBytes = 120 * 1024;
+      const preferredMaxDimension = 500;
+      const minimumDimension = 96;
 
-      const bitmap = await createImageBitmap(file);
-      const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
-      const width = Math.max(1, Math.round(bitmap.width * scale));
-      const height = Math.max(1, Math.round(bitmap.height * scale));
-
-      const canvas = document.createElement('canvas');
-      canvas.width = width;
-      canvas.height = height;
-      const context = canvas.getContext('2d', {alpha:true});
-      context.drawImage(bitmap, 0, 0, width, height);
-
-      let quality = preferredQuality;
-      let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', quality));
-
-      while(blob && blob.size > targetMaxBytes && quality > 0.35){
-        quality -= 0.08;
-        blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', quality));
+      let bitmap;
+      try{
+        bitmap = await createImageBitmap(file);
+      }catch(error){
+        throw new Error('Format gambar ini tidak dapat dibaca. Cuba screenshot dalam JPG atau PNG.');
       }
 
-      if(!blob){
-        throw new Error('Logo tidak dapat diproses pada browser ini.');
+      let maxDimension = preferredMaxDimension;
+      let quality = 0.82;
+      let bestBlob = null;
+      let bestWidth = 0;
+      let bestHeight = 0;
+
+      while(maxDimension >= minimumDimension){
+        const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
+        const width = Math.max(1, Math.round(bitmap.width * scale));
+        const height = Math.max(1, Math.round(bitmap.height * scale));
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        const context = canvas.getContext('2d', {
+          alpha: true,
+          desynchronized: true
+        });
+
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = 'high';
+        context.clearRect(0, 0, width, height);
+        context.drawImage(bitmap, 0, 0, width, height);
+
+        quality = 0.82;
+
+        while(quality >= 0.28){
+          const blob = await new Promise(resolve =>
+            canvas.toBlob(resolve, 'image/webp', quality)
+          );
+
+          if(blob && (!bestBlob || blob.size < bestBlob.size)){
+            bestBlob = blob;
+            bestWidth = width;
+            bestHeight = height;
+          }
+
+          if(blob && blob.size <= hardLimitBytes){
+            const base64 = await new Promise((resolve,reject) => {
+              const reader = new FileReader();
+              reader.onload = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(blob);
+            });
+
+            bitmap.close?.();
+
+            return {
+              data: base64,
+              bytes: blob.size,
+              type: blob.type,
+              width,
+              height
+            };
+          }
+
+          quality -= 0.09;
+        }
+
+        maxDimension = Math.floor(maxDimension * 0.78);
       }
 
-      if(blob.size > targetMaxBytes){
-        throw new Error('Logo masih terlalu besar selepas compression. Cuba screenshot yang lebih kecil.');
+      if(bestBlob){
+        const base64 = await new Promise((resolve,reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result);
+          reader.onerror = reject;
+          reader.readAsDataURL(bestBlob);
+        });
+
+        bitmap.close?.();
+
+        return {
+          data: base64,
+          bytes: bestBlob.size,
+          type: bestBlob.type,
+          width: bestWidth,
+          height: bestHeight
+        };
       }
 
-      const base64 = await new Promise((resolve,reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-
-      return {
-        data: base64,
-        bytes: blob.size,
-        type: blob.type,
-        width,
-        height
-      };
+      bitmap.close?.();
+      throw new Error('Logo tidak dapat diproses. Cuba screenshot semula dalam JPG atau PNG.');
     }
 
     const logoInput = document.getElementById('discoveryLogo');
@@ -2179,7 +2229,7 @@
           `<img src="${result.data}" alt="Business logo">`;
 
         info.textContent =
-          `Ready • ${Math.round(result.bytes / 1024)} KB • ${result.width}×${result.height} • WebP`;
+          `Ready • Auto-compressed to ${Math.round(result.bytes / 1024)} KB • ${result.width}×${result.height}`;
         info.style.color = '#15803D';
       }catch(error){
         compressedLogoData = null;
