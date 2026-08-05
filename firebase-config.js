@@ -11,11 +11,12 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.2.1/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "PASTE_API_KEY",
-  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  projectId: "PASTE_PROJECT_ID",
-  messagingSenderId: "PASTE_MESSAGING_SENDER_ID",
-  appId: "PASTE_APP_ID"
+  apiKey: "AIzaSyDZZvniHnoxZQNfplSgxBg0Wg_Dn59w8N0",
+  authDomain: "binalab-a7891.firebaseapp.com",
+  projectId: "binalab-a7891",
+  storageBucket: "binalab-a7891.firebasestorage.app",
+  messagingSenderId: "394316362316",
+  appId: "1:394316362316:web:bdf891ef3017daa91a3ae9"
 };
 
 const configured = !Object.values(firebaseConfig).some(value =>
