@@ -1,11 +1,11 @@
-const CACHE = 'binalab-os-v5';
+const CACHE = 'binalab-os-v7';
 const ASSETS = [
   './',
   './index.html',
   './manifest.webmanifest',
   './icon-192.png',
   './icon-512.png',
-  './apple-touch-icon.png'
+  './apple-touch-icon.png','./mos-karting.jpg','./awanzco.jpg','./keduaos.jpg','./abedin-auto.jpg'
 ];
 
 self.addEventListener('install', event => {
