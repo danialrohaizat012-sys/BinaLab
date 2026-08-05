@@ -1492,6 +1492,7 @@
                     <strong>Upload logo</strong>
                     <div style="color:var(--muted);font-size:13px;margin-top:5px">PNG, JPG atau WEBP</div>
                     <input id="discoveryLogo" type="file" accept="image/*" hidden>
+                    <div id="logoCompressionInfo" style="margin-top:10px;color:var(--muted);font-size:12px"></div>
                   </label>
                 </div>
               </div>
@@ -1547,15 +1548,8 @@
               <h2>Show us how things work today.</h2>
               <p class="step-intro">Dokumen sebenar membantu kami memahami konteks tanpa membuat andaian.</p>
 
-              <label class="file-upload" for="referenceFiles">
-                <strong>＋ Upload logo, borang, SOP, invoice atau gambar operasi</strong>
-                <div style="color:var(--muted);font-size:13px;margin-top:7px">Anda boleh pilih beberapa fail serentak.</div>
-                <input id="referenceFiles" type="file" multiple hidden>
-              </label>
-              <div class="upload-list" id="uploadList"></div>
-
               <div class="field" style="margin-top:18px">
-                <label for="referenceLink">Link rujukan</label>
+                <label for="referenceLink">Link rujukan tambahan</label>
                 <input id="referenceLink" placeholder="Website, Facebook, Instagram atau sistem semasa">
               </div>
             </section>
@@ -2082,27 +2076,90 @@
       card.addEventListener('click', () => card.classList.toggle('selected'));
     });
 
-    const logoInput = document.getElementById('discoveryLogo');
-    logoInput.addEventListener('change', () => {
-      const file = logoInput.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = event => {
-        document.getElementById('logoPreview').innerHTML = `<img src="${event.target.result}" alt="Business logo">`;
-      };
-      reader.readAsDataURL(file);
-    });
 
-    const referenceFiles = document.getElementById('referenceFiles');
-    referenceFiles.addEventListener('change', () => {
-      const list = document.getElementById('uploadList');
-      list.innerHTML = '';
-      [...referenceFiles.files].forEach(file => {
-        const item = document.createElement('div');
-        item.className = 'upload-item';
-        item.innerHTML = `<span>${file.name}</span><b>${Math.max(1,Math.round(file.size/1024))} KB</b>`;
-        list.appendChild(item);
+    let compressedLogoData = null;
+    let compressedLogoBytes = 0;
+    let compressedLogoType = null;
+
+    async function compressLogo(file){
+      const maxDimension = 500;
+      const targetMaxBytes = 180 * 1024;
+      const preferredQuality = 0.72;
+
+      const bitmap = await createImageBitmap(file);
+      const scale = Math.min(1, maxDimension / Math.max(bitmap.width, bitmap.height));
+      const width = Math.max(1, Math.round(bitmap.width * scale));
+      const height = Math.max(1, Math.round(bitmap.height * scale));
+
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext('2d', {alpha:true});
+      context.drawImage(bitmap, 0, 0, width, height);
+
+      let quality = preferredQuality;
+      let blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', quality));
+
+      while(blob && blob.size > targetMaxBytes && quality > 0.35){
+        quality -= 0.08;
+        blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/webp', quality));
+      }
+
+      if(!blob){
+        throw new Error('Logo tidak dapat diproses pada browser ini.');
+      }
+
+      if(blob.size > targetMaxBytes){
+        throw new Error('Logo masih terlalu besar selepas compression. Cuba screenshot yang lebih kecil.');
+      }
+
+      const base64 = await new Promise((resolve,reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
       });
+
+      return {
+        data: base64,
+        bytes: blob.size,
+        type: blob.type,
+        width,
+        height
+      };
+    }
+
+    const logoInput = document.getElementById('discoveryLogo');
+    logoInput.addEventListener('change', async () => {
+      const file = logoInput.files[0];
+      const info = document.getElementById('logoCompressionInfo');
+      if(!file) return;
+
+      info.textContent = 'Compressing logo...';
+      info.style.color = 'var(--muted)';
+
+      try{
+        const result = await compressLogo(file);
+        compressedLogoData = result.data;
+        compressedLogoBytes = result.bytes;
+        compressedLogoType = result.type;
+
+        document.getElementById('logoPreview').innerHTML =
+          `<img src="${result.data}" alt="Business logo">`;
+
+        info.textContent =
+          `Ready • ${Math.round(result.bytes / 1024)} KB • ${result.width}×${result.height} • WebP`;
+        info.style.color = '#15803D';
+      }catch(error){
+        compressedLogoData = null;
+        compressedLogoBytes = 0;
+        compressedLogoType = null;
+        logoInput.value = '';
+        document.getElementById('logoPreview').textContent = 'LOGO';
+        info.textContent = error.message || 'Logo gagal diproses.';
+        info.style.color = '#BE123C';
+      }
+    });
     });
 
     function selectedPainPoints(){
@@ -2124,8 +2181,7 @@
         referenceLink: requiredValue('referenceLink'),
         dreamOutcome: requiredValue('dreamOutcome'),
         priorityOutcome: document.getElementById('priorityOutcome').value,
-        targetTimeline: document.getElementById('targetTimeline').value,
-        files: [...referenceFiles.files].map(file => file.name)
+        targetTimeline: document.getElementById('targetTimeline').value
       };
     }
 
@@ -2216,11 +2272,11 @@
 
         const submissionId = await window.BinaLabFirebase.submitDiscovery({
           ...data,
+          logoData: compressedLogoData,
+          logoSize: compressedLogoBytes,
+          logoType: compressedLogoType,
           submittedAt: new Date().toISOString(),
           status: 'new'
-        }, {
-          logoFile: logoInput.files[0] || null,
-          referenceFiles: [...referenceFiles.files]
         });
 
         localStorage.removeItem('binalabDiscoveryDraft');

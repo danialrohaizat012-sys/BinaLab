@@ -1,35 +1,52 @@
-BinaLab — Client Acquisition Edition v1.1
+BinaLab — Client Acquisition Edition v1.2 (Firestore Logo Compression)
 
 Perubahan utama:
-- Business Diagnosis dibuang sepenuhnya
-- Business Discovery menjadi satu-satunya lead flow
-- USP baharu: interface direka mengikut colour branding dan identiti jenama client
-- Brand Identity showcase
-- Industries We Have Explored
-- FAQ
-- Business Discovery disambungkan kepada Firebase Firestore + Firebase Storage
-- Logo dan reference files dihantar ke Firebase Storage
-- Submission disimpan dalam collection: businessDiscoveries
-- Mobile-first dan PWA ready
-- Service worker cache v11
+- Business Diagnosis dibuang
+- Business Discovery menjadi lead flow utama
+- Customer boleh upload logo atau screenshot logo dari phone
+- Logo auto-resize maksimum 500×500 px
+- Logo auto-convert ke WebP
+- Logo auto-compress dengan sasaran bawah 180 KB
+- Logo disimpan sebagai Base64 terus dalam Firestore
+- Firebase Storage tidak diperlukan
+- Firestore collection: businessDiscoveries
+- FAQ, Brand Identity, Industries Explored, live portfolio dan case studies dikekalkan
+- Service worker cache v12
 
 WAJIB SEBELUM DEPLOY:
-1. Buka Firebase Console.
-2. Create / pilih project BinaLab.
-3. Tambah Web App.
-4. Copy firebaseConfig.
-5. Buka firebase-config.js.
-6. Replace semua nilai PASTE_... dengan config sebenar.
-7. Enable Firestore Database.
-8. Enable Firebase Storage.
-9. Gunakan security rules yang sesuai sebelum share kepada client.
+1. Create Firebase project.
+2. Register Web App.
+3. Copy firebaseConfig ke firebase-config.js.
+4. Enable Firestore Database.
+5. Publish Firestore security rules.
+6. Upload semua fail dalam folder ini ke root GitHub repository.
 
-Firestore collection:
-businessDiscoveries
+Cadangan Firestore Rules:
 
-Storage folder:
-business-discoveries/{submissionId}/
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /businessDiscoveries/{discoveryId} {
+      allow create: if
+        request.resource.data.businessName is string
+        && request.resource.data.businessName.size() >= 2
+        && request.resource.data.businessName.size() <= 120
+        && request.resource.data.industry is string
+        && request.resource.data.dailyOperation is string
+        && request.resource.data.biggestProblem is string
+        && request.resource.data.dreamOutcome is string
+        && (
+          !('logoSize' in request.resource.data)
+          || request.resource.data.logoSize <= 184320
+        );
+
+      allow read, update, delete: if false;
+    }
+  }
+}
 
 Penting:
-Fail ini menggunakan Firebase Web SDK melalui CDN.
-Jangan padam firebase-config.js daripada root repository.
+- Satu dokumen Firestore mempunyai had saiz.
+- Versi ini hanya sesuai untuk satu logo kecil yang sudah di-compress.
+- Jangan gunakan Base64 Firestore untuk banyak gambar atau dokumen besar.
