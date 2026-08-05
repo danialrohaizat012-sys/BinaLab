@@ -22,7 +22,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.17.1/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDZZvniHnoxZQNfp1SgxBgoWg_Dn59w8N0",
+  apiKey: "AIzaSyDZZvniHnoxZQNfplSgxBgoWg_Dn59w8N0",
   authDomain: "binalab-a7891.firebaseapp.com",
   projectId: "binalab-a7891",
   messagingSenderId: "394316362316",

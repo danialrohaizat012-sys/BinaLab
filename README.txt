@@ -52,3 +52,9 @@ FIX v2.1:
 - Corrected digit/letter differences in the API key.
 - Updated Firebase SDK imports to 12.17.1.
 - Cache version upgraded to v210.
+
+
+FIX v2.2:
+- Corrected Firebase API key from QNfp1S to QNfplS.
+- Cache-busted Firebase config to v220.
+- Service worker cache upgraded to v220.

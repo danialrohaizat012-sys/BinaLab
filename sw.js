@@ -1,10 +1,10 @@
-const CACHE = 'binalab-os-v210';
+const CACHE = 'binalab-os-v220';
 const ASSETS = [
   "./",
   "./index.html",
   "./studio.html",
   "./portal.html",
-  "./firebase-config.js?v=210",
+  "./firebase-config.js?v=220",
   "./manifest.webmanifest",
   "./icon-192.png",
   "./icon-512.png",
