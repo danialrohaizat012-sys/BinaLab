@@ -50,3 +50,9 @@ Penting:
 - Satu dokumen Firestore mempunyai had saiz.
 - Versi ini hanya sesuai untuk satu logo kecil yang sudah di-compress.
 - Jangan gunakan Base64 Firestore untuk banyak gambar atau dokumen besar.
+
+
+FIX v1.3:
+- Fixed JavaScript syntax error that caused splash screen to stay forever.
+- Firebase configuration has been inserted.
+- Service worker cache upgraded to v13.
