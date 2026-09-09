@@ -1,28 +1,45 @@
-BinaLab v4.2 — Effortless UX Edition
+BinaLab v4.5 — Demo Safe Architecture
 
-Principle:
-Powerful underneath. Effortless on the surface.
+Locked architecture:
+PUBLIC
+Website → Portfolio Kami → Demo System only
 
-Studio
-- Quick Update always visible
-- Stage + progress + customer update in one place
-- Save + WhatsApp Client in one click
-- Project Assets, Internal Tasks and Timeline collapsed by default
-- Website Systems and Testimonials CMS retained
+CLIENT
+Client Portal → Prototype / Quotation / Production System
 
-Client Portal
-- No tabs
-- One simple scrolling page
-- Current status first
-- Latest update first
-- Timeline, available files and WhatsApp support
-- Unavailable assets stay quiet
+INTERNAL
+BinaLab Studio → Projects / Commercial / Portfolio Manager
 
-Deploy all files to repository root.
-Use ?v=420 after deployment.
+Important safety rule:
+Public website MUST NEVER link directly to a client's production/internal system.
 
+Portfolio workflow:
+Project Completed
+→ Add to Portfolio Kami
+→ Draft created
+→ Client/portfolio approval confirmed
+→ Demo-safe version prepared
+→ Add demo URL
+→ Publish
 
-FIX v4.2.1:
-- Removed duplicate deleteDoc declaration that blocked Studio login.
-- Firebase module syntax verified PASS.
-- Cache bumped to v421.
+Portfolio fields:
+- Business / project name
+- Industry
+- Problem
+- What BinaLab built
+- BM / English description
+- Demo URL
+- Screenshot
+- Tags
+- Approval checkbox
+- Demo Ready checkbox
+- Publish toggle
+
+Studio improvements:
+- Projects Completed label
+- Hasil Diterima
+- Invoice Belum Dibayar
+- Create Quotation directly from Project with auto-filled client details
+- Production URL and Demo URL stored separately
+
+Use ?v=450 after deployment.
