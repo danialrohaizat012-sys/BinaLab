@@ -20,7 +20,6 @@ service cloud.firestore {
       allow list, update, delete: if request.auth != null;
     }
 
-    // Public website content. It is intentionally readable by everyone.
     match /websiteSystems/{systemId} {
       allow read: if true;
       allow create, update, delete: if request.auth != null;

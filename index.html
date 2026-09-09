@@ -142,7 +142,7 @@ section{padding:76px 0}.section-head{margin-bottom:27px}.section-head h2{font-si
 <div class="success" id="successView" hidden><div class="check">✓</div><h2>Terima kasih. Kami dah terima cerita bisnes anda.</h2><p>BinaLab akan review operasi anda dan fikirkan bagaimana teknologi boleh membantu. Tiada komitmen untuk membeli.</p><div class="portal-card"><small style="color:var(--green);font-weight:900">CASE ID</small><h3 id="caseId" style="font-size:28px;margin:6px 0 16px"></h3><p style="color:var(--muted)">Simpan link portal ini untuk melihat update projek anda.</p><div class="portal-row"><input id="portalLink" readonly><button class="btn btn-dark" id="copyPortal">Copy Link</button><a class="btn btn-primary" id="openPortal" target="_blank">Buka Portal</a></div></div></div>
 </div></div></div>
 
-<script type="module" src="firebase-config.js?v=400"></script>
+<script type="module" src="firebase-config.js?v=420"></script>
 <script>
 const overlay=document.getElementById('overlay'),steps=[...document.querySelectorAll('.step')],bars=[...document.querySelectorAll('.stepsbar span')],nextBtn=document.getElementById('nextBtn'),backBtn=document.getElementById('backBtn'),statusBox=document.getElementById('statusBox');let step=0,logoData=null,logoSize=0,logoType=null;
 document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{overlay.classList.add('open');document.body.style.overflow='hidden'});closeBtn.onclick=()=>{overlay.classList.remove('open');document.body.style.overflow=''};overlay.onclick=e=>{if(e.target===overlay)closeBtn.click()};document.querySelectorAll('.faq-q').forEach(b=>b.onclick=()=>{const i=b.closest('.faq-item');document.querySelectorAll('.faq-item').forEach(x=>{if(x!==i)x.classList.remove('open')});i.classList.toggle('open')});document.querySelectorAll('.quick').forEach(b=>b.onclick=e=>{e.preventDefault();b.classList.toggle('selected')});
@@ -156,7 +156,7 @@ copyPortal.onclick=async()=>{await navigator.clipboard.writeText(portalLink.valu
 </script>
 
 <script type="module">
-import {db,collection,query,orderBy,onSnapshot} from './firebase-config.js?v=400';
+import {db,collection,query,orderBy,onSnapshot} from './firebase-config.js?v=420';
 
 const fallbackSystems = [
   {name:'Abedin Auto',industry:'Automotive',descriptionMs:'Digital rental workflow, vehicle inventory dan operational mission control.',descriptionEn:'Digital rental workflow, vehicle inventory and operational mission control.',liveUrl:'https://danialrohaizat012-sys.github.io/AbeDInAuto/',coverData:'abedin-auto.jpg',tags:['Automotive','PWA','Live'],sortOrder:1,published:true},
