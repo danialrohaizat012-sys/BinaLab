@@ -48,6 +48,22 @@
 .money{text-align:right}.mini-actions{display:flex;gap:7px;flex-wrap:wrap}.muted{color:var(--muted)}
 @media(max-width:950px){.ops-grid{grid-template-columns:1fr 1fr}.ops-layout,.commercial-layout{grid-template-columns:1fr}}
 
+
+.preview-shell{margin-top:18px;border:1px solid var(--line);border-radius:22px;background:#EEF2F7;padding:16px}
+.preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.preview-toolbar strong{font-size:13px}
+.paper{background:#fff;width:min(820px,100%);margin:auto;padding:38px;box-shadow:0 16px 45px rgba(15,23,42,.12);border-radius:6px;min-height:900px}
+.paper-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;border-bottom:2px solid #0F172A;padding-bottom:18px}
+.paper-brand{display:flex;align-items:center;gap:12px}.paper-brand img{width:52px;height:52px;border-radius:14px}.paper-brand h2{margin:0;font-size:24px}.paper-brand small{color:#64748B}
+.paper-doc{text-align:right}.paper-doc h1{margin:0;font-size:32px}.paper-doc div{color:#64748B;font-size:12px;margin-top:4px}
+.paper-meta{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}.paper-box{padding:14px;border:1px solid #E2E8F0;border-radius:12px}.paper-box small{display:block;color:#64748B;font-size:10px;margin-bottom:4px}
+.paper-table{width:100%;border-collapse:collapse;margin-top:18px}.paper-table th,.paper-table td{padding:11px 8px;border-bottom:1px solid #E2E8F0;font-size:12px}.paper-table th{text-align:left;color:#64748B}.paper-table .right{text-align:right}
+.paper-totals{margin-left:auto;width:min(320px,100%);margin-top:18px}.paper-total-row{display:flex;justify-content:space-between;padding:7px 0;font-size:12px}.paper-total-row.final{border-top:2px solid #0F172A;margin-top:6px;padding-top:12px;font-size:20px;font-weight:900}
+.paper-notes{margin-top:28px;padding:15px;border-radius:12px;background:#F8FAFC}.paper-notes strong{display:block;margin-bottom:6px}.paper-notes p{margin:0;color:#475569;font-size:12px;line-height:1.6;white-space:pre-wrap}
+.paper-footer{margin-top:46px;padding-top:15px;border-top:1px solid #E2E8F0;display:flex;justify-content:space-between;gap:20px;color:#64748B;font-size:10px}
+.preview-live-note{font-size:11px;color:var(--muted)}
+@media(max-width:700px){.paper{padding:22px 15px;min-height:auto}.paper-head,.paper-meta,.paper-footer{grid-template-columns:1fr;display:grid}.paper-doc{text-align:left}}
+
 </style>
 </head>
 <body>
@@ -109,7 +125,7 @@
 </main></div>
 
 <script type="module">
-import {db,auth,collection,query,orderBy,onSnapshot,doc,updateDoc,deleteDoc,setDoc,addDoc,serverTimestamp,arrayUnion,signInWithEmailAndPassword,signOut,onAuthStateChanged} from './firebase-config.js?v=440';
+import {db,auth,collection,query,orderBy,onSnapshot,doc,updateDoc,deleteDoc,setDoc,addDoc,serverTimestamp,arrayUnion,signInWithEmailAndPassword,signOut,onAuthStateChanged} from './firebase-config.js?v=452';
 
 const stages=['Discovery','Problem Mapping','Blueprint','Prototype','Proposal','Development','Testing','Launch'];
 let discoveries=[],selectedId=null,websiteSystems=[],selectedSystemId=null,systemImageData=null,quotations=[],invoices=[],selectedDocType=null,selectedDocId=null;
@@ -325,7 +341,7 @@ function renderDocEditor(d={},type='quotation'){
       <div class="field"><label>Status</label><select id="docStatus">
         ${isInvoice?`<option value="unpaid" ${d.status==='unpaid'?'selected':''}>Unpaid</option><option value="paid" ${d.status==='paid'?'selected':''}>Paid</option>`:`<option value="draft" ${d.status==='draft'?'selected':''}>Draft</option><option value="sent" ${d.status==='sent'?'selected':''}>Sent</option><option value="accepted" ${d.status==='accepted'?'selected':''}>Accepted</option><option value="rejected" ${d.status==='rejected'?'selected':''}>Rejected</option>`}
       </select></div>
-      <div class="field full"><label>Notes</label><textarea id="docNotes">${esc(d.notes||'')}</textarea></div>
+      <div class="field full"><label>Notes / Scope</label><textarea id="docNotes">${esc(d.notes||'')}</textarea></div>
     </div>
 
     <h3 style="margin-top:20px">Items</h3>
@@ -339,10 +355,19 @@ function renderDocEditor(d={},type='quotation'){
 
     <div class="actions">
       <button class="btn primary" id="saveDoc">Save ${isInvoice?'Invoice':'Quotation'}</button>
-      <button class="btn dark" id="printDoc">Preview / Print</button>
+      <button class="btn dark" id="printDoc">Print / Save PDF</button>
       ${!isInvoice&&d.id?'<button class="btn ghost" id="convertInvoice">Convert to Invoice</button>':''}
       ${d.id?'<button class="btn danger" id="deleteDocBtn">Delete</button>':''}
     </div>
+
+    <div class="preview-shell">
+      <div class="preview-toolbar">
+        <div><strong>Live Preview</strong><div class="preview-live-note">Preview berubah automatik semasa anda menaip.</div></div>
+        <button class="btn ghost" id="refreshPreview">Refresh</button>
+      </div>
+      <div class="paper" id="docPreview"></div>
+    </div>
+
     <div class="message" id="docMessage"></div>`;
 
   function refreshTotal(){
@@ -351,11 +376,60 @@ function renderDocEditor(d={},type='quotation'){
     const tax=Number(docTax.value||0);
     const total=subtotal+(subtotal*tax/100);
     docTotal.value=rm(total);
+    renderPreview({items,subtotal,taxRate:tax,total});
     return {items,subtotal,taxRate:tax,total};
   }
-  docEditor.querySelectorAll('[data-doc-input]').forEach(x=>x.addEventListener('input',refreshTotal));
-  docTax.addEventListener('input',refreshTotal);
-  addItem.onclick=()=>{docItems.insertAdjacentHTML('beforeend',itemRow({description:'',qty:1,price:0},docItems.children.length));docItems.querySelectorAll('[data-doc-input]').forEach(x=>x.oninput=refreshTotal);refreshTotal()};
+
+  function renderPreview(totals){
+    if(!document.getElementById('docPreview')) return;
+    const title=isInvoice?'INVOICE':'QUOTATION';
+    const itemsHtml=totals.items.length?totals.items.map(x=>`<tr>
+      <td>${esc(x.description)}</td><td>${x.qty}</td><td class="right">${rm(x.price)}</td><td class="right">${rm(x.qty*x.price)}</td>
+    </tr>`).join(''):`<tr><td colspan="4" class="muted">No items yet.</td></tr>`;
+
+    docPreview.innerHTML=`
+      <div class="paper-head">
+        <div class="paper-brand"><img src="icon-192.png" alt=""><div><h2>BinaLab</h2><small>SME Digitalisation Partner</small></div></div>
+        <div class="paper-doc"><h1>${title}</h1><div>${esc(docRef.value||ref)}</div></div>
+      </div>
+
+      <div class="paper-meta">
+        <div class="paper-box"><small>BILLED TO</small><strong>${esc(docBusiness.value||'Business Name')}</strong><div>${esc(docClient.value||'Client Name')}</div><div>${esc(docPhone.value||'')}</div></div>
+        <div class="paper-box"><small>PROJECT</small><strong>${esc(docCase.value||'Case ID')}</strong><div>Status: ${esc(docStatus.value)}</div></div>
+      </div>
+
+      <table class="paper-table">
+        <thead><tr><th>Description</th><th>Qty</th><th class="right">Price</th><th class="right">Total</th></tr></thead>
+        <tbody>${itemsHtml}</tbody>
+      </table>
+
+      <div class="paper-totals">
+        <div class="paper-total-row"><span>Subtotal</span><strong>${rm(totals.subtotal)}</strong></div>
+        <div class="paper-total-row"><span>Tax / SST (${totals.taxRate}%)</span><strong>${rm(totals.total-totals.subtotal)}</strong></div>
+        <div class="paper-total-row final"><span>Total</span><span>${rm(totals.total)}</span></div>
+      </div>
+
+      ${docNotes.value.trim()?`<div class="paper-notes"><strong>${isInvoice?'Notes':'Scope / Notes'}</strong><p>${esc(docNotes.value)}</p></div>`:''}
+
+      <div class="paper-footer"><span>Real Business. Real Solutions.</span><span>BinaLab • SME Digitalisation Partner</span></div>
+    `;
+  }
+
+  function bindLivePreview(){
+    ['docRef','docCase','docBusiness','docClient','docPhone','docStatus','docNotes','docTax'].forEach(id=>{
+      document.getElementById(id)?.addEventListener('input',refreshTotal);
+      document.getElementById(id)?.addEventListener('change',refreshTotal);
+    });
+    docEditor.querySelectorAll('[data-doc-input]').forEach(x=>x.addEventListener('input',refreshTotal));
+  }
+
+  bindLivePreview();
+  refreshPreview.onclick=refreshTotal;
+  addItem.onclick=()=>{
+    docItems.insertAdjacentHTML('beforeend',itemRow({description:'',qty:1,price:0},docItems.children.length));
+    docItems.querySelectorAll('[data-doc-input]').forEach(x=>x.oninput=refreshTotal);
+    refreshTotal();
+  };
   refreshTotal();
 
   saveDoc.onclick=async()=>{
