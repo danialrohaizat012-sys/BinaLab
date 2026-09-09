@@ -10,6 +10,8 @@ import {
   query,
   orderBy,
   updateDoc,
+  deleteDoc,
+  deleteDoc,
   onSnapshot,
   serverTimestamp,
   arrayUnion
@@ -35,7 +37,7 @@ export const auth = getAuth(app);
 
 export {
   collection, doc, setDoc, addDoc, getDoc, getDocs, query, orderBy,
-  updateDoc, onSnapshot, serverTimestamp, arrayUnion,
+  updateDoc, deleteDoc, onSnapshot, serverTimestamp, arrayUnion,
   signInWithEmailAndPassword, signOut, onAuthStateChanged
 };
 
