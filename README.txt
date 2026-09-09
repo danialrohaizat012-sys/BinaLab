@@ -20,3 +20,9 @@ Client Portal
 
 Deploy all files to repository root.
 Use ?v=420 after deployment.
+
+
+FIX v4.2.1:
+- Removed duplicate deleteDoc declaration that blocked Studio login.
+- Firebase module syntax verified PASS.
+- Cache bumped to v421.
