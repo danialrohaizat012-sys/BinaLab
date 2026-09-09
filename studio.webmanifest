@@ -1,0 +1,25 @@
+{
+  "id": "./studio",
+  "name": "BinaLab Studio",
+  "short_name": "BinaLab Studio",
+  "description": "Internal command centre for BinaLab.",
+  "start_url": "./studio.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#071425",
+  "theme_color": "#071425",
+  "icons": [
+    {
+      "src": "studio-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "studio-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

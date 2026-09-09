@@ -42,6 +42,50 @@ section{padding:76px 0}.section-head{margin-bottom:27px}.section-head h2{font-si
 @media(max-width:900px){.testimonial-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:620px){.lang-buttons,.testimonial-grid{grid-template-columns:1fr}}
 
+
+/* v4.5.6 Mobile safety layer */
+html,body{max-width:100%;overflow-x:hidden}
+img,video,svg,canvas{max-width:100%}
+input,select,textarea,button{max-width:100%}
+@media(max-width:768px){
+  body{font-size:15px}
+  .container{width:min(100% - 24px,1120px)}
+  .nav-inner{gap:10px}
+  .nav-links{max-width:100%;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .nav-links::-webkit-scrollbar{display:none}
+  .hero-grid,.grid2,.story-grid,.paper-meta,.paper-summary{grid-template-columns:1fr!important}
+  .hero h1{font-size:clamp(38px,12vw,56px)!important;letter-spacing:-2px!important}
+  .hero p{font-size:15px!important}
+  .actions,.quick-actions,.preview-toolbar,.panel-head{flex-wrap:wrap}
+  .actions .btn,.quick-actions .btn{min-height:44px}
+  .card,.panel,.form-card{max-width:100%;overflow:hidden}
+  table{font-size:12px}
+  .table-wrap,.paper-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .paper{width:100%!important;min-height:auto!important;border-radius:14px!important}
+  .paper-inner{padding:22px 15px!important}
+  .paper-head{display:grid!important;grid-template-columns:1fr!important;gap:16px!important}
+  .paper-doc{text-align:left!important}
+  .paper-brand img{width:52px!important;height:52px!important}
+  .paper-doc h1{font-size:27px!important}
+  .paper-summary{gap:14px!important}
+  .paper-totals{width:100%!important}
+  .preview-shell{padding:8px!important}
+  .modal,.dialog,.modal-card{width:calc(100vw - 24px)!important;max-width:calc(100vw - 24px)!important;max-height:88vh;overflow-y:auto}
+  textarea{min-height:110px}
+  input,select,textarea{font-size:16px!important}
+}
+@media(max-width:480px){
+  .container{width:min(100% - 18px,1120px)}
+  section{padding-left:0;padding-right:0}
+  .brand{font-size:17px}
+  .brand img{width:36px;height:36px}
+  .btn{padding:11px 12px}
+  .hero{padding-top:38px}
+  .socials{gap:8px}
+  .social{flex:1 1 calc(50% - 8px);justify-content:center}
+  .values{grid-template-columns:1fr!important}
+}
+
 </style>
 
 
@@ -51,7 +95,7 @@ section{padding:76px 0}.section-head{margin-bottom:27px}.section-head h2{font-si
 <header class="nav">
 <div class="container nav-inner">
 <a class="brand" href="#top"><img src="icon-192.png" alt="BinaLab"><span>Bina<b>Lab</b></span></a>
-<nav class="nav-links"><a href="#solutions">What We Solve</a><a href="#process">How We Work</a><a href="#portfolio">Projects</a><a href="#faq">FAQ</a></nav>
+<nav class="nav-links"><a href="#solutions">What We Solve</a><a href="#process">How We Work</a><a href="#portfolio">Projects</a><a href="#faq">FAQ</a><a href="about-founder-en.html">Founder</a></nav>
 <div class="nav-actions"><a class="lang-switch" id="langSwitch" href="index.html" data-switch-lang="ms">BM</a><a class="btn btn-ghost" href="#portfolio">View Systems</a><button class="btn btn-primary" data-open>Tell Us About Your Business →</button></div>
 </div>
 </header>
@@ -145,7 +189,7 @@ section{padding:76px 0}.section-head{margin-bottom:27px}.section-head h2{font-si
 <div class="success" id="successView" hidden><div class="check">✓</div><h2>Thank you. We have received your business story.</h2><p>BinaLab will review your operations and consider how technology can help. There is no commitment to purchase.</p><div class="portal-card"><small style="color:var(--green);font-weight:900">CASE ID</small><h3 id="caseId" style="font-size:28px;margin:6px 0 16px"></h3><p style="color:var(--muted)">Save this portal link to view your project updates.</p><div class="portal-row"><input id="portalLink" readonly><button class="btn btn-dark" id="copyPortal">Copy Link</button><a class="btn btn-primary" id="openPortal" target="_blank">Open Portal</a></div></div></div>
 </div></div></div>
 
-<script type="module" src="firebase-config.js?v=453"></script>
+<script type="module" src="firebase-config.js?v=456"></script>
 <script>
 const overlay=document.getElementById('overlay'),steps=[...document.querySelectorAll('.step')],bars=[...document.querySelectorAll('.stepsbar span')],nextBtn=document.getElementById('nextBtn'),backBtn=document.getElementById('backBtn'),statusBox=document.getElementById('statusBox');let step=0,logoData=null,logoSize=0,logoType=null;
 document.querySelectorAll('[data-open]').forEach(b=>b.onclick=()=>{overlay.classList.add('open');document.body.style.overflow='hidden'});closeBtn.onclick=()=>{overlay.classList.remove('open');document.body.style.overflow=''};overlay.onclick=e=>{if(e.target===overlay)closeBtn.click()};document.querySelectorAll('.faq-q').forEach(b=>b.onclick=()=>{const i=b.closest('.faq-item');document.querySelectorAll('.faq-item').forEach(x=>{if(x!==i)x.classList.remove('open')});i.classList.toggle('open')});document.querySelectorAll('.quick').forEach(b=>b.onclick=e=>{e.preventDefault();b.classList.toggle('selected')});
@@ -159,7 +203,7 @@ copyPortal.onclick=async()=>{await navigator.clipboard.writeText(portalLink.valu
 </script>
 
 <script type="module">
-import {db,collection,query,orderBy,onSnapshot} from './firebase-config.js?v=453';
+import {db,collection,query,orderBy,onSnapshot} from './firebase-config.js?v=456';
 
 const fallbackSystems = [
   {name:'Abedin Auto',industry:'Automotive',descriptionMs:'Digital rental workflow, vehicle inventory dan operational mission control.',descriptionEn:'Digital rental workflow, vehicle inventory and operational mission control.',demoUrl:'https://danialrohaizat012-sys.github.io/AbeDInAuto/',coverData:'abedin-auto.jpg',tags:['Automotive','PWA','Live'],sortOrder:1,published:true},

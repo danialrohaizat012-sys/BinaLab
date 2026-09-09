@@ -19,6 +19,50 @@
 .asset-mini strong{display:block;font-size:13px}.asset-mini small{color:var(--muted);display:block;margin:5px 0 10px;font-size:11px}
 @media(max-width:760px){.asset-row{grid-template-columns:1fr 1fr}}
 
+
+/* v4.5.6 Mobile safety layer */
+html,body{max-width:100%;overflow-x:hidden}
+img,video,svg,canvas{max-width:100%}
+input,select,textarea,button{max-width:100%}
+@media(max-width:768px){
+  body{font-size:15px}
+  .container{width:min(100% - 24px,1120px)}
+  .nav-inner{gap:10px}
+  .nav-links{max-width:100%;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .nav-links::-webkit-scrollbar{display:none}
+  .hero-grid,.grid2,.story-grid,.paper-meta,.paper-summary{grid-template-columns:1fr!important}
+  .hero h1{font-size:clamp(38px,12vw,56px)!important;letter-spacing:-2px!important}
+  .hero p{font-size:15px!important}
+  .actions,.quick-actions,.preview-toolbar,.panel-head{flex-wrap:wrap}
+  .actions .btn,.quick-actions .btn{min-height:44px}
+  .card,.panel,.form-card{max-width:100%;overflow:hidden}
+  table{font-size:12px}
+  .table-wrap,.paper-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .paper{width:100%!important;min-height:auto!important;border-radius:14px!important}
+  .paper-inner{padding:22px 15px!important}
+  .paper-head{display:grid!important;grid-template-columns:1fr!important;gap:16px!important}
+  .paper-doc{text-align:left!important}
+  .paper-brand img{width:52px!important;height:52px!important}
+  .paper-doc h1{font-size:27px!important}
+  .paper-summary{gap:14px!important}
+  .paper-totals{width:100%!important}
+  .preview-shell{padding:8px!important}
+  .modal,.dialog,.modal-card{width:calc(100vw - 24px)!important;max-width:calc(100vw - 24px)!important;max-height:88vh;overflow-y:auto}
+  textarea{min-height:110px}
+  input,select,textarea{font-size:16px!important}
+}
+@media(max-width:480px){
+  .container{width:min(100% - 18px,1120px)}
+  section{padding-left:0;padding-right:0}
+  .brand{font-size:17px}
+  .brand img{width:36px;height:36px}
+  .btn{padding:11px 12px}
+  .hero{padding-top:38px}
+  .socials{gap:8px}
+  .social{flex:1 1 calc(50% - 8px);justify-content:center}
+  .values{grid-template-columns:1fr!important}
+}
+
 </style>
 </head>
 <body>
@@ -74,7 +118,7 @@
 </div>
 
 <script type="module">
-import {db,doc,onSnapshot} from './firebase-config.js?v=453';
+import {db,doc,onSnapshot} from './firebase-config.js?v=456';
 const id=new URLSearchParams(location.search).get('id'),stages=['Discovery','Problem Mapping','Blueprint','Prototype','Proposal','Development','Testing','Launch'];
 if(!id)empty.textContent='Portal link tidak lengkap.';else onSnapshot(doc(db,'businessDiscoveries',id),snap=>{if(!snap.exists()){empty.textContent='Project tidak dijumpai.';return}const d=snap.data();empty.hidden=true;content.hidden=false;
 const progress=Number(d.progress||10),stage=d.stage||'Discovery',current=Math.max(0,stages.indexOf(stage));businessName.textContent=d.businessName||'Your Project';caseLabel.textContent=d.caseId||'PROJECT CASE';customerMessage.textContent=d.customerMessage||'BinaLab is reviewing your project.';latestUpdate.textContent=d.customerMessage||'BinaLab is reviewing your project.';progressBar.style.width=progress+'%';progressText.textContent=progress+'%';currentStage.textContent=stage;statusBadge.textContent=d.status==='completed'?'Completed':'In Progress';detailBusiness.textContent=d.businessName||'—';detailStage.textContent=stage;detailContact.textContent=[d.ownerName,d.phone].filter(Boolean).join(' • ')||'—';const updated=d.updatedAt?.toDate?d.updatedAt.toDate():new Date(d.submittedAt||Date.now());detailUpdated.textContent=updated.toLocaleString();

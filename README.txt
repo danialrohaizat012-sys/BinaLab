@@ -1,72 +1,45 @@
-BinaLab v4.5 — Demo Safe Architecture
+BinaLab v4.5.5 — About Founder
 
-Locked architecture:
-PUBLIC
-Website → Portfolio Kami → Demo System only
+New public pages:
+- about-founder.html
+- about-founder-en.html
 
-CLIENT
-Client Portal → Prototype / Quotation / Production System
+Studio:
+New tab: About Founder
 
-INTERNAL
-BinaLab Studio → Projects / Commercial / Portfolio Manager
+Editable from Studio:
+- Name
+- Role BM / EN
+- Intro BM / EN
+- Story BM / EN
+- Why BinaLab BM / EN
+- Values / principles BM / EN
+- Founder photo with auto compression
+- Facebook
+- TikTok
+- Instagram
+- Threads
+- YouTube
+- LinkedIn
 
-Important safety rule:
-Public website MUST NEVER link directly to a client's production/internal system.
+Website:
+- Founder link added to navigation
+- Founder page updates live from Firestore
+- Social buttons direct to the URLs saved in Studio
 
-Portfolio workflow:
-Project Completed
-→ Add to Portfolio Kami
-→ Draft created
-→ Client/portfolio approval confirmed
-→ Demo-safe version prepared
-→ Add demo URL
-→ Publish
+Firestore:
+Publish the included firestore.rules because siteContent/founder has been added.
 
-Portfolio fields:
-- Business / project name
-- Industry
-- Problem
-- What BinaLab built
-- BM / English description
-- Demo URL
-- Screenshot
-- Tags
-- Approval checkbox
-- Demo Ready checkbox
-- Publish toggle
+Use ?v=455 after deployment.
 
-Studio improvements:
-- Projects Completed label
-- Hasil Diterima
-- Invoice Belum Dibayar
-- Create Quotation directly from Project with auto-filled client details
-- Production URL and Demo URL stored separately
-
-Use ?v=450 after deployment.
-
-
-FIX v4.5.1:
-- Fixed BM/EN switch so it always navigates to the other language page.
-- Removed redirect logic that could force users back to the previously saved language.
-- Language preference is now updated only when the user explicitly chooses/switches language.
-- First-visit language popup remains.
-- Cache bumped to v451.
-
-
-UPDATE v4.5.2 — Commercial Live Preview
-- Quotation and Invoice now have a live preview while editing.
-- Preview updates instantly when changing client details, items, tax, notes, or status.
-- Print / Save PDF uses the same document data.
-- Preview includes BinaLab branding, client block, project Case ID, items, totals, notes, and footer.
-
-
-UPDATE v4.5.3 — Premium Commercial Documents
-- Redesigned Quotation / Invoice preview
-- Added BinaLab logo prominently
-- Added premium brand header and accent bar
-- Stronger document hierarchy
-- Better client/project information cards
-- Dark branded item table header
-- Improved totals card
-- Better Scope / Notes section
-- Print / Save PDF now matches the preview design closely
+UPDATE v4.5.6 — Mobile Optimisation
+- Mobile safety layer added to Website BM/EN, Founder BM/EN, Client Portal and Studio.
+- Prevents horizontal page overflow.
+- Forms collapse to one column on phones.
+- Inputs use 16px to avoid iPhone auto-zoom.
+- Buttons/actions wrap instead of overlapping.
+- Studio tabs scroll horizontally on small screens.
+- Tables become horizontally scrollable instead of breaking layout.
+- Quotation/invoice preview adapts to phone width.
+- Modals constrained to phone viewport with internal vertical scrolling.
+- Founder social buttons adapt to narrow screens.
