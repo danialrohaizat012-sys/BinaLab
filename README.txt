@@ -43,3 +43,13 @@ UPDATE v4.5.6 — Mobile Optimisation
 - Quotation/invoice preview adapts to phone width.
 - Modals constrained to phone viewport with internal vertical scrolling.
 - Founder social buttons adapt to narrow screens.
+
+
+UPDATE v4.5.7 — Behind Us + Mobile Menu
+- Public Founder navigation label renamed to Behind Us.
+- Studio tab remains About Founder.
+- Added mobile hamburger menu below 980px.
+- Mobile menu includes Solutions, Process, Portfolio, Behind Us, FAQ, language switch and main CTA.
+- Menu closes automatically after selection.
+- Mobile language switch stores the selected language preference.
+- Behind Us page keeps Founder as the actual role/title.

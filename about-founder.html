@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#071425">
-<title>About Founder — BinaLab</title>
+<title>Behind Us — BinaLab</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
@@ -69,7 +69,7 @@ input,select,textarea,button{max-width:100%}
 <main id="mainContent" hidden>
 <section class="hero"><div class="container hero-grid">
 <div class="photo-wrap"><img id="founderPhoto" src="icon-512.png" alt="Founder BinaLab"></div>
-<div><span class="eyebrow">ABOUT FOUNDER</span><h1 id="founderName">Founder <span>BinaLab</span></h1><div class="role" id="founderRole"></div><p id="founderIntro"></p><div class="socials" id="socialLinks"></div></div>
+<div><span class="eyebrow">BEHIND US</span><h1 id="founderName">Founder <span>BinaLab</span></h1><div class="role" id="founderRole"></div><p id="founderIntro"></p><div class="socials" id="socialLinks"></div></div>
 </div></section>
 
 <section><div class="container story-grid">
@@ -83,7 +83,7 @@ input,select,textarea,button{max-width:100%}
 <footer><div class="container foot"><div class="brand"><img src="icon-192.png" alt=""><span>Bina<b>Lab</b></span></div><small>Real Business. Real Solutions.</small></div></footer>
 
 <script type="module">
-import {db,doc,onSnapshot} from './firebase-config.js?v=456';
+import {db,doc,onSnapshot} from './firebase-config.js?v=457';
 const icons={facebook:'f',tiktok:'♪',instagram:'◎',threads:'@',youtube:'▶',linkedin:'in'};
 onSnapshot(doc(db,'siteContent','founder'),snap=>{
   loading.hidden=true; mainContent.hidden=false;
