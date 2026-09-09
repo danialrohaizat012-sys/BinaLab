@@ -74,7 +74,7 @@
 </div>
 
 <script type="module">
-import {db,doc,onSnapshot} from './firebase-config.js?v=452';
+import {db,doc,onSnapshot} from './firebase-config.js?v=453';
 const id=new URLSearchParams(location.search).get('id'),stages=['Discovery','Problem Mapping','Blueprint','Prototype','Proposal','Development','Testing','Launch'];
 if(!id)empty.textContent='Portal link tidak lengkap.';else onSnapshot(doc(db,'businessDiscoveries',id),snap=>{if(!snap.exists()){empty.textContent='Project tidak dijumpai.';return}const d=snap.data();empty.hidden=true;content.hidden=false;
 const progress=Number(d.progress||10),stage=d.stage||'Discovery',current=Math.max(0,stages.indexOf(stage));businessName.textContent=d.businessName||'Your Project';caseLabel.textContent=d.caseId||'PROJECT CASE';customerMessage.textContent=d.customerMessage||'BinaLab is reviewing your project.';latestUpdate.textContent=d.customerMessage||'BinaLab is reviewing your project.';progressBar.style.width=progress+'%';progressText.textContent=progress+'%';currentStage.textContent=stage;statusBadge.textContent=d.status==='completed'?'Completed':'In Progress';detailBusiness.textContent=d.businessName||'—';detailStage.textContent=stage;detailContact.textContent=[d.ownerName,d.phone].filter(Boolean).join(' • ')||'—';const updated=d.updatedAt?.toDate?d.updatedAt.toDate():new Date(d.submittedAt||Date.now());detailUpdated.textContent=updated.toLocaleString();

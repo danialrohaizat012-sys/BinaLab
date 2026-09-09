@@ -58,3 +58,15 @@ UPDATE v4.5.2 — Commercial Live Preview
 - Preview updates instantly when changing client details, items, tax, notes, or status.
 - Print / Save PDF uses the same document data.
 - Preview includes BinaLab branding, client block, project Case ID, items, totals, notes, and footer.
+
+
+UPDATE v4.5.3 — Premium Commercial Documents
+- Redesigned Quotation / Invoice preview
+- Added BinaLab logo prominently
+- Added premium brand header and accent bar
+- Stronger document hierarchy
+- Better client/project information cards
+- Dark branded item table header
+- Improved totals card
+- Better Scope / Notes section
+- Print / Save PDF now matches the preview design closely

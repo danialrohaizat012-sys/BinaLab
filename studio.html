@@ -64,6 +64,183 @@
 .preview-live-note{font-size:11px;color:var(--muted)}
 @media(max-width:700px){.paper{padding:22px 15px;min-height:auto}.paper-head,.paper-meta,.paper-footer{grid-template-columns:1fr;display:grid}.paper-doc{text-align:left}}
 
+
+.paper{
+  background:#fff;
+  width:min(860px,100%);
+  margin:auto;
+  padding:0;
+  box-shadow:0 18px 52px rgba(15,23,42,.14);
+  border-radius:18px;
+  overflow:hidden;
+  min-height:980px
+}
+.paper-topbar{
+  height:10px;
+  background:linear-gradient(90deg,#22C55E,#14B8A6,#2563EB)
+}
+.paper-inner{padding:34px 38px 28px}
+.paper-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:24px;
+  border-bottom:1px solid #E2E8F0;
+  padding-bottom:24px
+}
+.paper-brand{
+  display:flex;
+  align-items:center;
+  gap:14px
+}
+.paper-brand img{
+  width:64px;
+  height:64px;
+  border-radius:18px;
+  box-shadow:0 8px 24px rgba(15,23,42,.12)
+}
+.paper-brand h2{
+  margin:0;
+  font-size:28px;
+  letter-spacing:-1px
+}
+.paper-brand small{
+  color:#64748B;
+  display:block;
+  margin-top:3px
+}
+.paper-doc{text-align:right}
+.paper-doc h1{
+  margin:0;
+  font-size:34px;
+  letter-spacing:1px;
+  color:#071425
+}
+.paper-doc .ref{
+  margin-top:7px;
+  display:inline-block;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#F0FDF4;
+  color:#166534;
+  font-size:11px;
+  font-weight:900
+}
+.paper-meta{
+  display:grid;
+  grid-template-columns:1.25fr .75fr;
+  gap:16px;
+  margin:24px 0
+}
+.paper-box{
+  padding:16px;
+  border:1px solid #E2E8F0;
+  border-radius:16px;
+  background:#FAFCFE
+}
+.paper-box small{
+  display:block;
+  color:#64748B;
+  font-size:10px;
+  letter-spacing:.08em;
+  font-weight:900;
+  margin-bottom:7px
+}
+.paper-box strong{
+  font-size:15px
+}
+.paper-table-wrap{
+  border:1px solid #E2E8F0;
+  border-radius:16px;
+  overflow:hidden
+}
+.paper-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:0
+}
+.paper-table thead{
+  background:#071425;
+  color:#fff
+}
+.paper-table th,.paper-table td{
+  padding:13px 12px;
+  border-bottom:1px solid #E2E8F0;
+  font-size:12px
+}
+.paper-table th{
+  color:#fff;
+  font-size:10px;
+  letter-spacing:.05em;
+  text-transform:uppercase
+}
+.paper-table tbody tr:last-child td{border-bottom:0}
+.paper-summary{
+  display:grid;
+  grid-template-columns:1fr 320px;
+  gap:24px;
+  margin-top:22px;
+  align-items:start
+}
+.paper-notes{
+  margin:0;
+  padding:17px;
+  border-radius:16px;
+  background:#F8FAFC;
+  border:1px solid #E2E8F0
+}
+.paper-notes strong{
+  display:block;
+  margin-bottom:7px
+}
+.paper-notes p{
+  margin:0;
+  color:#475569;
+  font-size:12px;
+  line-height:1.7;
+  white-space:pre-wrap
+}
+.paper-totals{
+  margin:0;
+  width:100%
+}
+.paper-total-row{
+  display:flex;
+  justify-content:space-between;
+  padding:8px 0;
+  font-size:12px
+}
+.paper-total-row.final{
+  margin-top:7px;
+  padding:14px 16px;
+  border:0;
+  border-radius:14px;
+  background:linear-gradient(135deg,#071425,#0D2743);
+  color:#fff;
+  font-size:19px;
+  font-weight:900
+}
+.paper-footer{
+  margin-top:44px;
+  padding-top:18px;
+  border-top:1px solid #E2E8F0;
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  color:#64748B;
+  font-size:10px
+}
+.paper-footer strong{color:#071425}
+.paper-accent{
+  color:#22C55E;
+  font-weight:900
+}
+@media(max-width:700px){
+  .paper-inner{padding:24px 18px}
+  .paper-head,.paper-meta,.paper-summary,.paper-footer{grid-template-columns:1fr;display:grid}
+  .paper-doc{text-align:left}
+}
+
 </style>
 </head>
 <body>
@@ -125,7 +302,7 @@
 </main></div>
 
 <script type="module">
-import {db,auth,collection,query,orderBy,onSnapshot,doc,updateDoc,deleteDoc,setDoc,addDoc,serverTimestamp,arrayUnion,signInWithEmailAndPassword,signOut,onAuthStateChanged} from './firebase-config.js?v=452';
+import {db,auth,collection,query,orderBy,onSnapshot,doc,updateDoc,deleteDoc,setDoc,addDoc,serverTimestamp,arrayUnion,signInWithEmailAndPassword,signOut,onAuthStateChanged} from './firebase-config.js?v=453';
 
 const stages=['Discovery','Problem Mapping','Blueprint','Prototype','Proposal','Development','Testing','Launch'];
 let discoveries=[],selectedId=null,websiteSystems=[],selectedSystemId=null,systemImageData=null,quotations=[],invoices=[],selectedDocType=null,selectedDocId=null;
@@ -383,35 +560,77 @@ function renderDocEditor(d={},type='quotation'){
   function renderPreview(totals){
     if(!document.getElementById('docPreview')) return;
     const title=isInvoice?'INVOICE':'QUOTATION';
-    const itemsHtml=totals.items.length?totals.items.map(x=>`<tr>
-      <td>${esc(x.description)}</td><td>${x.qty}</td><td class="right">${rm(x.price)}</td><td class="right">${rm(x.qty*x.price)}</td>
-    </tr>`).join(''):`<tr><td colspan="4" class="muted">No items yet.</td></tr>`;
+    const itemsHtml=totals.items.length?totals.items.map((x,i)=>`<tr>
+      <td style="width:44px">${String(i+1).padStart(2,'0')}</td>
+      <td>${esc(x.description)}</td>
+      <td>${x.qty}</td>
+      <td class="right">${rm(x.price)}</td>
+      <td class="right"><strong>${rm(x.qty*x.price)}</strong></td>
+    </tr>`).join(''):`<tr><td colspan="5" class="muted">No items yet.</td></tr>`;
 
     docPreview.innerHTML=`
-      <div class="paper-head">
-        <div class="paper-brand"><img src="icon-192.png" alt=""><div><h2>BinaLab</h2><small>SME Digitalisation Partner</small></div></div>
-        <div class="paper-doc"><h1>${title}</h1><div>${esc(docRef.value||ref)}</div></div>
+      <div class="paper-topbar"></div>
+      <div class="paper-inner">
+        <div class="paper-head">
+          <div class="paper-brand">
+            <img src="icon-192.png" alt="BinaLab Logo">
+            <div>
+              <h2>Bina<span class="paper-accent">Lab</span></h2>
+              <small>SME Digitalisation Partner</small>
+              <small>Real Business. Real Solutions.</small>
+            </div>
+          </div>
+          <div class="paper-doc">
+            <h1>${title}</h1>
+            <div class="ref">${esc(docRef.value||ref)}</div>
+          </div>
+        </div>
+
+        <div class="paper-meta">
+          <div class="paper-box">
+            <small>BILLED TO</small>
+            <strong>${esc(docBusiness.value||'Business Name')}</strong>
+            <div style="margin-top:5px;color:#475569">${esc(docClient.value||'Client Name')}</div>
+            <div style="color:#64748B;font-size:12px;margin-top:3px">${esc(docPhone.value||'')}</div>
+          </div>
+          <div class="paper-box">
+            <small>PROJECT DETAILS</small>
+            <strong>${esc(docCase.value||'Case ID')}</strong>
+            <div style="margin-top:5px;color:#475569">Status: ${esc(docStatus.value)}</div>
+          </div>
+        </div>
+
+        <div class="paper-table-wrap">
+          <table class="paper-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th class="right">Unit Price</th>
+                <th class="right">Amount</th>
+              </tr>
+            </thead>
+            <tbody>${itemsHtml}</tbody>
+          </table>
+        </div>
+
+        <div class="paper-summary">
+          <div>
+            ${docNotes.value.trim()?`<div class="paper-notes"><strong>${isInvoice?'Notes':'Scope / Notes'}</strong><p>${esc(docNotes.value)}</p></div>`:`<div class="paper-notes"><strong>${isInvoice?'Notes':'Scope / Notes'}</strong><p>No additional notes.</p></div>`}
+          </div>
+          <div class="paper-totals">
+            <div class="paper-total-row"><span>Subtotal</span><strong>${rm(totals.subtotal)}</strong></div>
+            <div class="paper-total-row"><span>Tax / SST (${totals.taxRate}%)</span><strong>${rm(totals.total-totals.subtotal)}</strong></div>
+            <div class="paper-total-row final"><span>Total</span><span>${rm(totals.total)}</span></div>
+          </div>
+        </div>
+
+        <div class="paper-footer">
+          <span><strong>BinaLab</strong><br>SME Digitalisation Partner</span>
+          <span style="text-align:right">Prepared for ${esc(docBusiness.value||'Client')}<br>${esc(docCase.value||'Project')}</span>
+        </div>
       </div>
-
-      <div class="paper-meta">
-        <div class="paper-box"><small>BILLED TO</small><strong>${esc(docBusiness.value||'Business Name')}</strong><div>${esc(docClient.value||'Client Name')}</div><div>${esc(docPhone.value||'')}</div></div>
-        <div class="paper-box"><small>PROJECT</small><strong>${esc(docCase.value||'Case ID')}</strong><div>Status: ${esc(docStatus.value)}</div></div>
-      </div>
-
-      <table class="paper-table">
-        <thead><tr><th>Description</th><th>Qty</th><th class="right">Price</th><th class="right">Total</th></tr></thead>
-        <tbody>${itemsHtml}</tbody>
-      </table>
-
-      <div class="paper-totals">
-        <div class="paper-total-row"><span>Subtotal</span><strong>${rm(totals.subtotal)}</strong></div>
-        <div class="paper-total-row"><span>Tax / SST (${totals.taxRate}%)</span><strong>${rm(totals.total-totals.subtotal)}</strong></div>
-        <div class="paper-total-row final"><span>Total</span><span>${rm(totals.total)}</span></div>
-      </div>
-
-      ${docNotes.value.trim()?`<div class="paper-notes"><strong>${isInvoice?'Notes':'Scope / Notes'}</strong><p>${esc(docNotes.value)}</p></div>`:''}
-
-      <div class="paper-footer"><span>Real Business. Real Solutions.</span><span>BinaLab • SME Digitalisation Partner</span></div>
     `;
   }
 
@@ -460,14 +679,25 @@ function collectItems(){
 }
 function openPrintPreview(isInvoice,totals){
   const title=isInvoice?'INVOICE':'QUOTATION';
-  const items=totals.items.map(x=>`<tr><td>${esc(x.description)}</td><td>${x.qty}</td><td>RM${x.price.toFixed(2)}</td><td>RM${(x.qty*x.price).toFixed(2)}</td></tr>`).join('');
+  const items=totals.items.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.description)}</td><td>${x.qty}</td><td class="right">RM${x.price.toFixed(2)}</td><td class="right">RM${(x.qty*x.price).toFixed(2)}</td></tr>`).join('');
+  const logoUrl=new URL('icon-192.png',location.href).href;
   const w=window.open('','_blank');
-  w.document.write(`<html><head><title>${title} ${esc(docRef.value)}</title><style>body{font-family:Arial;padding:40px;color:#111}h1{margin-bottom:0}.muted{color:#666}table{width:100%;border-collapse:collapse;margin-top:25px}th,td{padding:10px;border-bottom:1px solid #ddd;text-align:left}.right{text-align:right}.total{font-size:22px;font-weight:bold}</style></head><body>
-  <h1>BinaLab</h1><div class="muted">SME Digitalisation Partner</div><hr>
-  <h2>${title}</h2><p><strong>${esc(docRef.value)}</strong><br>${esc(docBusiness.value)}<br>${esc(docClient.value)}<br>${esc(docPhone.value)}</p>
-  <table><thead><tr><th>Description</th><th>Qty</th><th>Price</th><th>Total</th></tr></thead><tbody>${items}</tbody></table>
-  <p class="right">Subtotal: RM${totals.subtotal.toFixed(2)}<br>Tax: ${totals.taxRate}%<br><span class="total">Total: RM${totals.total.toFixed(2)}</span></p>
-  <p>${esc(docNotes.value)}</p><script>window.onload=()=>window.print()<\/script></body></html>`);
+  w.document.write(`<html><head><title>${title} ${esc(docRef.value)}</title><style>
+  body{font-family:Arial,sans-serif;margin:0;color:#0F172A;background:#fff}
+  .top{height:10px;background:linear-gradient(90deg,#22C55E,#14B8A6,#2563EB)}
+  .wrap{padding:38px 42px}.head{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:1px solid #ddd;padding-bottom:22px}.brand{display:flex;gap:14px;align-items:center}.brand img{width:64px;height:64px;border-radius:18px}.brand h2{margin:0;font-size:28px}.green{color:#22C55E}.doc{text-align:right}.doc h1{font-size:34px;margin:0}.ref{display:inline-block;margin-top:8px;padding:7px 10px;background:#F0FDF4;color:#166534;border-radius:999px;font-size:11px;font-weight:bold}
+  .meta{display:grid;grid-template-columns:1.25fr .75fr;gap:16px;margin:24px 0}.box{padding:16px;border:1px solid #ddd;border-radius:14px;background:#fafafa}.box small{display:block;color:#666;font-size:10px;font-weight:bold;margin-bottom:7px}
+  table{width:100%;border-collapse:collapse;border:1px solid #ddd}.thead th{background:#071425;color:#fff}th,td{padding:12px;border-bottom:1px solid #ddd;text-align:left;font-size:12px}.right{text-align:right}
+  .summary{display:grid;grid-template-columns:1fr 320px;gap:24px;margin-top:22px}.notes{padding:16px;border:1px solid #ddd;border-radius:14px;background:#fafafa}.notes p{white-space:pre-wrap;line-height:1.6;color:#475569}.totals .row{display:flex;justify-content:space-between;padding:8px 0;font-size:12px}.totals .final{margin-top:8px;background:#071425;color:#fff;padding:14px 16px;border-radius:14px;font-size:19px;font-weight:bold}
+  .footer{display:flex;justify-content:space-between;margin-top:44px;padding-top:16px;border-top:1px solid #ddd;color:#666;font-size:10px}
+  @media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style></head><body><div class="top"></div><div class="wrap">
+  <div class="head"><div class="brand"><img src="${logoUrl}"><div><h2>Bina<span class="green">Lab</span></h2><div>SME Digitalisation Partner</div><small>Real Business. Real Solutions.</small></div></div><div class="doc"><h1>${title}</h1><div class="ref">${esc(docRef.value)}</div></div></div>
+  <div class="meta"><div class="box"><small>BILLED TO</small><strong>${esc(docBusiness.value)}</strong><div>${esc(docClient.value)}</div><div>${esc(docPhone.value)}</div></div><div class="box"><small>PROJECT DETAILS</small><strong>${esc(docCase.value)}</strong><div>Status: ${esc(docStatus.value)}</div></div></div>
+  <table><thead class="thead"><tr><th>#</th><th>Description</th><th>Qty</th><th class="right">Unit Price</th><th class="right">Amount</th></tr></thead><tbody>${items}</tbody></table>
+  <div class="summary"><div class="notes"><strong>${isInvoice?'Notes':'Scope / Notes'}</strong><p>${esc(docNotes.value||'No additional notes.')}</p></div><div class="totals"><div class="row"><span>Subtotal</span><strong>RM${totals.subtotal.toFixed(2)}</strong></div><div class="row"><span>Tax / SST (${totals.taxRate}%)</span><strong>RM${(totals.total-totals.subtotal).toFixed(2)}</strong></div><div class="row final"><span>Total</span><span>RM${totals.total.toFixed(2)}</span></div></div></div>
+  <div class="footer"><span><strong>BinaLab</strong><br>SME Digitalisation Partner</span><span style="text-align:right">Prepared for ${esc(docBusiness.value||'Client')}<br>${esc(docCase.value||'Project')}</span></div>
+  </div><script>window.onload=()=>setTimeout(()=>window.print(),300)<\/script></body></html>`);
   w.document.close();
 }
 
