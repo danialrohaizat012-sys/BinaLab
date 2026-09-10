@@ -18,50 +18,17 @@ section{padding:64px 0}.story-grid{display:grid;grid-template-columns:1fr 1fr;ga
 footer{padding:30px 0;background:#061321;color:#fff}.foot{display:flex;justify-content:space-between;align-items:center;gap:15px}.foot small{color:#8FA1B4}
 .empty{padding:120px 20px;text-align:center;color:var(--muted)}
 @media(max-width:820px){.hero-grid,.story-grid{grid-template-columns:1fr}.values{grid-template-columns:1fr}.hero{padding-top:46px}.photo-wrap{max-width:430px}.foot{flex-direction:column;align-items:flex-start}}
-
-/* v4.5.6 Mobile safety layer */
 html,body{max-width:100%;overflow-x:hidden}
 img,video,svg,canvas{max-width:100%}
 input,select,textarea,button{max-width:100%}
-@media(max-width:768px){
-  body{font-size:15px}
-  .container{width:min(100% - 24px,1120px)}
-  .nav-inner{gap:10px}
-  .nav-links{max-width:100%;overflow-x:auto;white-space:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-  .nav-links::-webkit-scrollbar{display:none}
-  .hero-grid,.grid2,.story-grid,.paper-meta,.paper-summary{grid-template-columns:1fr!important}
-  .hero h1{font-size:clamp(38px,12vw,56px)!important;letter-spacing:-2px!important}
-  .hero p{font-size:15px!important}
-  .actions,.quick-actions,.preview-toolbar,.panel-head{flex-wrap:wrap}
-  .actions .btn,.quick-actions .btn{min-height:44px}
-  .card,.panel,.form-card{max-width:100%;overflow:hidden}
-  table{font-size:12px}
-  .table-wrap,.paper-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .paper{width:100%!important;min-height:auto!important;border-radius:14px!important}
-  .paper-inner{padding:22px 15px!important}
-  .paper-head{display:grid!important;grid-template-columns:1fr!important;gap:16px!important}
-  .paper-doc{text-align:left!important}
-  .paper-brand img{width:52px!important;height:52px!important}
-  .paper-doc h1{font-size:27px!important}
-  .paper-summary{gap:14px!important}
-  .paper-totals{width:100%!important}
-  .preview-shell{padding:8px!important}
-  .modal,.dialog,.modal-card{width:calc(100vw - 24px)!important;max-width:calc(100vw - 24px)!important;max-height:88vh;overflow-y:auto}
-  textarea{min-height:110px}
-  input,select,textarea{font-size:16px!important}
-}
-@media(max-width:480px){
-  .container{width:min(100% - 18px,1120px)}
-  section{padding-left:0;padding-right:0}
-  .brand{font-size:17px}
-  .brand img{width:36px;height:36px}
-  .btn{padding:11px 12px}
-  .hero{padding-top:38px}
-  .socials{gap:8px}
-  .social{flex:1 1 calc(50% - 8px);justify-content:center}
-  .values{grid-template-columns:1fr!important}
-}
+@media(max-width:768px){body{font-size:15px}.container{width:min(100% - 24px,1120px)}.nav-inner{gap:10px}.hero-grid,.story-grid{grid-template-columns:1fr!important}.hero h1{font-size:clamp(38px,12vw,56px)!important;letter-spacing:-2px!important}.hero p{font-size:15px!important}.card{max-width:100%;overflow:hidden}}
+@media(max-width:480px){.container{width:min(100% - 18px,1120px)}section{padding-left:0;padding-right:0}.brand{font-size:17px}.brand img{width:36px;height:36px}.hero{padding-top:38px}.socials{gap:8px}.social{flex:1 1 calc(50% - 8px);justify-content:center}.values{grid-template-columns:1fr!important}}
 
+/* BinaLab Floating WhatsApp */
+.binalab-whatsapp{position:fixed;right:24px;bottom:24px;z-index:90;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;background:#22C55E;color:#fff;font-weight:900;font-size:13px;box-shadow:0 14px 38px rgba(15,23,42,.24);transition:transform .2s ease,box-shadow .2s ease}
+.binalab-whatsapp:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(15,23,42,.3)}
+.binalab-whatsapp svg{width:26px;height:26px;flex:0 0 auto}
+@media(max-width:640px){.binalab-whatsapp{right:16px;bottom:16px;width:56px;height:56px;padding:0;justify-content:center}.binalab-whatsapp span{display:none}.binalab-whatsapp svg{width:30px;height:30px}}
 </style>
 </head>
 <body>
@@ -71,17 +38,11 @@ input,select,textarea,button{max-width:100%}
 <div class="photo-wrap"><img id="founderPhoto" src="icon-512.png" alt="Founder BinaLab"></div>
 <div><span class="eyebrow">BEHIND US</span><h1 id="founderName">Founder <span>BinaLab</span></h1><div class="role" id="founderRole"></div><p id="founderIntro"></p><div class="socials" id="socialLinks"></div></div>
 </div></section>
-
-<section><div class="container story-grid">
-<article class="card"><h2>My Story</h2><p id="founderStory"></p></article>
-<article class="card quote"><h2>Why BinaLab?</h2><p id="founderWhy"></p></article>
-</div></section>
-
+<section><div class="container story-grid"><article class="card"><h2>My Story</h2><p id="founderStory"></p></article><article class="card quote"><h2>Why BinaLab?</h2><p id="founderWhy"></p></article></div></section>
 <section><div class="container"><div class="values" id="founderValues"></div></div></section>
 </main>
 <div class="empty" id="loading">Loading founder profile...</div>
 <footer><div class="container foot"><div class="brand"><img src="icon-192.png" alt=""><span>Bina<b>Lab</b></span></div><small>Real Business. Real Solutions.</small></div></footer>
-
 <script type="module">
 import {db,doc,onSnapshot} from './firebase-config.js?v=457';
 const icons={facebook:'f',tiktok:'♪',instagram:'◎',threads:'@',youtube:'▶',linkedin:'in'};
@@ -102,4 +63,9 @@ onSnapshot(doc(db,'siteContent','founder'),snap=>{
 function label(k){return ({facebook:'Facebook',tiktok:'TikTok',instagram:'Instagram',threads:'Threads',youtube:'YouTube',linkedin:'LinkedIn'})[k]||k}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 </script>
+
+<a class="binalab-whatsapp" href="https://wa.me/60199400004?text=Hi%20Danial%2C%20Saya%20datang%20dari%20website%20BinaLab." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Danial" title="Chat with BinaLab">
+<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16.04 3C9.42 3 4.04 8.38 4.04 15c0 2.12.55 4.19 1.6 6.01L4 27l6.13-1.61A11.94 11.94 0 0 0 16.04 27C22.66 27 28.04 21.62 28.04 15S22.66 3 16.04 3zm0 21.82c-1.82 0-3.61-.49-5.17-1.42l-.37-.22-3.64.96.97-3.55-.24-.38A9.76 9.76 0 0 1 6.09 15c0-5.48 4.46-9.94 9.95-9.94S25.99 9.52 25.99 15s-4.47 9.82-9.95 9.82zm5.45-7.44c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.71.23 1.36.19 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg>
+<span>Chat with us</span>
+</a>
 </body></html>

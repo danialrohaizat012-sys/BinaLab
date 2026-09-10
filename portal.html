@@ -63,6 +63,13 @@ input,select,textarea,button{max-width:100%}
   .values{grid-template-columns:1fr!important}
 }
 
+
+/* Project-aware Floating WhatsApp */
+.binalab-whatsapp{position:fixed;right:24px;bottom:24px;z-index:90;display:flex;align-items:center;gap:10px;padding:12px 16px;border-radius:999px;background:#22C55E;color:#fff;font-weight:900;font-size:13px;box-shadow:0 14px 38px rgba(15,23,42,.24);transition:transform .2s ease,box-shadow .2s ease}
+.binalab-whatsapp:hover{transform:translateY(-3px);box-shadow:0 18px 44px rgba(15,23,42,.3)}
+.binalab-whatsapp svg{width:26px;height:26px;flex:0 0 auto}
+@media(max-width:640px){.binalab-whatsapp{right:16px;bottom:16px;width:56px;height:56px;padding:0;justify-content:center}.binalab-whatsapp span{display:none}.binalab-whatsapp svg{width:30px;height:30px}}
+
 </style>
 </head>
 <body>
@@ -92,6 +99,7 @@ input,select,textarea,button{max-width:100%}
     <div class="info">
       <div><small>Business</small><strong id="detailBusiness"></strong></div>
       <div><small>Current Stage</small><strong id="detailStage"></strong></div>
+      <div><small>Contact</small><strong id="detailContact"></strong></div>
       <div><small>Last Updated</small><strong id="detailUpdated"></strong></div>
     </div>
   </aside>
@@ -121,11 +129,19 @@ input,select,textarea,button{max-width:100%}
 import {db,doc,onSnapshot} from './firebase-config.js?v=457';
 const id=new URLSearchParams(location.search).get('id'),stages=['Discovery','Problem Mapping','Blueprint','Prototype','Proposal','Development','Testing','Launch'];
 if(!id)empty.textContent='Portal link tidak lengkap.';else onSnapshot(doc(db,'businessDiscoveries',id),snap=>{if(!snap.exists()){empty.textContent='Project tidak dijumpai.';return}const d=snap.data();empty.hidden=true;content.hidden=false;
-const progress=Number(d.progress||10),stage=d.stage||'Discovery',current=Math.max(0,stages.indexOf(stage));businessName.textContent=d.businessName||'Your Project';caseLabel.textContent=d.caseId||'PROJECT CASE';customerMessage.textContent=d.customerMessage||'BinaLab is reviewing your project.';latestUpdate.textContent=d.customerMessage||'BinaLab is reviewing your project.';progressBar.style.width=progress+'%';progressText.textContent=progress+'%';currentStage.textContent=stage;statusBadge.textContent=d.status==='completed'?'Completed':'In Progress';detailBusiness.textContent=d.businessName||'—';detailStage.textContent=stage;detailContact.textContent=[d.ownerName,d.phone].filter(Boolean).join(' • ')||'—';const updated=d.updatedAt?.toDate?d.updatedAt.toDate():new Date(d.submittedAt||Date.now());detailUpdated.textContent=updated.toLocaleString();
+const progress=Number(d.progress||10),stage=d.stage||'Discovery',current=Math.max(0,stages.indexOf(stage));businessName.textContent=d.businessName||'Your Project';caseLabel.textContent=d.caseId||'PROJECT CASE';customerMessage.textContent=d.customerMessage||'BinaLab is reviewing your project.';latestUpdate.textContent=d.customerMessage||'BinaLab is reviewing your project.';progressBar.style.width=progress+'%';progressText.textContent=progress+'%';currentStage.textContent=stage;statusBadge.textContent=d.status==='completed'?'Completed':'In Progress';detailBusiness.textContent=d.businessName||'—';detailStage.textContent=stage;document.getElementById('detailContact') && (document.getElementById('detailContact').textContent=[d.ownerName,d.phone].filter(Boolean).join(' • ')||'—');const updated=d.updatedAt?.toDate?d.updatedAt.toDate():new Date(d.submittedAt||Date.now());detailUpdated.textContent=updated.toLocaleString();
 timelineList.innerHTML=stages.map((s,i)=>{const cls=i<current?'done':i===current?'current':'',event=(d.timeline||[]).slice().reverse().find(x=>x.stage===s),msg=event?.message||(i===current?d.customerMessage:'Waiting for previous stage');return `<div class="item ${cls}"><div class="dot">${i<current?'✓':i+1}</div><div><h3>${s}</h3><p>${msg||''}</p></div></div>`}).join('');
 setAsset(blueprintBtn,d.blueprintUrl);setAsset(prototypeBtn,d.prototypeUrl);setAsset(quotationBtn,d.quotationUrl);setAsset(liveBtn,d.liveSystemUrl);
 const wa=`Hi BinaLab, saya nak tanya tentang project ${d.caseId||''} — ${d.businessName||''}.`;supportBtn.href=`https://wa.me/60199400004?text=${encodeURIComponent(wa)}`;
+const floatingSupportBtn=document.getElementById('floatingSupportBtn');
+if(floatingSupportBtn) floatingSupportBtn.href=`https://wa.me/60199400004?text=${encodeURIComponent(wa)}`;
 });
 function setAsset(btn,url){if(url){btn.href=url;btn.classList.remove('locked');btn.textContent=btn.textContent}else{btn.removeAttribute('href');btn.classList.add('locked');btn.textContent='Not Available Yet'}}
 </script>
+
+<a class="binalab-whatsapp" id="floatingSupportBtn" href="https://wa.me/60199400004" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp BinaLab" title="WhatsApp BinaLab">
+<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16.04 3C9.42 3 4.04 8.38 4.04 15c0 2.12.55 4.19 1.6 6.01L4 27l6.13-1.61A11.94 11.94 0 0 0 16.04 27C22.66 27 28.04 21.62 28.04 15S22.66 3 16.04 3zm0 21.82c-1.82 0-3.61-.49-5.17-1.42l-.37-.22-3.64.96.97-3.55-.24-.38A9.76 9.76 0 0 1 6.09 15c0-5.48 4.46-9.94 9.95-9.94S25.99 9.52 25.99 15s-4.47 9.82-9.95 9.82zm5.45-7.44c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.08c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.71.23 1.36.19 1.87.12.57-.08 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35z"/></svg>
+<span>WhatsApp BinaLab</span>
+</a>
+
 </body></html>
