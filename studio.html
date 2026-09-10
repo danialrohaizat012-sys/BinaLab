@@ -439,6 +439,7 @@ function renderProject(d){
      <button class="btn primary" id="quickSave">Save Update</button>
      <button class="btn dark" id="quickNotify">Save + WhatsApp Client</button>
      <a class="btn ghost" href="${portal.href}" target="_blank" style="color:#0F172A">Open Client Portal</a>
+     <button class="btn danger" id="deleteDiscovery">Delete Discovery</button>
    </div>
    <div class="message" id="quickMessageBox"></div>
  </div>
@@ -475,6 +476,17 @@ function renderProject(d){
 
  quickSave.onclick=()=>quickUpdate(d,portal,false);
  quickNotify.onclick=()=>quickUpdate(d,portal,true);
+ deleteDiscovery.onclick=async()=>{
+   const label=[d.caseId,d.businessName].filter(Boolean).join(' • ')||'this discovery';
+   if(!confirm(`Delete ${label}?\n\nThis will permanently remove the discovery/project from Firestore and cannot be undone.`)) return;
+   try{
+     await deleteDoc(doc(db,'businessDiscoveries',d.id));
+     selectedId=null;
+     detailView.innerHTML='<div class="empty">Discovery deleted. Select another project.</div>';
+   }catch(e){
+     alert(`Delete failed: ${e.message||e}`);
+   }
+ };
  if(document.getElementById('addToPortfolio')) addToPortfolio.onclick=async()=>{
    try{
      const portfolioId=(d.caseId||d.id||crypto.randomUUID()).toLowerCase().replace(/[^a-z0-9-]/g,'-');
