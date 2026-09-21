@@ -18,6 +18,11 @@
 .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.tab{padding:11px 14px;border:1px solid var(--line);border-radius:13px;background:#fff;font-weight:850}.tab.active{background:var(--navy);color:#fff}.view{display:none}.view.active{display:block}
 .layout{display:grid;grid-template-columns:360px 1fr;gap:18px}.panel{background:#fff;border:1px solid var(--line);border-radius:23px;overflow:hidden}.panel-head{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px}.lead-list,.content-list{max-height:720px;overflow:auto}.lead,.content-item{padding:14px 17px;border-bottom:1px solid var(--line);cursor:pointer}.lead:hover,.lead.active,.content-item:hover,.content-item.active{background:#F0FDF4}.lead h3,.content-item h3{font-size:15px;margin:0 0 4px}.lead p,.content-item p{font-size:11px;color:var(--muted);margin:0}
 .detail{padding:22px}.project-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}.project-head h1{margin:6px 0;font-size:34px}.case{font-size:11px;font-weight:950;letter-spacing:.08em;color:var(--green)}.logo{width:78px;height:78px;border-radius:18px;object-fit:cover;background:var(--soft)}
+/* Discovery detail and logo */
+.discovery-section{margin-top:18px;padding:18px;border:1px solid var(--line);border-radius:18px;background:#fff}
+.discovery-section h3{margin:0 0 14px}.discovery-answer{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.7;color:#334155;font-size:14px}
+.discovery-logo{max-width:170px;max-height:170px;object-fit:contain;border:1px solid var(--line);border-radius:14px;background:#fff;padding:8px}
+.discovery-logo-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
 .project-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0}.project-tab{padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:#fff;font-weight:800;font-size:12px}.project-tab.active{background:#EFF6FF;border-color:#BFDBFE;color:#1D4ED8}.project-pane{display:none}.project-pane.active{display:block}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}.full{grid-column:1/-1}.info{padding:14px;border-radius:15px;background:var(--soft)}.info small{display:block;color:var(--muted);font-size:11px;margin-bottom:4px}
 .stage-strip{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin:15px 0}.stage{padding:12px 8px;border-radius:13px;background:#F1F5F9;text-align:center;font-size:10px;font-weight:850;color:#64748B}.stage.done{background:#DCFCE7;color:#166534}.stage.current{background:#DBEAFE;color:#1D4ED8}
@@ -451,6 +456,22 @@ function renderProject(d){
    <div class="smart-card full"><strong>Desired Outcome</strong><small>${esc(d.dreamOutcome||'—')}</small></div>
  </div>
 
+ <section class="discovery-section" aria-label="Customer Discovery Details">
+   <h3>Customer Discovery Details</h3>
+   <div class="grid2">
+     <div class="info"><small>Nama Perniagaan</small><div class="discovery-answer">${esc(d.businessName||'—')}</div></div>
+     <div class="info"><small>Nama Pemilik</small><div class="discovery-answer">${esc(d.ownerName||'—')}</div></div>
+     <div class="info"><small>No. Telefon</small><div class="discovery-answer">${esc(d.phone||'—')}</div></div>
+     <div class="info"><small>Industri</small><div class="discovery-answer">${esc(d.industry||'—')}</div></div>
+     <div class="info full"><small>Operasi Harian Perniagaan</small><div class="discovery-answer">${esc(d.dailyOperation||'—')}</div></div>
+     <div class="info full"><small>Masalah Terbesar</small><div class="discovery-answer">${esc(d.biggestProblem||'—')}</div></div>
+     <div class="info full"><small>Hasil Yang Diinginkan</small><div class="discovery-answer">${esc(d.dreamOutcome||'—')}</div></div>
+     ${d.businessAreas||d.areasToSimplify?`<div class="info full"><small>Bahagian Perniagaan Untuk Dipermudahkan</small><div class="discovery-answer">${esc(Array.isArray(d.businessAreas||d.areasToSimplify)?(d.businessAreas||d.areasToSimplify).join(', '):(d.businessAreas||d.areasToSimplify))}</div></div>`:''}
+   </div>
+   <h3 style="margin-top:20px">Logo Perniagaan</h3>
+   <div id="discoveryLogoArea" class="discovery-logo-actions"><span class="subtle">${d.logoData?'Logo tersedia.':'Tiada logo disimpan untuk discovery ini.'}</span></div>
+ </section>
+
  <details class="collapsible">
    <summary>Project Assets</summary>
    <div class="grid2" style="margin-top:14px">
@@ -474,6 +495,21 @@ function renderProject(d){
    <div class="timeline" style="margin-top:12px">${(d.timeline||[]).slice().reverse().map((t,i)=>`<div class="timeline-item"><div class="timeline-dot">${i+1}</div><div><h4>${esc(t.title||t.stage||'Update')}</h4><p>${esc(t.message||'')}</p><small style="color:var(--muted)">${esc(t.at||'')}</small></div></div>`).join('')||'<p class="subtle">No updates yet.</p>'}</div>
  </details>`;
 
+ // Only display image data URLs; do not interpolate untrusted URLs into HTML.
+ const logoArea=document.getElementById('discoveryLogoArea');
+ const logoData=typeof d.logoData==='string'&&/^data:image\/(?:png|jpeg|webp|gif);base64,[A-Za-z0-9+/=]+$/i.test(d.logoData)?d.logoData:null;
+ if(logoData){
+   logoArea.replaceChildren();
+   const preview=document.createElement('img');preview.className='discovery-logo';preview.alt='Logo '+(d.businessName||'perniagaan');preview.src=logoData;
+   const download=document.createElement('button');download.type='button';download.className='btn primary';download.textContent='Download Logo';
+   download.onclick=()=>{
+     const extension=logoData.match(/^data:image\/(png|jpeg|webp|gif);/i)?.[1]?.toLowerCase().replace('jpeg','jpg')||'png';
+     const filename=(d.businessName||d.caseId||'customer').replace(/[^a-z0-9_-]+/gi,'-').replace(/^-+|-+$/g,'')||'customer';
+     const link=document.createElement('a');link.href=logoData;link.download=filename+'-logo.'+extension;
+     document.body.appendChild(link);link.click();link.remove();
+   };
+   logoArea.append(preview,download);
+ }
  quickSave.onclick=()=>quickUpdate(d,portal,false);
  quickNotify.onclick=()=>quickUpdate(d,portal,true);
  deleteDiscovery.onclick=async()=>{
