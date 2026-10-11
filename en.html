@@ -155,12 +155,38 @@ input,select,textarea,button{max-width:100%}
 
 
 
+<style id="homepage-v2">
+.hero{padding:82px 0 75px;background:radial-gradient(circle at 10% 12%,rgba(34,197,94,.11),transparent 35%),linear-gradient(180deg,#fff,#f5f9fc)}
+.hero-grid{grid-template-columns:1.1fr .9fr;gap:40px}
+.hero h1{font-size:clamp(44px,5.9vw,76px);line-height:1.04;letter-spacing:-.065em;max-width:750px}
+.hero p{max-width:610px;font-size:17px;line-height:1.75}
+.hero-demo{min-height:455px;border-radius:30px}
+.demo-main{left:24px;right:44px;top:43px}
+.demo-disclaimer{font-size:10px!important;color:#64748b!important;margin:10px 0 0!important;line-height:1.4!important}
+.demo-float{right:14px;bottom:24px;width:235px}
+.service-intro{padding:56px 0 78px;background:#fff}
+.service-intro-head{text-align:center;margin:0 auto 30px;max-width:730px}
+.service-intro-head h2{font-size:clamp(30px,4.3vw,48px);letter-spacing:-.045em;line-height:1.12;margin:14px 0}
+.service-intro-head p{color:var(--muted);line-height:1.65}
+.service-intro-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+.service-intro-card{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:11px;min-height:188px;padding:23px;border:1px solid #e2e8f0;border-radius:22px;background:#fff;transition:transform .2s,box-shadow .2s,border-color .2s}
+.service-intro-card:hover{transform:translateY(-4px);box-shadow:0 16px 35px rgba(15,23,42,.08);border-color:#86efac}
+.service-symbol{font-size:29px;color:#16a34a;line-height:1}
+.service-intro-card strong{font-size:17px;letter-spacing:-.02em}
+.service-intro-card small{color:#64748b;line-height:1.6;font-size:12px;padding-right:8px}
+.service-arrow{position:absolute;right:20px;top:20px;color:#16a34a}
+.nav-links{gap:15px;font-size:12px}
+@media(max-width:980px){.hero-grid{grid-template-columns:1fr}.service-intro-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.hero-demo{max-width:690px;width:100%}}
+@media(max-width:640px){.hero{padding:42px 0 48px}.hero h1{font-size:clamp(40px,10vw,58px);letter-spacing:-.055em}.hero p{font-size:15px}.hero-actions .btn{width:100%;min-height:48px}.hero-demo{min-height:360px;border-radius:22px}.demo-main{top:22px;left:14px;right:30px;padding:13px}.stat{padding:9px}.stat strong{font-size:16px}.chart{height:100px}.demo-float{width:195px;bottom:12px;right:10px;padding:12px}.demo-float strong{font-size:16px}.service-intro{padding:44px 0 58px}.service-intro-grid{gap:10px}.service-intro-card{padding:16px;min-height:180px;border-radius:17px}.service-intro-card strong{font-size:14px}.service-intro-card small{font-size:11px}.service-symbol{font-size:25px}}
+@media(max-width:365px){.service-intro-grid{grid-template-columns:1fr}.hero-demo{min-height:340px}}
+@media(prefers-reduced-motion:reduce){.service-intro-card{transition:none}}
+</style>
 </head>
 <body>
 <header class="nav">
 <div class="container nav-inner">
 <a class="brand" href="#top"><img src="icon-192.png" alt="BinaLab"><span>Bina<b>Lab</b></span></a>
-<nav class="nav-links"><a href="#solutions">What We Solve</a><a href="google-business.html">Google Business</a><a href="#process">How We Work</a><a href="#portfolio">Projects</a><a href="impact.html">Youth Impact</a><a href="products.html">Products</a><a href="#faq">FAQ</a><a href="about-founder-en.html">Behind Us</a></nav>
+<nav class="nav-links"><a href="#solutions">Solutions</a><a href="#portfolio">Our Work</a><a href="#process">Our Process</a><a href="impact.html">Youth Impact</a><a href="about-founder-en.html">About</a></nav>
 <div class="nav-actions"><a class="lang-switch" id="langSwitch" href="index.html" data-switch-lang="ms">BM</a><a class="btn btn-ghost" href="#portfolio">View Systems</a><button class="btn btn-primary" data-open>Tell Us About Your Business →</button></div>
 
 <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">☰</button>
@@ -179,9 +205,24 @@ input,select,textarea,button{max-width:100%}
 
 <main id="top">
 <section class="hero"><div class="container hero-grid">
-<div><span class="eyebrow">SME DIGITALISATION PARTNER</span><h1>From Manual Processes to <span>Digital Systems.</span></h1><p>BinaLab helps micro businesses and SMEs digitalise their operations through systems built around the way their business actually works.</p><div class="hero-actions"><button class="btn btn-primary" data-open>Tell Us About Your Business →</button><a class="btn btn-ghost" href="#portfolio">View Systems We Built</a></div><div class="trust"><span>Easy to start</span><span>No upfront commitment</span><span>Built around your business</span></div></div>
-<div class="hero-demo"><div class="demo-main"><div class="demo-head"><div class="demo-brand"><img src="icon-192.png" alt="">BinaLab Business OS</div><span class="tag">Live Dashboard</span></div><div class="stat-grid"><div class="stat"><strong>RM24,320</strong><small>Sales</small></div><div class="stat"><strong>124</strong><small>Orders</small></div><div class="stat"><strong>32</strong><small>Customers</small></div></div><div class="chart"></div></div><div class="demo-float"><small style="color:var(--muted)">When operations are organised...</small><strong>Owners can focus on growth.</strong></div></div>
-</div></section>
+<div class="hero-copy"><span class="eyebrow">DIGITAL SOLUTIONS FOR REAL BUSINESSES</span>
+<h1>Less manual work.<br><span>More room to grow.</span></h1>
+<p>From scattered spreadsheets and WhatsApp orders to a more organised operation. BinaLab designs practical digital systems around how your business actually works.</p>
+<div class="hero-actions"><button class="btn btn-primary" data-open>Discuss My Business <span aria-hidden="true">↗</span></button><a class="btn btn-ghost" href="#portfolio">Explore Our Work <span aria-hidden="true">→</span></a></div>
+<div class="trust"><span>Built around your workflow</span><span>Start with a conversation</span><span>Made for micro & small businesses</span></div></div>
+<div class="hero-demo" aria-label="Illustrative business dashboard concept">
+<div class="demo-main"><div class="demo-head"><div class="demo-brand"><img src="icon-192.png" alt="">BinaLab Business OS</div><span class="tag">UI CONCEPT</span></div>
+<div class="stat-grid"><div class="stat"><strong>01</strong><small>Orders</small></div><div class="stat"><strong>02</strong><small>Inventory</small></div><div class="stat"><strong>03</strong><small>Reports</small></div></div>
+<div class="chart" aria-hidden="true"></div><p class="demo-disclaimer">Illustrative interface, not live business data.</p></div>
+<div class="demo-float"><small style="color:var(--muted)">From daily chaos to clarity</small><strong>Run the business. Not the paperwork.</strong></div>
+</div></div></section><section class="service-intro" aria-label="Our solutions"><div class="container">
+<div class="service-intro-head"><span class="kicker">WHAT WE HELP WITH</span><h2>One business, many moving parts.</h2><p>Choose the problem first. We will help map the right system.</p></div>
+<div class="service-intro-grid">
+<a href="#solutions" class="service-intro-card"><span class="service-symbol">▦</span><strong>POS & Sales</strong><small>Orders, sales and daily records</small><span class="service-arrow">↗</span></a>
+<a href="#solutions" class="service-intro-card"><span class="service-symbol">◫</span><strong>Inventory & Operations</strong><small>Stock, tasks and workflows</small><span class="service-arrow">↗</span></a>
+<a href="#solutions" class="service-intro-card"><span class="service-symbol">◎</span><strong>Customer Portals</strong><small>Better visibility and updates</small><span class="service-arrow">↗</span></a>
+<a href="google-business.html" class="service-intro-card"><span class="service-symbol">⌕</span><strong>Google Business</strong><small>Help customers discover your business</small><span class="service-arrow">↗</span></a>
+</div></div></section>
 
 <section id="solutions"><div class="container"><div class="section-head"><span class="kicker">COMMON SME PROBLEMS</span><h2>Does this sound like your business?</h2><p>Many owners still manage important work using methods that worked when the business was small, but become difficult as the business grows.</p></div>
 <div class="problem-grid">
@@ -283,10 +324,10 @@ copyPortal.onclick=async()=>{await navigator.clipboard.writeText(portalLink.valu
 import {db,collection,query,orderBy,onSnapshot} from './firebase-config.js?v=457';
 
 const fallbackSystems = [
-  {name:'Abedin Auto',industry:'Automotive',descriptionMs:'Digital rental workflow, vehicle inventory dan operational mission control.',descriptionEn:'Digital rental workflow, vehicle inventory and operational mission control.',demoUrl:'https://danialrohaizat012-sys.github.io/AbeDInAuto/',coverData:'abedin-auto.jpg',tags:['Automotive','PWA','Live'],sortOrder:1,published:true},
-  {name:'Awanzco',industry:'Retail',descriptionMs:'Deal sourcing dan inventory intelligence untuk perniagaan used-device.',descriptionEn:'Deal sourcing and inventory intelligence for a used-device business.',demoUrl:'https://danialrohaizat012-sys.github.io/Awanzco/',coverData:'awanzco.jpg',tags:['Retail','Inventory','Live'],sortOrder:2,published:true},
-  {name:'KeduaOS',industry:'F&B',descriptionMs:'Booking, event dan customer operations untuk perniagaan mobile coffee van.',descriptionEn:'Booking, events and customer operations for a mobile coffee van business.',demoUrl:'https://danialrohaizat012-sys.github.io/KeduaKopi/',coverData:'keduaos.jpg',tags:['F&B','Booking','Live'],sortOrder:3,published:true},
-  {name:'MOS Karting',industry:'Entertainment',descriptionMs:'Booking dan customer experience untuk operasi go-kart dengan sesi 10 minit.',descriptionEn:'Booking and customer experience for a go-kart operation with 10-minute sessions.',demoUrl:'https://danialrohaizat012-sys.github.io/MosKart/',coverData:'mos-karting.jpg',tags:['Entertainment','Booking','Live'],sortOrder:4,published:true}
+  {name:'Abedin Auto',industry:'Automotive',descriptionMs:'Digital rental workflow, vehicle inventory dan operational mission control.',descriptionEn:'Digital rental workflow, vehicle inventory and operational mission control.',demoUrl:'https://danialrohaizat012-sys.github.io/AbeDInAuto/',coverData:'abedin-auto.jpg',tags:['Automotive','PWA','Demo'],sortOrder:1,published:true},
+  {name:'Awanzco',industry:'Retail',descriptionMs:'Deal sourcing dan inventory intelligence untuk perniagaan used-device.',descriptionEn:'Deal sourcing and inventory intelligence for a used-device business.',demoUrl:'https://danialrohaizat012-sys.github.io/Awanzco/',coverData:'awanzco.jpg',tags:['Retail','Inventory','Demo'],sortOrder:2,published:true},
+  {name:'KeduaOS',industry:'F&B',descriptionMs:'Booking, event dan customer operations untuk perniagaan mobile coffee van.',descriptionEn:'Booking, events and customer operations for a mobile coffee van business.',demoUrl:'https://danialrohaizat012-sys.github.io/KeduaKopi/',coverData:'keduaos.jpg',tags:['F&B','Booking','Demo'],sortOrder:3,published:true},
+  {name:'MOS Karting',industry:'Entertainment',descriptionMs:'Booking dan customer experience untuk operasi go-kart dengan sesi 10 minit.',descriptionEn:'Booking and customer experience for a go-kart operation with 10-minute sessions.',demoUrl:'https://danialrohaizat012-sys.github.io/MosKart/',coverData:'mos-karting.jpg',tags:['Entertainment','Booking','Demo'],sortOrder:4,published:true}
 ];
 
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
