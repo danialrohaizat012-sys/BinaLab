@@ -399,7 +399,7 @@ input,select,textarea,button{max-width:100%}
 </main></div>
 
 <script type="module">
-import {db,auth,collection,query,orderBy,onSnapshot,doc,updateDoc,deleteDoc,setDoc,addDoc,serverTimestamp,arrayUnion,signInWithEmailAndPassword,signOut,onAuthStateChanged} from './firebase-config.js?v=457';
+import {db,auth,collection,query,orderBy,onSnapshot,doc,updateDoc,deleteDoc,setDoc,addDoc,serverTimestamp,arrayUnion,signInWithEmailAndPassword,signOut,onAuthStateChanged,publicPortalView} from './firebase-config.js?v=457';
 
 const stages=['Discovery','Problem Mapping','Blueprint','Prototype','Proposal','Development','Testing','Launch'];
 let discoveries=[],selectedId=null,websiteSystems=[],selectedSystemId=null,systemImageData=null,quotations=[],invoices=[],selectedDocType=null,selectedDocId=null,founderData={},founderPhotoData=null;
@@ -411,7 +411,17 @@ logoutBtn.onclick=()=>signOut(auth);
 
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.view).classList.add('active')});
 
-function listenProjects(){onSnapshot(query(collection(db,'businessDiscoveries'),orderBy('createdAt','desc')),snap=>{discoveries=snap.docs.map(x=>({id:x.id,...x.data()}));renderStats();renderList();if(selectedId)renderProject(discoveries.find(x=>x.id===selectedId))})}
+const portalSyncHashes=new Map();
+async function syncPublicPortal(d){
+ const view=publicPortalView(d);
+ const signature=JSON.stringify({...view,updatedAt:null});
+ if(portalSyncHashes.get(d.id)===signature)return;
+ try{
+  await setDoc(doc(db,'portalViews',d.id),view);
+  portalSyncHashes.set(d.id,signature);
+ }catch(error){console.warn('Portal sync pending:',d.id,error.code||error.message)}
+}
+function listenProjects(){onSnapshot(query(collection(db,'businessDiscoveries'),orderBy('createdAt','desc')),snap=>{discoveries=snap.docs.map(x=>({id:x.id,...x.data()}));renderStats();renderList();if(selectedId)renderProject(discoveries.find(x=>x.id===selectedId));discoveries.forEach(syncPublicPortal)})}
 function renderStats(){
       statTotal.textContent=discoveries.length;
       statNew.textContent=discoveries.filter(x=>x.status==='new').length;
@@ -517,6 +527,7 @@ function renderProject(d){
    if(!confirm(`Delete ${label}?\n\nThis will permanently remove the discovery/project from Firestore and cannot be undone.`)) return;
    try{
      await deleteDoc(doc(db,'businessDiscoveries',d.id));
+     try{await deleteDoc(doc(db,'portalViews',d.id));portalSyncHashes.delete(d.id)}catch(error){console.warn('Portal cleanup pending:',error.code||error.message)}
      selectedId=null;
      detailView.innerHTML='<div class="empty">Discovery deleted. Select another project.</div>';
    }catch(e){
