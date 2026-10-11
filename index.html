@@ -178,32 +178,33 @@ input,select,textarea,button{max-width:100%}
 @media(prefers-reduced-motion:reduce){.service-intro-card{transition:none}}
 </style>
 <style id="smart-welcome-style">
-.smart-welcome{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center;padding:18px}
-.smart-welcome.is-open{display:flex}
-.smart-welcome-backdrop{position:absolute;inset:0;background:rgba(4,17,32,.67);backdrop-filter:blur(7px)}
-.smart-welcome-panel{position:relative;z-index:1;width:min(560px,100%);max-height:min(90vh,850px);overflow-y:auto;background:#fff;border-radius:26px;padding:28px;box-shadow:0 30px 90px rgba(0,0,0,.25)}
-.smart-welcome-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:23px}
-.smart-welcome-brand{display:flex;align-items:center;gap:7px;font-size:18px;font-weight:950;color:#071425}
-.smart-welcome-brand img{width:32px;height:32px;border-radius:9px}
-.smart-welcome-brand span{color:#16a34a;margin-left:-7px}
-.smart-welcome-close{border:0;background:#f1f5f9;width:35px;height:35px;border-radius:11px;font-size:25px;color:#334155}
-.smart-welcome-kicker{font-size:10px;font-weight:900;letter-spacing:.13em;color:#16a34a}
-.smart-welcome h2{font-size:clamp(27px,4.5vw,37px);letter-spacing:-.05em;line-height:1.12;margin:9px 0}
-.smart-welcome-sub{font-size:14px;color:#64748b;line-height:1.6;margin:0 0 20px}
-.smart-welcome-options{display:grid;gap:9px}
-.smart-welcome-options button{width:100%;border:1px solid #e2e8f0;background:#fff;border-radius:16px;padding:14px;text-align:left;display:grid;grid-template-columns:42px 1fr 18px;align-items:center;gap:12px;transition:border-color .2s,background .2s}
-.smart-welcome-options button:hover,.smart-welcome-options button:focus-visible{border-color:#22c55e;background:#f0fdf4}
-.smart-welcome-icon{width:42px;height:42px;border-radius:12px;background:#ecfdf5;color:#15803d;font-size:24px;display:grid;place-items:center}
-.smart-welcome-options strong{display:block;color:#0f172a;font-size:14px;margin-bottom:4px}
-.smart-welcome-options small{display:block;color:#64748b;font-size:12px;line-height:1.4}
-.smart-welcome-arrow{color:#16a34a;font-size:18px}
-.smart-welcome-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:20px;flex-wrap:wrap}
-.smart-welcome-skip{background:none;border:0;color:#64748b;font-size:12px;text-decoration:underline;padding:6px 0}
-.smart-welcome-language{display:flex;align-items:center;gap:8px;color:#64748b;font-size:12px}
-.smart-welcome-language button{border:0;background:none;color:#334155;font-weight:800;padding:5px}
-.smart-welcome-language button[aria-current="true"]{color:#16a34a;text-decoration:underline}
+.smart-welcome{position:fixed;inset:0;z-index:110;display:none;align-items:center;justify-content:center;padding:16px}
+.smart-welcome.is-open{display:flex}.smart-welcome-backdrop{position:absolute;inset:0;background:rgba(4,15,29,.72);backdrop-filter:blur(9px)}
+.smart-welcome-panel{position:relative;z-index:1;width:min(660px,100%);max-height:92dvh;overflow-y:auto;background:#fff;border-radius:28px;padding:34px 36px 28px;box-shadow:0 35px 100px rgba(2,8,23,.32)}
+.smart-welcome-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:26px}
+.smart-welcome-brand{display:inline-flex;align-items:center;gap:8px;font-size:19px;font-weight:900;letter-spacing:-.04em;color:#0f172a}
+.smart-welcome-brand img{width:34px;height:34px;border-radius:10px}.smart-welcome-brand .brand-word b{color:#16a34a}
+.smart-welcome-close{border:1px solid #e2e8f0;background:#f8fafc;width:38px;height:38px;border-radius:12px;display:grid;place-items:center;color:#475569}.smart-welcome-close svg{width:18px;height:18px}
+.smart-welcome-kicker{display:inline-flex;align-items:center;gap:7px;font-size:10px;font-weight:900;letter-spacing:.13em;color:#15803d}.smart-welcome-kicker:before{content:"";height:7px;width:7px;border-radius:50%;background:#22c55e}
+.smart-welcome h2{font-size:clamp(30px,4.5vw,41px);font-weight:850;letter-spacing:-.055em;line-height:1.12;color:#0b1729;margin:12px 0 10px}
+.smart-welcome-sub{font-size:14px;color:#64748b;line-height:1.65;margin:0 0 25px}
+.smart-welcome-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.smart-welcome-options button{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:170px;width:100%;border:1px solid #e2e8f0;background:#fff;border-radius:19px;padding:20px;text-align:left;transition:transform .2s,border-color .2s,box-shadow .2s,background .2s}
+.smart-welcome-options button:hover,.smart-welcome-options button:focus-visible{transform:translateY(-2px);border-color:#86efac;background:#fcfffd;box-shadow:0 12px 30px rgba(15,23,42,.07);outline-offset:3px}
+.smart-welcome-icon{width:47px;height:47px;border-radius:14px;background:#eefbf3;color:#15803d;display:grid;place-items:center;margin-bottom:17px}.smart-welcome-icon svg{width:24px;height:24px}
+.smart-welcome-options button[data-welcome-destination="review"] .smart-welcome-icon{background:#fffaeb;color:#a16207}
+.smart-welcome-options button[data-welcome-destination="youth"] .smart-welcome-icon{background:#eef2ff;color:#4f46e5}
+.smart-welcome-options button[data-welcome-destination="explore"] .smart-welcome-icon{background:#f1f5f9;color:#334155}
+.smart-welcome-copy{display:block;padding-right:14px}.smart-welcome-options strong{display:block;color:#0f172a;font-size:15px;letter-spacing:-.025em;line-height:1.35;margin-bottom:5px}
+.smart-welcome-options small{display:block;color:#64748b;font-size:12px;line-height:1.5}
+.smart-welcome-arrow{position:absolute;top:21px;right:20px;color:#94a3b8}.smart-welcome-arrow svg{width:17px;height:17px}
+.smart-welcome-options button:hover .smart-welcome-arrow{color:#16a34a}
+.smart-welcome-bottom{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:23px;flex-wrap:wrap}
+.smart-welcome-skip{background:none;border:0;color:#64748b;font-size:12px;padding:8px 0}.smart-welcome-skip:hover{text-decoration:underline}
+.smart-welcome-language{display:flex;align-items:center;gap:6px;color:#94a3b8;font-size:12px}.smart-welcome-language button{border:1px solid transparent;background:none;color:#64748b;font-weight:850;padding:7px 9px;border-radius:8px}.smart-welcome-language button[aria-current="true"]{color:#15803d;border-color:#bbf7d0;background:#f0fdf4}
 .smart-welcome-trigger{font-size:12px;font-weight:800;color:#166534;border:1px solid #bbf7d0;background:#f0fdf4;border-radius:10px;padding:8px 10px;white-space:nowrap}
-@media(max-width:640px){.smart-welcome{padding:10px;align-items:center}.smart-welcome-panel{padding:19px;border-radius:20px;max-height:calc(100dvh - 20px)}.smart-welcome-top{margin-bottom:13px}.smart-welcome h2{font-size:28px}.smart-welcome-sub{font-size:13px;margin-bottom:13px}.smart-welcome-options button{padding:10px;gap:9px;grid-template-columns:37px 1fr 14px}.smart-welcome-icon{width:37px;height:37px}.smart-welcome-options strong{font-size:13px}.smart-welcome-options small{font-size:11px}.smart-welcome-bottom{margin-top:13px}}
+@media(max-width:640px){.smart-welcome{padding:10px}.smart-welcome-panel{padding:21px 18px 17px;border-radius:22px;max-height:calc(100dvh - 20px)}.smart-welcome-top{margin-bottom:16px}.smart-welcome h2{font-size:30px}.smart-welcome-sub{font-size:13px;margin-bottom:17px}.smart-welcome-options{gap:9px}.smart-welcome-options button{min-height:151px;padding:13px;border-radius:15px}.smart-welcome-icon{width:39px;height:39px;border-radius:11px;margin-bottom:12px}.smart-welcome-icon svg{width:21px;height:21px}.smart-welcome-options strong{font-size:13px}.smart-welcome-options small{font-size:11px}.smart-welcome-arrow{top:15px;right:13px}.smart-welcome-bottom{margin-top:13px}.smart-welcome-kicker{font-size:9px}}
+@media(max-width:380px){.smart-welcome-options{grid-template-columns:1fr}.smart-welcome-options button{min-height:auto;padding:12px 14px;display:grid;grid-template-columns:36px 1fr;gap:11px}.smart-welcome-icon{margin:0;width:36px;height:36px}.smart-welcome-copy{padding-right:14px}}
 @media(prefers-reduced-motion:reduce){.smart-welcome-options button{transition:none}}
 </style>
 </head>
@@ -305,15 +306,15 @@ input,select,textarea,button{max-width:100%}
 <div class="smart-welcome" id="smartWelcome" role="dialog" aria-modal="true" aria-labelledby="smartWelcomeTitle" aria-hidden="true">
 <div class="smart-welcome-backdrop" data-welcome-close></div>
 <div class="smart-welcome-panel" tabindex="-1">
-<div class="smart-welcome-top"><span class="smart-welcome-brand"><img src="icon-192.png" alt=""> Bina<span>Lab</span></span><button type="button" class="smart-welcome-close" data-welcome-close aria-label="Tutup paparan selamat datang">×</button></div>
+<div class="smart-welcome-top"><span class="smart-welcome-brand"><img src="icon-192.png" alt=""><span class="brand-word">Bina<b>Lab</b></span></span><button type="button" class="smart-welcome-close" data-welcome-close aria-label="Tutup paparan selamat datang"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
 <span class="smart-welcome-kicker">SELAMAT DATANG KE BINALAB</span>
 <h2 id="smartWelcomeTitle">Apa yang anda cari hari ini?</h2>
 <p class="smart-welcome-sub">Pilih tujuan anda. Kami bantu tunjukkan jalan yang paling mudah.</p>
 <div class="smart-welcome-options">
-<button type="button" data-welcome-destination="system"><span class="smart-welcome-icon">▦</span><span><strong>Bina sistem untuk bisnes</strong><small>POS, inventori, automasi dan sistem khas</small></span><span class="smart-welcome-arrow">↗</span></button>
-<button type="button" data-welcome-destination="review"><span class="smart-welcome-icon">★</span><span><strong>Kenali Bina Review</strong><small>Produk QR Google Review untuk bisnes</small></span><span class="smart-welcome-arrow">↗</span></button>
-<button type="button" data-welcome-destination="youth"><span class="smart-welcome-icon">✦</span><span><strong>Program belia & Youth Impact</strong><small>Terokai inisiatif dan peluang belia</small></span><span class="smart-welcome-arrow">↗</span></button>
-<button type="button" data-welcome-destination="explore"><span class="smart-welcome-icon">◎</span><span><strong>Saya nak tengok-tengok dulu</strong><small>Kenali projek dan perkhidmatan BinaLab</small></span><span class="smart-welcome-arrow">↗</span></button>
+<button type="button" data-welcome-destination="system"><span class="smart-welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 9v12"/><path d="m13 15 2 2 4-4"/></svg></span><span class="smart-welcome-copy"><strong>Bina sistem untuk bisnes</strong><small>POS, inventori, automasi dan sistem khas</small></span><span class="smart-welcome-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button>
+<button type="button" data-welcome-destination="review"><span class="smart-welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 2.9 6.1 6.7.9-4.8 4.7 1.2 6.7L12 17.3l-6 3.1 1.2-6.7L2.4 9l6.7-.9L12 2Z"/></svg></span><span class="smart-welcome-copy"><strong>Kenali Bina Review</strong><small>Produk QR Google Review untuk bisnes</small></span><span class="smart-welcome-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button>
+<button type="button" data-welcome-destination="youth"><span class="smart-welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 10 10-5 10 5-10 5-10-5Z"/><path d="M6 12v5c3.6 2.8 8.4 2.8 12 0v-5M22 10v6"/></svg></span><span class="smart-welcome-copy"><strong>Program belia & Youth Impact</strong><small>Terokai inisiatif dan peluang belia</small></span><span class="smart-welcome-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button>
+<button type="button" data-welcome-destination="explore"><span class="smart-welcome-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m15.8 8.2-2.3 5.3-5.3 2.3 2.3-5.3 5.3-2.3Z"/></svg></span><span class="smart-welcome-copy"><strong>Saya nak tengok-tengok dulu</strong><small>Kenali projek dan perkhidmatan BinaLab</small></span><span class="smart-welcome-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span></button>
 </div>
 <div class="smart-welcome-bottom"><button type="button" class="smart-welcome-skip" data-welcome-close>Langkau, terus ke website</button><div class="smart-welcome-language"><span>Bahasa:</span><button type="button" data-welcome-lang="ms" aria-current="true">BM</button><span>·</span><button type="button" data-welcome-lang="en" >EN</button></div></div>
 </div></div>
