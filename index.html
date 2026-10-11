@@ -207,27 +207,51 @@ input,select,textarea,button{max-width:100%}
 @media(max-width:380px){.smart-welcome-options{grid-template-columns:1fr}.smart-welcome-options button{min-height:auto;padding:12px 14px;display:grid;grid-template-columns:36px 1fr;gap:11px}.smart-welcome-icon{margin:0;width:36px;height:36px}.smart-welcome-copy{padding-right:14px}}
 @media(prefers-reduced-motion:reduce){.smart-welcome-options button{transition:none}}
 </style>
+<style id="header-cleanup-v2">
+.nav{background:rgba(255,255,255,.96);border-bottom:1px solid #e8edf2}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:28px;min-height:78px;padding:11px 0}
+.nav .brand{flex:0 0 auto;font-size:21px;letter-spacing:-.035em;white-space:nowrap}
+.nav .brand img{width:39px;height:39px}
+.nav-links{display:flex;align-items:center;justify-content:center;gap:27px;flex:1;min-width:0;font-size:13px;font-weight:750;color:#475569}
+.nav-links a,.nav-explore{white-space:nowrap;transition:color .15s}
+.nav-links a:hover,.nav-explore:hover{color:#16a34a}
+.nav-explore{border:0;background:transparent;color:#475569;padding:0;font-size:13px;font-weight:750}
+.nav-explore span{color:#16a34a}
+.nav-actions{display:flex;align-items:center;gap:11px;flex:0 0 auto}
+.nav-actions .lang-switch{padding:10px 11px;border:1px solid #e2e8f0;border-radius:11px;background:#fff;color:#334155;font-size:12px;font-weight:850}
+.nav-actions .nav-cta{padding:12px 16px;font-size:12px;border-radius:12px;box-shadow:none;white-space:nowrap}
+.nav .menu-toggle{flex:0 0 auto}
+@media(max-width:1120px){.nav-links{display:none!important}.nav-actions{display:none!important}.nav .menu-toggle{display:inline-flex}.nav-inner{position:relative;min-height:70px}.nav .mobile-menu{top:calc(100% - 2px);right:0}}
+@media(min-width:1121px){.nav .menu-toggle{display:none!important}.nav .mobile-menu{display:none!important}}
+@media(max-width:640px){.nav-inner{min-height:65px;padding:9px 0}.nav .brand{font-size:19px}.nav .brand img{width:36px;height:36px}}
+</style>
 </head>
 <body>
 <header class="nav">
 <div class="container nav-inner">
-<a class="brand" href="#top"><img src="icon-192.png" alt="BinaLab"><span>Bina<b>Lab</b></span></a>
-<nav class="nav-links"><a href="#solutions">Penyelesaian</a><a href="#portfolio">Projek Kami</a><a href="#process">Cara Kami Bekerja</a><a href="impact.html">Youth Impact</a><a href="about-founder.html">Tentang Kami</a></nav>
-<div class="nav-actions"><button type="button" class="smart-welcome-trigger" id="welcomeReopen">Explore BinaLab ↗</button><a class="lang-switch" id="langSwitch" href="en.html" data-switch-lang="en">EN</a><a class="btn btn-ghost" href="#portfolio">Lihat Sistem</a><button class="btn btn-primary" data-open>Ceritakan Bisnes Anda →</button></div>
-
-<button class="menu-toggle" id="menuToggle" aria-label="Buka menu" aria-expanded="false">☰</button>
-<div class="mobile-menu" id="mobileMenu">
-  <a href="#solutions">Apa Kami Bantu</a><a href="google-business.html">Google Business</a>
-  <a href="#process">Cara Kami Bekerja</a>
-  <a href="#portfolio">Portfolio Kami</a>
-  <a href="about-founder.html">Behind Us</a>
-  <a href="impact.html">Youth Impact</a>
-  <a href="products.html">Produk</a>
-  <a href="#faq">FAQ</a>
-  <a class="menu-lang" href="en.html" id="mobileLang">English</a>
-  <button class="menu-cta" data-open>Ceritakan Bisnes Anda →</button>
-</div></div>
-</header>
+<a class="brand" href="#top" aria-label="BinaLab homepage"><img src="icon-192.png" alt=""><span>Bina<b>Lab</b></span></a>
+<nav class="nav-links" aria-label="Navigasi utama">
+<a href="#solutions">Penyelesaian</a>
+<a href="#portfolio">Projek Kami</a>
+<a href="about-founder.html">Tentang Kami</a>
+<button type="button" class="nav-explore" data-welcome-reopen>Explore <span aria-hidden="true">↗</span></button>
+</nav>
+<div class="nav-actions">
+<a class="lang-switch" id="langSwitch" href="en.html" data-switch-lang="en" aria-label="Switch to English">EN</a>
+<button class="btn btn-primary nav-cta" data-open>Bincang Projek <span aria-hidden="true">↗</span></button>
+</div>
+<button class="menu-toggle" id="menuToggle" aria-label="Buka menu" aria-expanded="false" aria-controls="mobileMenu">☰</button>
+<nav class="mobile-menu" id="mobileMenu" aria-label="Navigasi telefon">
+<a href="#solutions">Penyelesaian</a>
+<a href="#portfolio">Projek Kami</a>
+<a href="products.html">Produk</a>
+<a href="impact.html">Youth Impact</a>
+<a href="about-founder.html">Tentang Kami</a>
+<button type="button" data-welcome-reopen>Explore BinaLab ↗</button>
+<a class="menu-lang" href="en.html" id="mobileLang">English</a>
+<button class="menu-cta" data-open>Bincang Projek ↗</button>
+</nav>
+</div></header>
 
 <main id="top">
 <section class="hero"><div class="container hero-grid">
@@ -424,7 +448,7 @@ function closeWelcome(remember=true){
  if(previousFocus&&typeof previousFocus.focus==='function')previousFocus.focus();
 }
 document.querySelectorAll('[data-welcome-close]').forEach(el=>el.addEventListener('click',()=>closeWelcome()));
-document.getElementById('welcomeReopen')?.addEventListener('click',openWelcome);
+document.querySelectorAll('[data-welcome-reopen]').forEach(el=>el.addEventListener('click',openWelcome));
 document.querySelectorAll('[data-welcome-destination]').forEach(el=>el.addEventListener('click',()=>{
  const dest=el.dataset.welcomeDestination;
  closeWelcome();
