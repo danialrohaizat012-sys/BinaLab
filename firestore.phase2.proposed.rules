@@ -28,7 +28,7 @@ service cloud.firestore {
    && d.createdAt == request.time && d.updatedAt == request.time
    && d.timeline is list && d.timeline.size() == 1
    && (!('logoSize' in d) || (d.logoSize is number && d.logoSize >= 0 && d.logoSize <= 184320))
-   && (!('logoData' in d) || (d.logoData is string && d.logoData.size() <= 250000));
+   && (!('logoData' in d) || d.logoData == null || (d.logoData is string && d.logoData.size() <= 250000));
   }
   function validNewPortalView(id) {
    let d=request.resource.data;
