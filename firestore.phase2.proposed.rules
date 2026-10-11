@@ -1,0 +1,80 @@
+rules_version = '2';
+service cloud.firestore {
+ match /databases/{database}/documents {
+  function isOwner() {
+   return request.auth != null
+    && request.auth.uid == 'UsuzBQjxeJQmQyvDMj0OXHJoZWy2';
+  }
+  function validDiscovery() {
+   let d=request.resource.data;
+   return d.keys().hasOnly([
+    'businessName','industry','ownerName','phone','email',
+    'dailyOperation','biggestProblem','dreamOutcome','painPoints',
+    'logoData','logoSize','logoType','portalToken','caseId',
+    'status','stage','progress','prototypeUrl','customerMessage',
+    'submittedAt','createdAt','updatedAt','source','timeline'
+   ])
+   && d.businessName is string && d.businessName.size() >= 2 && d.businessName.size() <= 120
+   && d.ownerName is string && d.ownerName.size() >= 1 && d.ownerName.size() <= 120
+   && d.phone is string && d.phone.size() >= 5 && d.phone.size() <= 40
+   && d.industry is string && d.industry.size() <= 120
+   && d.dailyOperation is string && d.dailyOperation.size() <= 4000
+   && d.biggestProblem is string && d.biggestProblem.size() <= 4000
+   && d.dreamOutcome is string && d.dreamOutcome.size() <= 4000
+   && d.status == 'new' && d.stage == 'Discovery' && d.progress == 10
+   && d.source == 'binalab-website'
+   && d.portalToken is string && d.portalToken.size() >= 10
+   && d.caseId is string && d.caseId.size() <= 50
+   && d.createdAt == request.time && d.updatedAt == request.time
+   && d.timeline is list && d.timeline.size() == 1
+   && (!('logoSize' in d) || (d.logoSize is number && d.logoSize >= 0 && d.logoSize <= 184320))
+   && (!('logoData' in d) || (d.logoData is string && d.logoData.size() <= 250000));
+  }
+  function validNewPortalView(id) {
+   let d=request.resource.data;
+   let source=get(/databases/$(database)/documents/businessDiscoveries/$(id)).data;
+   return d.keys().hasOnly([
+    'businessName','caseId','stage','status','progress','customerMessage',
+    'timeline','blueprintUrl','prototypeUrl','quotationUrl','liveSystemUrl','updatedAt'
+   ])
+   && d.keys().hasAll([
+    'businessName','caseId','stage','status','progress','customerMessage',
+    'timeline','blueprintUrl','prototypeUrl','quotationUrl','liveSystemUrl','updatedAt'
+   ])
+   && d.businessName == source.businessName
+   && d.caseId == source.caseId
+   && source.portalToken == id
+   && d.stage == 'Discovery' && d.status == 'new' && d.progress == 10
+   && d.customerMessage is string && d.customerMessage.size() <= 1500
+   && d.timeline is list && d.timeline.size() <= 30
+   && d.blueprintUrl == '' && d.prototypeUrl == '' && d.quotationUrl == '' && d.liveSystemUrl == ''
+   && d.updatedAt == request.time;
+  }
+  match /businessDiscoveries/{discoveryId} {
+   allow create: if validDiscovery() && request.resource.data.portalToken == discoveryId;
+   allow get, list, update, delete: if isOwner();
+  }
+  match /portalViews/{portalId} {
+   // Random unguessable URL ID is a bearer capability; don't share links publicly.
+   allow get: if true;
+   allow list: if isOwner();
+   allow create: if isOwner() || validNewPortalView(portalId);
+   allow update, delete: if isOwner();
+  }
+  match /websiteSystems/{systemId} {
+   allow read: if true;
+   allow create, update, delete: if isOwner();
+  }
+  match /quotations/{quotationId} {
+   allow read, create, update, delete: if isOwner();
+  }
+  match /invoices/{invoiceId} {
+   allow read, create, update, delete: if isOwner();
+  }
+  match /siteContent/{contentId} {
+   allow read: if true;
+   allow create, update, delete: if isOwner();
+  }
+  match /{document=**} { allow read, write: if false; }
+ }
+}
