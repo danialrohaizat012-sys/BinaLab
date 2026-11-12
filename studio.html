@@ -26,7 +26,7 @@
 .project-tabs{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0}.project-tab{padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:#fff;font-weight:800;font-size:12px}.project-tab.active{background:#EFF6FF;border-color:#BFDBFE;color:#1D4ED8}.project-pane{display:none}.project-pane.active{display:block}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}.full{grid-column:1/-1}.info{padding:14px;border-radius:15px;background:var(--soft)}.info small{display:block;color:var(--muted);font-size:11px;margin-bottom:4px}
 .stage-strip{display:grid;grid-template-columns:repeat(8,1fr);gap:7px;margin:15px 0}.stage{padding:12px 8px;border-radius:13px;background:#F1F5F9;text-align:center;font-size:10px;font-weight:850;color:#64748B}.stage.done{background:#DCFCE7;color:#166534}.stage.current{background:#DBEAFE;color:#1D4ED8}
-.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.message{display:none;margin-top:12px;padding:12px;border-radius:13px}.message.show{display:block}.success{background:#F0FDF4;color:#166534}.error{background:#FFF1F2;color:#BE123C}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}.stripe-panel{margin-top:18px;padding:18px;border:1px solid #E2E8F0;border-radius:16px;background:#FAFCFE}.stripe-panel p{margin:8px 0;line-height:1.6}.stripe-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.stripe-badge{padding:4px 10px;border-radius:99px;font-size:12px;font-weight:800}.stripe-badge.ok{background:#DCFCE7;color:#166534}.stripe-badge.wait{background:#FEF3C7;color:#92400E}.stripe-badge.off{background:#F1F5F9;color:#475569}.stripe-link{display:flex;gap:8px;margin-top:10px}.stripe-link input{flex:1;min-width:0;padding:11px;border:1px solid #E2E8F0;border-radius:11px}.stripe-warn{color:#B45309;font-weight:700}.message{display:none;margin-top:12px;padding:12px;border-radius:13px}.message.show{display:block}.success{background:#F0FDF4;color:#166534}.error{background:#FFF1F2;color:#BE123C}
 .timeline{display:grid;gap:11px}.timeline-item{display:grid;grid-template-columns:32px 1fr;gap:10px}.timeline-dot{width:30px;height:30px;border-radius:10px;background:#EFF6FF;color:#1D4ED8;display:grid;place-items:center;font-size:11px;font-weight:900}.timeline-item h4{margin:2px 0 4px}.timeline-item p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
 .task-row{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}.task-row input[type="text"]{border:0;background:transparent;padding:6px;width:100%}.task-row small{color:var(--muted)}
 .content-layout{display:grid;grid-template-columns:360px 1fr;gap:18px}.form-card{padding:22px}.toggle{display:flex;align-items:center;gap:8px;margin-top:12px}.thumb{width:84px;height:84px;border-radius:16px;object-fit:cover;background:var(--soft);border:1px solid var(--line)}.empty{text-align:center;color:var(--muted);padding:80px 20px}
@@ -399,7 +399,7 @@ input,select,textarea,button{max-width:100%}
 </main></div>
 
 <script type="module">
-import {db,auth,collection,query,orderBy,onSnapshot,doc,updateDoc,deleteDoc,setDoc,addDoc,serverTimestamp,arrayUnion,signInWithEmailAndPassword,signOut,onAuthStateChanged,publicPortalView} from './firebase-config.js?v=457';
+import {db,auth,collection,query,orderBy,onSnapshot,doc,updateDoc,deleteDoc,setDoc,addDoc,serverTimestamp,arrayUnion,signInWithEmailAndPassword,signOut,onAuthStateChanged,BILLING_API_URL } from './firebase-config.js?v=460';
 
 const stages=['Discovery','Problem Mapping','Blueprint','Prototype','Proposal','Development','Testing','Launch'];
 let discoveries=[],selectedId=null,websiteSystems=[],selectedSystemId=null,systemImageData=null,quotations=[],invoices=[],selectedDocType=null,selectedDocId=null,founderData={},founderPhotoData=null;
@@ -411,17 +411,7 @@ logoutBtn.onclick=()=>signOut(auth);
 
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.getElementById(b.dataset.view).classList.add('active')});
 
-const portalSyncHashes=new Map();
-async function syncPublicPortal(d){
- const view=publicPortalView(d);
- const signature=JSON.stringify({...view,updatedAt:null});
- if(portalSyncHashes.get(d.id)===signature)return;
- try{
-  await setDoc(doc(db,'portalViews',d.id),view);
-  portalSyncHashes.set(d.id,signature);
- }catch(error){console.warn('Portal sync pending:',d.id,error.code||error.message)}
-}
-function listenProjects(){onSnapshot(query(collection(db,'businessDiscoveries'),orderBy('createdAt','desc')),snap=>{discoveries=snap.docs.map(x=>({id:x.id,...x.data()}));renderStats();renderList();if(selectedId)renderProject(discoveries.find(x=>x.id===selectedId));discoveries.forEach(syncPublicPortal)})}
+function listenProjects(){onSnapshot(query(collection(db,'businessDiscoveries'),orderBy('createdAt','desc')),snap=>{discoveries=snap.docs.map(x=>({id:x.id,...x.data()}));renderStats();renderList();if(selectedId)renderProject(discoveries.find(x=>x.id===selectedId))})}
 function renderStats(){
       statTotal.textContent=discoveries.length;
       statNew.textContent=discoveries.filter(x=>x.status==='new').length;
@@ -433,7 +423,6 @@ function renderList(){leadList.innerHTML=discoveries.map(d=>`<div class="lead ${
 
 function renderProject(d){
  if(!d){detailView.innerHTML='<div class="empty">Select a project.</div>';return}
- const portal=new URL('portal.html',location.href);portal.searchParams.set('id',d.id);
  const current=Math.max(0,stages.indexOf(d.stage||'Discovery'));
  const tasks=d.tasks||[];
  detailView.innerHTML=`
@@ -453,7 +442,6 @@ function renderProject(d){
      ${((d.status==='completed')||(d.stage==='Launch'))?`<button class="btn ghost" id="addToPortfolio" style="color:#0F172A">Tambah ke Portfolio Kami</button>`:''}
      <button class="btn primary" id="quickSave">Save Update</button>
      <button class="btn dark" id="quickNotify">Save + WhatsApp Client</button>
-     <a class="btn ghost" href="${portal.href}" target="_blank" style="color:#0F172A">Open Client Portal</a>
      <button class="btn danger" id="deleteDiscovery">Delete Discovery</button>
    </div>
    <div class="message" id="quickMessageBox"></div>
@@ -520,14 +508,13 @@ function renderProject(d){
    };
    logoArea.append(preview,download);
  }
- quickSave.onclick=()=>quickUpdate(d,portal,false);
- quickNotify.onclick=()=>quickUpdate(d,portal,true);
+ quickSave.onclick=()=>quickUpdate(d,false);
+ quickNotify.onclick=()=>quickUpdate(d,true);
  deleteDiscovery.onclick=async()=>{
    const label=[d.caseId,d.businessName].filter(Boolean).join(' • ')||'this discovery';
    if(!confirm(`Delete ${label}?\n\nThis will permanently remove the discovery/project from Firestore and cannot be undone.`)) return;
    try{
      await deleteDoc(doc(db,'businessDiscoveries',d.id));
-     try{await deleteDoc(doc(db,'portalViews',d.id));portalSyncHashes.delete(d.id)}catch(error){console.warn('Portal cleanup pending:',error.code||error.message)}
      selectedId=null;
      detailView.innerHTML='<div class="empty">Discovery deleted. Select another project.</div>';
    }catch(e){
@@ -560,7 +547,7 @@ function renderProject(d){
  saveTasks.onclick=async()=>{const updated=[...tasks];detailView.querySelectorAll('[data-task-text]').forEach(el=>{const i=Number(el.dataset.taskText);updated[i]={...(updated[i]||{}),text:el.value,done:detailView.querySelector(`[data-task-check="${i}"]`).checked}});if(newTaskText.value.trim())updated.push({text:newTaskText.value.trim(),owner:newTaskOwner.value.trim(),done:false,createdAt:new Date().toISOString()});await updateDoc(doc(db,'businessDiscoveries',d.id),{tasks:updated,updatedAt:serverTimestamp()})};
 }
 
-async function quickUpdate(d,portal,notify){
+async function quickUpdate(d,notify){
  try{
   const stage=quickStage.value,progress=Number(quickProgress.value),message=quickMessage.value.trim();
   await updateDoc(doc(db,'businessDiscoveries',d.id),{
@@ -571,7 +558,7 @@ async function quickUpdate(d,portal,notify){
   show('quickMessageBox','Update saved.','success');
   if(notify){
     const phone=String(d.phone||'').replace(/\D/g,'');
-    const text=`Hi ${d.ownerName||''}, update daripada BinaLab untuk ${d.businessName}:\\n\\n${stage} — ${progress}%\\n${message}\\n\\nPortal: ${portal.href}`;
+    const text=`Hi ${d.ownerName||''}, update daripada BinaLab untuk ${d.businessName}:\n\n${stage} — ${progress}%\n${message}`;
     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`,'_blank');
   }
  }catch(e){show('quickMessageBox',e.message,'error')}
@@ -602,7 +589,7 @@ function listenCommercial(){
     quotations=snap.docs.map(x=>({id:x.id,...x.data()}));renderDocList();renderDashboard();
   });
   onSnapshot(query(collection(db,'invoices'),orderBy('createdAt','desc')),snap=>{
-    invoices=snap.docs.map(x=>({id:x.id,...x.data()}));renderDocList();renderDashboard();
+    invoices=snap.docs.map(x=>({id:x.id,...x.data()}));renderDocList();renderDashboard();renderStripePanel();
   });
 }
 
@@ -666,6 +653,7 @@ function renderDocEditor(d={},type='quotation'){
       <div class="field"><label>Business Name</label><input id="docBusiness" value="${esc(d.businessName||'')}"></div>
       <div class="field"><label>Client Name</label><input id="docClient" value="${esc(d.clientName||'')}"></div>
       <div class="field"><label>WhatsApp</label><input id="docPhone" value="${esc(d.phone||'')}"></div>
+      <div class="field"><label>Email ${isInvoice?'(untuk Stripe)':'(optional)'}</label><input id="docEmail" type="email" value="${esc(d.email||'')}" placeholder="client@email.com"></div>
       <div class="field"><label>Status</label><select id="docStatus">
         ${isInvoice?`<option value="unpaid" ${d.status==='unpaid'?'selected':''}>Unpaid</option><option value="paid" ${d.status==='paid'?'selected':''}>Paid</option>`:`<option value="draft" ${d.status==='draft'?'selected':''}>Draft</option><option value="sent" ${d.status==='sent'?'selected':''}>Sent</option><option value="accepted" ${d.status==='accepted'?'selected':''}>Accepted</option><option value="rejected" ${d.status==='rejected'?'selected':''}>Rejected</option>`}
       </select></div>
@@ -687,6 +675,7 @@ function renderDocEditor(d={},type='quotation'){
       ${!isInvoice&&d.id?'<button class="btn ghost" id="convertInvoice">Convert to Invoice</button>':''}
       ${d.id?'<button class="btn danger" id="deleteDocBtn">Delete</button>':''}
     </div>
+    ${isInvoice?'<div class="stripe-panel" id="stripePanel"></div>':''}
 
     <div class="preview-shell">
       <div class="preview-toolbar">
@@ -805,22 +794,59 @@ function renderDocEditor(d={},type='quotation'){
   saveDoc.onclick=async()=>{
     try{
       const totals=refreshTotal();
-      const payload={ref:docRef.value.trim(),caseId:docCase.value.trim(),businessName:docBusiness.value.trim(),clientName:docClient.value.trim(),phone:docPhone.value.trim(),status:docStatus.value,notes:docNotes.value.trim(),items:totals.items,subtotal:totals.subtotal,taxRate:totals.taxRate,total:totals.total,updatedAt:serverTimestamp()};
+      const payload={ref:docRef.value.trim(),caseId:docCase.value.trim(),businessName:docBusiness.value.trim(),clientName:docClient.value.trim(),phone:docPhone.value.trim(),email:docEmail.value.trim(),status:docStatus.value,notes:docNotes.value.trim(),items:totals.items,subtotal:totals.subtotal,taxRate:totals.taxRate,total:totals.total,updatedAt:serverTimestamp()};
       const coll=isInvoice?'invoices':'quotations';
       if(d.id) await updateDoc(doc(db,coll,d.id),payload);
       else {const r=await addDoc(collection(db,coll),{...payload,createdAt:serverTimestamp()});selectedDocId=r.id;selectedDocType=type}
       show('docMessage','Saved.','success');
+      if(isInvoice)renderStripePanel();
     }catch(e){show('docMessage',e.message,'error')}
   };
+  if(isInvoice)renderStripePanel();
 
   printDoc.onclick=()=>openPrintPreview(isInvoice,refreshTotal());
   if(d.id) deleteDocBtn.onclick=async()=>{if(confirm('Delete this document?'))await deleteDoc(doc(db,isInvoice?'invoices':'quotations',d.id))};
   if(!isInvoice&&d.id) convertInvoice.onclick=async()=>{
     const totals=refreshTotal();
     const invRef=`INV-${new Date().getFullYear()}-${crypto.randomUUID().slice(0,4).toUpperCase()}`;
-    await addDoc(collection(db,'invoices'),{ref:invRef,caseId:docCase.value.trim(),businessName:docBusiness.value.trim(),clientName:docClient.value.trim(),phone:docPhone.value.trim(),status:'unpaid',notes:docNotes.value.trim(),items:totals.items,subtotal:totals.subtotal,taxRate:totals.taxRate,total:totals.total,sourceQuotation:d.ref||'',createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+    await addDoc(collection(db,'invoices'),{ref:invRef,caseId:docCase.value.trim(),businessName:docBusiness.value.trim(),clientName:docClient.value.trim(),phone:docPhone.value.trim(),email:docEmail.value.trim(),status:'unpaid',notes:docNotes.value.trim(),items:totals.items,subtotal:totals.subtotal,taxRate:totals.taxRate,total:totals.total,sourceQuotation:d.ref||'',createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
     show('docMessage','Invoice created from quotation.','success');
   };
+}
+
+// ---- Stripe payment link (server: BINALABREPO /studio routes) ----
+let stripeBusy=false;
+async function billingCall(path){
+  const token=await auth.currentUser.getIdToken();
+  const r=await fetch(BILLING_API_URL.replace(/\/$/,'')+path,{method:'POST',headers:{'Authorization':'Bearer '+token,'Content-Type':'application/json'},body:'{}'});
+  const body=await r.json().catch(()=>({}));
+  if(!r.ok)throw new Error(body.error||`Server error ${r.status}`);
+  return body;
+}
+function renderStripePanel(){
+  const panel=document.getElementById('stripePanel');
+  if(!panel||selectedDocType!=='invoice')return;
+  const d=invoices.find(x=>x.id===selectedDocId);
+  if(!BILLING_API_URL){panel.innerHTML='<strong>Bayaran Stripe</strong><p class="muted">Server pembayaran belum disambung. Isi <code>BILLING_API_URL</code> dalam firebase-config.js selepas deploy.</p>';return}
+  if(!d){panel.innerHTML='<strong>Bayaran Stripe</strong><p class="muted">Simpan invois dahulu untuk buat link bayaran.</p>';return}
+  if(d.status==='paid'&&document.getElementById('docStatus'))docStatus.value='paid';
+  const st=d.status==='paid'?'paid':(d.stripeStatus||'');
+  const badge={paid:['Dibayar','ok'],open:['Menunggu bayaran','wait'],void:['Dibatalkan','off'],uncollectible:['Tak dapat dikutip','off']}[st];
+  const changed=st==='open'&&d.stripeAmountSen&&Math.round(Number(d.total||0)*100)!==d.stripeAmountSen;
+  const phone=String(d.phone||'').replace(/\D/g,'');
+  const waText=`Hi ${d.clientName||''}, ini link bayaran untuk invois ${d.ref||''} (${rm(d.total)}) daripada BinaLab:\n${d.stripeHostedUrl||''}\n\nBoleh bayar guna FPX atau kad. Terima kasih!`;
+  panel.innerHTML=`<div class="stripe-head"><strong>Bayaran Stripe</strong>${badge?`<span class="stripe-badge ${badge[1]}">${badge[0]}</span>`:''}</div>
+   ${st==='paid'?`<p>Pelanggan dah bayar${d.paidAmountSen?` ${rm(d.paidAmountSen/100)}`:''}. Status dikemas kini automatik oleh Stripe.</p>`:''}
+   ${st==='open'?`<div class="stripe-link"><input readonly value="${esc(d.stripeHostedUrl||'')}"><button class="btn ghost" id="stripeCopy">Copy</button></div>
+     ${changed?`<p class="stripe-warn">Jumlah invois dah berubah selepas link dibuat (link: ${rm(d.stripeAmountSen/100)}). Batalkan link dan buat yang baru.</p>`:''}
+     <div class="actions"><a class="btn primary" target="_blank" rel="noopener" href="https://wa.me/${phone}?text=${encodeURIComponent(waText)}">Hantar link di WhatsApp</a><button class="btn danger" id="stripeVoid">Batalkan link</button></div>`:''}
+   ${st!=='paid'&&st!=='open'?`<p class="muted">Buat link bayaran (FPX / kad) dan hantar kepada pelanggan melalui WhatsApp. Stripe juga emelkan invois kepada pelanggan. Status bertukar jadi Paid secara automatik.</p>
+     <div class="actions"><button class="btn primary" id="stripeCreate">Buat link bayaran Stripe</button></div>`:''}
+   <div class="message" id="stripeMsg"></div>`;
+  const run=async(btn,path,okMsg)=>{if(stripeBusy)return;stripeBusy=true;btn.disabled=true;const old=btn.textContent;btn.textContent='Sila tunggu...';try{await billingCall(path);show('stripeMsg',okMsg,'success')}catch(e){show('stripeMsg',e.message,'error');btn.disabled=false;btn.textContent=old}finally{stripeBusy=false}};
+  document.getElementById('stripeCreate')?.addEventListener('click',e=>run(e.currentTarget,`/studio/invoices/${d.id}/payment-link`,'Link dibuat.'));
+  document.getElementById('stripeVoid')?.addEventListener('click',e=>{if(confirm('Batalkan link bayaran ini? Pelanggan tak boleh bayar guna link lama.'))run(e.currentTarget,`/studio/invoices/${d.id}/void-payment-link`,'Link dibatalkan.')});
+  document.getElementById('stripeCopy')?.addEventListener('click',async e=>{await navigator.clipboard.writeText(d.stripeHostedUrl||'');e.currentTarget.textContent='Copied ✓'});
 }
 
 function itemRow(r,i){return `<div class="grid2" style="margin-bottom:8px"><div class="field full"><label>Description</label><input data-doc-input data-desc value="${esc(r.description||'')}"></div><div class="field"><label>Qty</label><input data-doc-input data-qty type="number" min="1" value="${Number(r.qty||1)}"></div><div class="field"><label>Price (RM)</label><input data-doc-input data-price type="number" min="0" step="0.01" value="${Number(r.price||0)}"></div></div>`}
