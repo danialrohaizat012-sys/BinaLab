@@ -16,8 +16,8 @@ service cloud.firestore {
         && request.resource.data.dreamOutcome is string
         && (!('logoSize' in request.resource.data) || request.resource.data.logoSize <= 184320);
 
-      allow get: if true;
-      allow list, update, delete: if request.auth != null;
+      // No public reads: updates go to clients over WhatsApp, not a web portal.
+      allow read, update, delete: if request.auth != null;
     }
 
     match /websiteSystems/{systemId} {
