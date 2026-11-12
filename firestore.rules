@@ -3,44 +3,118 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    // ========================================
+    // BINALAB OWNER AUTHORIZATION
+    // ========================================
+
+    function isOwner() {
+      return request.auth != null
+        && request.auth.uid ==
+          'UsuzBQjxeJQmQyvDMj0OXHJoZWy2';
+    }
+
+    // ========================================
+    // 1. BUSINESS DISCOVERIES
+    // ========================================
+
     match /businessDiscoveries/{discoveryId} {
+
+      // Public website: submit discovery
       allow create: if
         request.resource.data.businessName is string
         && request.resource.data.businessName.size() >= 2
         && request.resource.data.businessName.size() <= 120
+
         && request.resource.data.ownerName is string
         && request.resource.data.phone is string
         && request.resource.data.industry is string
         && request.resource.data.dailyOperation is string
         && request.resource.data.biggestProblem is string
         && request.resource.data.dreamOutcome is string
-        && (!('logoSize' in request.resource.data) || request.resource.data.logoSize <= 184320);
 
-      // No public reads: updates go to clients over WhatsApp, not a web portal.
-      allow read, update, delete: if request.auth != null;
+        && (
+          !('logoSize' in request.resource.data)
+          || (
+            request.resource.data.logoSize is number
+            && request.resource.data.logoSize <= 184320
+            && request.resource.data.logoSize >= 0
+          )
+        );
+
+      // No public reads: project updates go to clients over WhatsApp.
+      allow read: if isOwner();
+
+      // Only BinaLab owner can edit/delete
+      allow update, delete: if isOwner();
     }
+
+    // ========================================
+    // 2. WEBSITE SYSTEMS / PORTFOLIO
+    // ========================================
 
     match /websiteSystems/{systemId} {
+
+      // Public portfolio display
       allow read: if true;
-      allow create, update, delete: if request.auth != null;
+
+      // Owner-only management
+      allow create, update, delete: if isOwner();
     }
+
+    // ========================================
+    // 3. QUOTATIONS
+    // ========================================
 
     match /quotations/{quotationId} {
-      allow read, create, update, delete: if request.auth != null;
+
+      allow read, create, update, delete:
+        if isOwner();
     }
+
+    // ========================================
+    // 4. INVOICES
+    // ========================================
 
     match /invoices/{invoiceId} {
-      allow read, create, update, delete: if request.auth != null;
+
+      allow read, create, update, delete:
+        if isOwner();
     }
+
+    // ========================================
+    // 5. BRAND LOGOS (website "Brand yang pernah bekerjasama")
+    // ========================================
 
     match /websiteBrands/{brandId} {
+
+      // Public website reads logos
       allow read: if true;
-      allow create, update, delete: if request.auth != null;
+
+      // Owner-only management
+      allow create, update, delete:
+        if isOwner();
     }
 
+    // ========================================
+    // 6. SITE CONTENT
+    // ========================================
+
     match /siteContent/{contentId} {
+
+      // Public website can read founder content
       allow read: if true;
-      allow create, update, delete: if request.auth != null;
+
+      // Owner-only management
+      allow create, update, delete:
+        if isOwner();
+    }
+
+    // ========================================
+    // 7. DEFAULT DENY
+    // ========================================
+
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }
