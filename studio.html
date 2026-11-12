@@ -314,7 +314,7 @@ input,select,textarea,button{max-width:100%}
 <header class="top"><div class="top-inner"><div class="brand"><img src="icon-192.png" alt=""><span>Bina<b>Lab</b> Studio</span></div><button class="btn ghost" id="logoutBtn">Logout</button></div></header>
 <main class="shell">
 <div class="stats"><div class="stat"><strong id="statTotal">0</strong><small>Total Discoveries</small></div><div class="stat"><strong id="statNew">0</strong><small>New Leads</small></div><div class="stat"><strong id="statPrototype">0</strong><small>Prototype Stage</small></div><div class="stat"><strong id="statActive">0</strong><small>Active Projects</small></div></div>
-<div class="tabs"><button class="tab active" data-view="dashboardView">Dashboard</button><button class="tab" data-view="projectsView">Projects</button><button class="tab" data-view="commercialView">Quotation & Invoice</button><button class="tab" data-view="systemsView">Portfolio Kami</button><button class="tab" data-view="founderView">About Founder</button></div>
+<div class="tabs"><button class="tab active" data-view="dashboardView">Dashboard</button><button class="tab" data-view="projectsView">Projects</button><button class="tab" data-view="commercialView">Quotation & Invoice</button><button class="tab" data-view="systemsView">Portfolio Kami</button><button class="tab" data-view="brandsView">Logo Brand</button><button class="tab" data-view="founderView">About Founder</button></div>
 
 
 <section class="view active" id="dashboardView">
@@ -360,6 +360,11 @@ input,select,textarea,button{max-width:100%}
 <section class="panel"><div class="form-card" id="systemEditor"><div class="empty">Add or select a system.</div></div></section>
 </div></section>
 
+<section class="view" id="brandsView"><div class="content-layout">
+<section class="panel"><div class="panel-head"><strong>Logo Brand</strong><div><button class="btn primary" id="newBrand">+ New</button></div></div><div class="content-list" id="brandList"></div></section>
+<section class="panel"><div class="form-card" id="brandEditor"><div class="empty">Tambah atau pilih brand. Logo dipaparkan di website dalam bahagian "Brand yang pernah bekerjasama".</div></div></section>
+</div></section>
+
 <section class="view" id="founderView">
   <section class="panel">
     <div class="panel-head"><strong>About Founder</strong><span class="subtle">Edit sekali di Studio, website terus update.</span></div>
@@ -402,6 +407,7 @@ input,select,textarea,button{max-width:100%}
 import {db,auth,collection,query,orderBy,onSnapshot,doc,updateDoc,deleteDoc,setDoc,addDoc,serverTimestamp,arrayUnion,signInWithEmailAndPassword,signOut,onAuthStateChanged,BILLING_API_URL } from './firebase-config.js?v=460';
 
 const stages=['Discovery','Problem Mapping','Blueprint','Prototype','Proposal','Development','Testing','Launch'];
+let websiteBrands=[],selectedBrandId=null,brandLogoData=null;
 let discoveries=[],selectedId=null,websiteSystems=[],selectedSystemId=null,systemImageData=null,quotations=[],invoices=[],selectedDocType=null,selectedDocId=null,founderData={},founderPhotoData=null;
 
 const loginView=document.getElementById('loginView'),appView=document.getElementById('appView');
@@ -566,6 +572,7 @@ async function quickUpdate(d,notify){
 function show(id,text,type){const el=document.getElementById(id);el.textContent=text;el.className=`message ${type} show`}
 
 function listenContent(){
+ onSnapshot(query(collection(db,'websiteBrands'),orderBy('sortOrder','asc')),snap=>{websiteBrands=snap.docs.map(x=>({id:x.id,...x.data()}));renderBrandList()});
  onSnapshot(query(collection(db,'websiteSystems'),orderBy('sortOrder','asc')),snap=>{websiteSystems=snap.docs.map(x=>({id:x.id,...x.data()}));renderSystemList()});
  
 }
@@ -577,6 +584,17 @@ function renderSystemEditor(d={}){
  if(d.id)deleteSystem.onclick=async()=>{if(confirm('Delete this system?'))await deleteDoc(doc(db,'websiteSystems',d.id))};
 }
 newSystem.onclick=()=>renderSystemEditor({});
+
+function renderBrandList(){brandList.innerHTML=websiteBrands.map(d=>`<div class="content-item ${d.id===selectedBrandId?'active':''}" data-id="${d.id}"><h3>${esc(d.name||'Untitled')}</h3><p>${d.logoData?'Logo ✓':'Tiada logo (papar nama)'} • ${d.published===false?'Draft':'Published'} • Order ${d.sortOrder||0}</p></div>`).join('')||'<div class="empty">Belum ada brand. Website papar nama 4 client portfolio sebagai sementara.</div>';brandList.querySelectorAll('.content-item').forEach(el=>el.onclick=()=>{selectedBrandId=el.dataset.id;renderBrandList();renderBrandEditor(websiteBrands.find(x=>x.id===selectedBrandId))})}
+function renderBrandEditor(d={}){
+ brandLogoData=d.logoData||null;
+ brandEditor.innerHTML=`<h2>${d.id?'Edit':'New'} Brand</h2><div class="grid2"><div class="field"><label>Nama brand</label><input id="brName" value="${esc(d.name||'')}"></div><div class="field"><label>Sort Order</label><input id="brOrder" type="number" value="${Number(d.sortOrder||websiteBrands.length+1)}"></div><div class="field full"><label>Website / Instagram (optional)</label><input id="brUrl" value="${esc(d.url||'')}" placeholder="https://"></div><div class="field full"><label>Logo (PNG lut sinar paling cantik)</label><input id="brLogo" type="file" accept="image/*"><div id="brPreview" style="margin-top:10px">${d.logoData?`<img class="thumb" style="max-height:80px;object-fit:contain;background:#fff" src="${d.logoData}">`:''}</div>${d.logoData?'<button class="btn ghost" id="brRemoveLogo" style="margin-top:8px">Buang logo</button>':''}</div></div><label class="toggle"><input id="brPublished" type="checkbox" ${d.published===false?'':'checked'}> Papar di website</label><div class="actions"><button class="btn primary" id="saveBrand">Save</button>${d.id?'<button class="btn danger" id="deleteBrand">Delete</button>':''}</div><div class="message" id="brandMessage"></div>`;
+ brLogo.onchange=async()=>{if(!brLogo.files[0])return;try{brandLogoData=await compressImage(brLogo.files[0],120*1024,480);brPreview.innerHTML=`<img class="thumb" style="max-height:80px;object-fit:contain;background:#fff" src="${brandLogoData}">`}catch(e){show('brandMessage',e.message,'error')}};
+ if(document.getElementById('brRemoveLogo'))brRemoveLogo.onclick=()=>{brandLogoData=null;brPreview.innerHTML='';brRemoveLogo.remove()};
+ saveBrand.onclick=async()=>{try{const url=brUrl.value.trim();if(url&&!/^https?:\/\//.test(url))throw new Error('URL mesti bermula dengan https://');const p={name:brName.value.trim(),url,sortOrder:Number(brOrder.value||999),published:brPublished.checked,logoData:brandLogoData||'',updatedAt:serverTimestamp()};if(!p.name)throw new Error('Nama brand diperlukan.');if(d.id)await updateDoc(doc(db,'websiteBrands',d.id),p);else{const r=await addDoc(collection(db,'websiteBrands'),{...p,createdAt:serverTimestamp()});selectedBrandId=r.id;d={...p,id:r.id}}show('brandMessage','Saved. Website dikemas kini automatik.','success')}catch(e){show('brandMessage',e.message,'error')}};
+ if(d.id)deleteBrand.onclick=async()=>{if(confirm('Padam brand ini?')){await deleteDoc(doc(db,'websiteBrands',d.id));selectedBrandId=null;brandEditor.innerHTML='<div class="empty">Brand dipadam.</div>'}};
+}
+newBrand.onclick=()=>{selectedBrandId=null;renderBrandList();renderBrandEditor({})};
 const defaults=[{id:'abedin-auto',name:'Abedin Auto',industry:'Automotive',descriptionMs:'Digital rental workflow, vehicle inventory dan operational mission control.',descriptionEn:'Digital rental workflow, vehicle inventory and operational mission control.',liveUrl:'https://danialrohaizat012-sys.github.io/AbeDInAuto/',coverData:'abedin-auto.jpg',tags:['Automotive','PWA','Live'],sortOrder:1,published:true},{id:'awanzco',name:'Awanzco',industry:'Retail',descriptionMs:'Deal sourcing dan inventory intelligence untuk perniagaan used-device.',descriptionEn:'Deal sourcing and inventory intelligence for a used-device business.',liveUrl:'https://danialrohaizat012-sys.github.io/Awanzco/',coverData:'awanzco.jpg',tags:['Retail','Inventory','Live'],sortOrder:2,published:true},{id:'keduaos',name:'KeduaOS',industry:'F&B',descriptionMs:'Booking, event dan customer operations untuk perniagaan mobile coffee van.',descriptionEn:'Booking, events and customer operations for a mobile coffee van business.',liveUrl:'https://danialrohaizat012-sys.github.io/KeduaKopi/',coverData:'keduaos.jpg',tags:['F&B','Booking','Live'],sortOrder:3,published:true},{id:'mos-karting',name:'MOS Karting',industry:'Entertainment',descriptionMs:'Booking dan customer experience untuk operasi go-kart dengan sesi 10 minit.',descriptionEn:'Booking and customer experience for a go-kart operation with 10-minute sessions.',liveUrl:'https://danialrohaizat012-sys.github.io/MosKart/',coverData:'mos-karting.jpg',tags:['Entertainment','Booking','Live'],sortOrder:4,published:true}];
 seedSystems.onclick=async()=>{for(const d of defaults)await setDoc(doc(db,'websiteSystems',d.id),{...d,updatedAt:serverTimestamp()},{merge:true});alert('Current 4 imported.')};
 

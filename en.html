@@ -267,6 +267,18 @@ input,select,textarea,button{max-width:100%}
 .qf-case{margin-top:18px;font-size:13px;color:#64748B}
 @media(max-width:640px){.qf .quick-grid{grid-template-columns:1fr 1fr}.qf .quick{font-size:13px;padding:11px}.qf-alt{flex-direction:column}}
 </style>
+<style>
+.brands{padding:46px 0 30px;border-bottom:1px solid var(--line)}
+.brands-head{text-align:center;margin-bottom:24px}.brands-head small{font-size:12px;font-weight:900;letter-spacing:.12em;color:#64748B;text-transform:uppercase}
+.brand-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:14px 18px}
+.brand-logo{display:flex;align-items:center;justify-content:center;width:168px;height:84px;padding:14px 18px;border:1px solid var(--line);border-radius:18px;background:#fff;transition:transform .2s,border-color .2s,box-shadow .2s}
+a.brand-logo:hover{transform:translateY(-3px);border-color:#86efac;box-shadow:0 12px 26px rgba(15,23,42,.07)}
+.brand-logo img{max-width:100%;max-height:100%;object-fit:contain;filter:grayscale(1);opacity:.78;transition:filter .2s,opacity .2s}
+.brand-logo:hover img{filter:none;opacity:1}
+@media(hover:none){.brand-logo img{filter:none;opacity:1}}
+.brand-logo span{font-weight:900;font-size:17px;letter-spacing:-.02em;color:#334155;text-align:center;line-height:1.15}
+@media(max-width:640px){.brands{padding:34px 0 22px}.brand-row{gap:10px}.brand-logo{width:calc(50% - 5px);height:72px}}
+</style>
 </head>
 <body>
 <header class="nav">
@@ -316,6 +328,7 @@ input,select,textarea,button{max-width:100%}
 <a href="google-business.html" class="service-intro-card"><span class="service-symbol">⌕</span><strong>Google Business</strong><small>Help customers discover your business</small><span class="service-arrow">↗</span></a>
 </div></div></section>
 
+<section class="brands" aria-label="Brands we have worked with"><div class="container"><div class="brands-head"><small>Brands we have worked with</small></div><div class="brand-row" id="brandRow"></div></div></section>
 <section id="solutions"><div class="container"><div class="section-head"><span class="kicker">COMMON SME PROBLEMS</span><h2>Does this sound like your business?</h2><p>Many owners still manage important work using methods that worked when the business was small, but become difficult as the business grows.</p></div>
 <div class="problem-grid">
 <article class="problem"><span>💬</span><h3>Orders still on WhatsApp?</h3><p>Customer and order information gets buried easily.</p></article>
@@ -450,6 +463,19 @@ function renderSystems(items){
   document.getElementById('portfolioGrid').innerHTML=source.map(systemCard).join('');
 }
 
+const fallbackBrands=['Abedin Auto','Awanzco','KeduaOS','MOS Karting'].map((name,i)=>({name,sortOrder:i+1,published:true}));
+function renderBrands(items){
+  const list=items.filter(x=>x.published!==false&&(x.name||x.logoData)).sort((a,b)=>(a.sortOrder||999)-(b.sortOrder||999));
+  const source=list.length?list:fallbackBrands;
+  const row=document.getElementById('brandRow');if(!row)return;
+  row.innerHTML=source.map(b=>{
+    const inner=b.logoData?`<img src="${esc(b.logoData)}" alt="${esc(b.name||'Logo')}" loading="lazy">`:`<span>${esc(b.name)}</span>`;
+    const url=/^https?:\/\//.test(b.url||'')?b.url:'';
+    return url?`<a class="brand-logo" href="${esc(url)}" target="_blank" rel="noopener" title="${esc(b.name||'')}">${inner}</a>`:`<div class="brand-logo" title="${esc(b.name||'')}">${inner}</div>`;
+  }).join('');
+}
+renderBrands([]);
+
 function renderTestimonials(items){
   const published=items.filter(x=>x.published===true && x.demoReady===true && x.demoUrl).sort((a,b)=>(a.sortOrder||999)-(b.sortOrder||999));
   const grid=document.getElementById('testimonialGrid');
@@ -467,6 +493,7 @@ function renderTestimonials(items){
 
 try{
   onSnapshot(query(collection(db,'websiteSystems'),orderBy('sortOrder','asc')),snap=>renderSystems(snap.docs.map(x=>({id:x.id,...x.data()}))),()=>renderSystems([]));
+  onSnapshot(query(collection(db,'websiteBrands'),orderBy('sortOrder','asc')),snap=>renderBrands(snap.docs.map(x=>({id:x.id,...x.data()}))),()=>renderBrands([]));
   onSnapshot(query(collection(db,'websiteTestimonials'),orderBy('sortOrder','asc')),snap=>renderTestimonials(snap.docs.map(x=>({id:x.id,...x.data()}))),()=>renderTestimonials([]));
 }catch(e){renderSystems([]);renderTestimonials([])}
 
