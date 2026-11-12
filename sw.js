@@ -1,4 +1,4 @@
-const CACHE='binalab-v459';
+const CACHE='binalab-v460';
 const ASSETS=['./','./index.html','./en.html','./about-founder.html','./about-founder-en.html','./impact.html','./products.html','./google-business.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(async cache=>{await Promise.allSettled(ASSETS.map(url=>cache.add(url)))}))});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('binalab-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()))});
