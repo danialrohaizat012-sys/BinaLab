@@ -4,17 +4,17 @@
 <!-- Search and social metadata -->
 <title>Behind Us | Kenali BinaLab</title>
 <meta name="description" content="Kenali orang di sebalik BinaLab dan pendekatan kami membina penyelesaian digital untuk perniagaan sebenar.">
-<link rel="canonical" href="https://www.binalab.my/about-founder.html">
-<link rel="alternate" hreflang="ms-MY" href="https://www.binalab.my/about-founder.html">
-<link rel="alternate" hreflang="en" href="https://www.binalab.my/about-founder-en.html">
-<link rel="alternate" hreflang="x-default" href="https://www.binalab.my/about-founder.html">
+<link rel="canonical" href="https://binalab.my/about-founder.html">
+<link rel="alternate" hreflang="ms-MY" href="https://binalab.my/about-founder.html">
+<link rel="alternate" hreflang="en" href="https://binalab.my/about-founder-en.html">
+<link rel="alternate" hreflang="x-default" href="https://binalab.my/about-founder.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="BinaLab">
 <meta property="og:locale" content="ms_MY">
 <meta property="og:title" content="Behind Us | Kenali BinaLab">
 <meta property="og:description" content="Kenali orang di sebalik BinaLab dan pendekatan kami membina penyelesaian digital untuk perniagaan sebenar.">
-<meta property="og:url" content="https://www.binalab.my/about-founder.html">
-<meta property="og:image" content="https://www.binalab.my/BinaLab-Social-Preview-Final.jpg">
+<meta property="og:url" content="https://binalab.my/about-founder.html">
+<meta property="og:image" content="https://binalab.my/BinaLab-Social-Preview-Final.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:type" content="image/jpeg">
@@ -22,7 +22,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Behind Us | Kenali BinaLab">
 <meta name="twitter:description" content="Kenali orang di sebalik BinaLab dan pendekatan kami membina penyelesaian digital untuk perniagaan sebenar.">
-<meta name="twitter:image" content="https://www.binalab.my/BinaLab-Social-Preview-Final.jpg">
+<meta name="twitter:image" content="https://binalab.my/BinaLab-Social-Preview-Final.jpg">
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
@@ -109,11 +109,10 @@ input,select,textarea,button{max-width:100%}
 <footer><div class="container foot"><div class="brand"><img src="icon-192.png" alt=""><span>Bina<b>Lab</b></span></div><small>Real Business. Real Solutions.</small></div></footer>
 
 <script type="module">
-import {db,doc,onSnapshot} from './firebase-config.js?v=460';
 const icons={facebook:'f',tiktok:'♪',instagram:'◎',threads:'@',youtube:'▶',linkedin:'in'};
-onSnapshot(doc(db,'siteContent','founder'),snap=>{
-  loading.hidden=true; mainContent.hidden=false;
-  const d=snap.exists()?snap.data():{};
+let shown=false;
+function render(d){
+  shown=true; loading.hidden=true; mainContent.hidden=false;
   founderName.innerHTML=esc(d.name||'Danial Rohaizat').replace(/BinaLab/g,'<span>BinaLab</span>');
   founderRole.textContent=d.roleMs||'Founder, BinaLab';
   founderIntro.textContent=d.introMs||'Membina sistem yang membantu perniagaan mikro dan SME bergerak daripada proses manual kepada operasi digital yang lebih mudah.';
@@ -124,7 +123,12 @@ onSnapshot(doc(db,'siteContent','founder'),snap=>{
   founderValues.innerHTML=values.map((v,i)=>`<div class="value"><strong>${String(i+1).padStart(2,'0')}</strong><p>${esc(v)}</p></div>`).join('');
   const socials=d.socials||{};
   socialLinks.innerHTML=Object.entries(socials).filter(([k,v])=>v).map(([k,v])=>`<a class="social" href="${esc(v)}" target="_blank" rel="noopener"><span class="ico">${icons[k]||'↗'}</span>${label(k)}</a>`).join('');
-});
+}
+// Show the default profile if Firestore is slow or blocked, then update when it arrives.
+const fallbackTimer=setTimeout(()=>{if(!shown)render({})},2500);
+import('./firebase-config.js?v=460').then(({db,doc,onSnapshot})=>{
+  onSnapshot(doc(db,'siteContent','founder'),snap=>{clearTimeout(fallbackTimer);render(snap.exists()?snap.data():{})},()=>{if(!shown)render({})});
+}).catch(()=>{clearTimeout(fallbackTimer);if(!shown)render({})});
 function label(k){return ({facebook:'Facebook',tiktok:'TikTok',instagram:'Instagram',threads:'Threads',youtube:'YouTube',linkedin:'LinkedIn'})[k]||k}
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 </script>
