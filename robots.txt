@@ -1,5 +1,3 @@
 User-agent: *
 Allow: /
-Disallow: /studio.html
-Disallow: /portal.html
 Sitemap: https://binalab.my/sitemap.xml
