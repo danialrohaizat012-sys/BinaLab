@@ -1,5 +1,5 @@
 {
-  "name": "BinaLab \u2014 SME Digitalisation Partner",
+  "name": "BinaLab — Websites & Digital Systems",
   "short_name": "BinaLab",
   "start_url": "./",
   "display": "standalone",
@@ -16,5 +16,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "description": "Websites and business systems for small and growing businesses."
 }
